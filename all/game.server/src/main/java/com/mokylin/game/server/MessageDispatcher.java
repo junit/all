@@ -28,7 +28,6 @@ public class MessageDispatcher extends GameHandlerAdapter {
 	
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-		// TODO Auto-generated method stub
-//		super.exceptionCaught(ctx, cause);
+		logger.error(cause, cause);
 	}
 }
