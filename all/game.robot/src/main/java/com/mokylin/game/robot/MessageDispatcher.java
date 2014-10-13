@@ -19,10 +19,10 @@ public class MessageDispatcher extends GameHandlerAdapter {
 
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
-		ReqLoginMessage msg = new ReqLoginMessage();
-		msg.setName(name);
-		msg.setServerId(1);
-		msg.setPassword("x");
-		ctx.writeAndFlush(msg);
+//		ReqLoginMessage msg = new ReqLoginMessage();
+//		msg.setName(name);
+//		msg.setServerId(1);
+//		msg.setPassword("x");
+//		ctx.writeAndFlush(msg);
 	}
 }
