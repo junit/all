@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.mokylin.game.core.message.MessagePool;
 import com.mokylin.game.core.message.bean.Message;
+import com.mokylin.game.core.util.ContextUtil;
 import com.mokylin.game.core.util.ZLibUtil;
 
 public class Decoder extends ByteToMessageDecoder {
@@ -17,6 +18,7 @@ public class Decoder extends ByteToMessageDecoder {
 	protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
 		// 校验消息长度（4个字节）
 		if (in.readableBytes() < Integer.SIZE / Byte.SIZE) {
+			ContextUtil.close(ctx, "消息头太短");
 			return;
 		}
 
@@ -38,6 +40,11 @@ public class Decoder extends ByteToMessageDecoder {
 		int msgId = in.readInt();
 		// 消息
 		Message message = MessagePool.getInstance().createMessage(msgId);
+		
+		if (message == null) {
+			ContextUtil.close(ctx, "无此消息" + msgId);
+			return ;
+		}
 
 		if (zlib == 1) {
 			// 读取指定长度的字节数

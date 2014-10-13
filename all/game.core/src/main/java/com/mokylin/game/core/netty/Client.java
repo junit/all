@@ -1,5 +1,7 @@
 package com.mokylin.game.core.netty;
 
+import java.util.concurrent.TimeUnit;
+
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -8,15 +10,13 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.timeout.IdleStateHandler;
 
 import org.apache.log4j.Logger;
 
 import com.mokylin.game.core.netty.coder.Decoder;
 import com.mokylin.game.core.netty.coder.Encoder;
 
-/**
- * Created by game on 3/30/14.
- */
 public abstract class Client extends Thread {
 	private static Logger logger = Logger.getLogger(Client.class);
 	private String host;
@@ -38,9 +38,6 @@ public abstract class Client extends Thread {
 			System.exit(-1);
 		}
 
-		
-		
-		
 		try {
 			Bootstrap b = new Bootstrap();
 			b.group(workerGroup);
@@ -51,6 +48,7 @@ public abstract class Client extends Thread {
 				public void initChannel(SocketChannel ch) throws Exception {
 					ch.pipeline().addLast("encoder", new Encoder());
 					ch.pipeline().addLast("decoder", new Decoder());
+					ch.pipeline().addLast("idle", new IdleStateHandler(60, 60, 60, TimeUnit.SECONDS));
 					ch.pipeline().addLast("handler", createHandlerAdapter());
 				}
 			});

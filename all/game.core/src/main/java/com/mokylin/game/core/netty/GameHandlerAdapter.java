@@ -2,11 +2,13 @@ package com.mokylin.game.core.netty;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.handler.timeout.IdleStateEvent;
 
 import org.apache.log4j.Logger;
 
 import com.mokylin.game.core.message.MessagePool;
 import com.mokylin.game.core.message.bean.Message;
+import com.mokylin.game.core.util.ContextUtil;
 
 public abstract class GameHandlerAdapter extends ChannelInboundHandlerAdapter {
 	protected static Logger logger = Logger.getLogger(GameHandlerAdapter.class);
@@ -24,13 +26,13 @@ public abstract class GameHandlerAdapter extends ChannelInboundHandlerAdapter {
 		try {
 			handler = MessagePool.getInstance().createHandler(msg.getId());
 		} catch (Exception e) {
-			ctx.close();
+			ContextUtil.close(ctx, "exception");
 			logger.error(e, e);
 			return;
 		}
 
 		if (handler == null) {
-			ctx.close();
+			ContextUtil.close(ctx, "no handler:" + msg.getId());
 			return;
 		}
 
@@ -38,5 +40,19 @@ public abstract class GameHandlerAdapter extends ChannelInboundHandlerAdapter {
 		handler.setContext(ctx);
 
 		onRecvMsg(handler);
+	}
+	
+	@Override
+	public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+		if (evt instanceof IdleStateEvent) {
+			IdleStateEvent event = (IdleStateEvent)evt;
+			if (event == IdleStateEvent.READER_IDLE_STATE_EVENT) {
+				logger.error("no read");
+			} else if (event == IdleStateEvent.WRITER_IDLE_STATE_EVENT) {
+				logger.error("no write");
+			} else if (event == IdleStateEvent.ALL_IDLE_STATE_EVENT) {
+				logger.error("no all");
+			}
+		}
 	}
 }
