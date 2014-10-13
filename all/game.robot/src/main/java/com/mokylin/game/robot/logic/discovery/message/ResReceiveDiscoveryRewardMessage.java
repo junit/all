@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-
 import com.mokylin.game.core.message.bean.Message;
 
 /** 
