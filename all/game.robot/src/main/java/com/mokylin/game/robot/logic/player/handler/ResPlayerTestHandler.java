@@ -10,7 +10,10 @@ public class ResPlayerTestHandler extends Handler{
     public void exec() {
     	try {
     		ResPlayerTestMessage msg = (ResPlayerTestMessage)this.getMessage();
-    		// TODO
+    		long interval = System.currentTimeMillis() - msg.getFlag();
+//    		if (interval > 100) {
+//    			logger.error("超时:" + interval);
+//    		}
       } catch (Exception e) {
 			logger.error(e, e);
 		}

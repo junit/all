@@ -30,4 +30,22 @@ public class MessageDispatcher extends GameHandlerAdapter {
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
 		logger.error(cause, cause);
 	}
+
+	@Override
+	protected void readIdle(ChannelHandlerContext ctx) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void writeIdle(ChannelHandlerContext ctx) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void allIdle(ChannelHandlerContext ctx) {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -43,12 +43,13 @@ public abstract class Client extends Thread {
 			b.group(workerGroup);
 			b.channel(NioSocketChannel.class);
 			b.option(ChannelOption.SO_KEEPALIVE, true);
+			b.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 300000);
 			b.handler(new ChannelInitializer<SocketChannel>() {
 				@Override
 				public void initChannel(SocketChannel ch) throws Exception {
 					ch.pipeline().addLast("encoder", new Encoder());
 					ch.pipeline().addLast("decoder", new Decoder());
-					ch.pipeline().addLast("idle", new IdleStateHandler(60, 60, 60, TimeUnit.SECONDS));
+					ch.pipeline().addLast("idle", new IdleStateHandler(1, 60, 60, TimeUnit.SECONDS));
 					ch.pipeline().addLast("handler", createHandlerAdapter());
 				}
 			});

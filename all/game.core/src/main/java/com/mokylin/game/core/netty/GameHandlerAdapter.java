@@ -14,6 +14,9 @@ public abstract class GameHandlerAdapter extends ChannelInboundHandlerAdapter {
 	protected static Logger logger = Logger.getLogger(GameHandlerAdapter.class);
 
 	protected abstract void onRecvMsg(com.mokylin.game.core.message.bean.Handler handler);
+	protected abstract void readIdle(ChannelHandlerContext ctx);
+	protected abstract void writeIdle(ChannelHandlerContext ctx);
+	protected abstract void allIdle(ChannelHandlerContext ctx);
 
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object obj) { // (2)
@@ -47,11 +50,11 @@ public abstract class GameHandlerAdapter extends ChannelInboundHandlerAdapter {
 		if (evt instanceof IdleStateEvent) {
 			IdleStateEvent event = (IdleStateEvent)evt;
 			if (event == IdleStateEvent.READER_IDLE_STATE_EVENT) {
-				logger.error("no read");
+				readIdle(ctx);
 			} else if (event == IdleStateEvent.WRITER_IDLE_STATE_EVENT) {
-				logger.error("no write");
+				writeIdle(ctx);
 			} else if (event == IdleStateEvent.ALL_IDLE_STATE_EVENT) {
-				logger.error("no all");
+				allIdle(ctx);
 			}
 		}
 	}
