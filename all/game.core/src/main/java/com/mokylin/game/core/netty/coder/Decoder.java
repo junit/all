@@ -7,14 +7,11 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
-
 import com.mokylin.game.core.message.MessagePool;
 import com.mokylin.game.core.message.bean.Message;
 import com.mokylin.game.core.util.ZLibUtil;
 
 public class Decoder extends ByteToMessageDecoder {
-	private static Logger logger = Logger.getLogger(Decoder.class);
 
 	@Override
 	protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
@@ -41,10 +38,6 @@ public class Decoder extends ByteToMessageDecoder {
 		int msgId = in.readInt();
 		// 消息
 		Message message = MessagePool.getInstance().createMessage(msgId);
-		if (message == null) {
-			logger.error("message不存在.id:" + msgId);
-			return ;
-		}
 
 		if (zlib == 1) {
 			// 读取指定长度的字节数
