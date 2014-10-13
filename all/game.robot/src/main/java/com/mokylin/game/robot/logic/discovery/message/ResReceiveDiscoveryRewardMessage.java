@@ -1,12 +1,13 @@
 package com.mokylin.game.robot.logic.discovery.message;
 
-import java.util.List;
-import java.util.ArrayList;
-
-import com.mokylin.game.robot.logic.discovery.bean.*;
-import com.mokylin.game.core.message.bean.Message;
 import io.netty.buffer.ByteBuf;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.log4j.Logger;
+
+import com.mokylin.game.core.message.bean.Message;
 
 /** 
  * @author messageGenerator

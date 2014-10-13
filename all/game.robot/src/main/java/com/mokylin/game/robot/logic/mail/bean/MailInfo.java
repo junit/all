@@ -1,13 +1,13 @@
 package com.mokylin.game.robot.logic.mail.bean;
 
-import java.util.List;
-import java.util.ArrayList;
-
-import com.mokylin.game.robot.logic.mail.bean.*;
-import com.mokylin.game.core.message.bean.Bean;
-
 import io.netty.buffer.ByteBuf;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.log4j.Logger;
+
+import com.mokylin.game.core.message.bean.Bean;
 
 /** 
  * @author messageGenerator
