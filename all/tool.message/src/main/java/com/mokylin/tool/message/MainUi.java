@@ -86,7 +86,7 @@ public class MainUi extends JFrame implements ActionListener {
 
 	public boolean init() throws Exception {
 		// TODO 这里改配置
-		File dir = new File("/home/shell/git/all/all/res/message");
+		File dir = new File("/home/shell/workspace/Res/resource/message");
 		for (File file : dir.listFiles()) {
 			if (!file.getName().endsWith("xml")) {
 				continue;

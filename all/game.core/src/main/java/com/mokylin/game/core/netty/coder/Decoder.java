@@ -1,85 +1,69 @@
 package com.mokylin.game.core.netty.coder;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
-import io.netty.util.AttributeKey;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.mokylin.game.core.message.MessagePool;
 import com.mokylin.game.core.message.bean.Message;
-import com.mokylin.game.core.util.ContextUtil;
+import com.mokylin.game.core.util.ZLibUtil;
 
 public class Decoder extends ByteToMessageDecoder {
-	private static final AttributeKey<Object> MESSAGE_TIME = AttributeKey.valueOf("MESSAGE_TIME");
-	private static final AttributeKey<Object> MESSAGE_COUNT = AttributeKey.valueOf("MESSAGE_COUNT");
-	private static final int MESSAGE_COUNT_NUM = 30;
-	private static final int MESSAGE_COUNT_MSEC = 1000;
+	private static Logger logger = Logger.getLogger(Decoder.class);
 
 	@Override
 	protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
-		if (in.readableBytes() < (Integer.SIZE / Byte.SIZE)) {
+		// 校验消息长度（4个字节）
+		if (in.readableBytes() < Integer.SIZE / Byte.SIZE) {
 			return;
 		}
+
+		// 标记读的位置
 		in.markReaderIndex();
 
-		int length = in.readInt();
-		if (length < 0) {
-			ContextUtil.close(ctx, "消息头长度错误:" + length);;
-			return;
-		}
+		// 获得信息长度
+		int dataLength = in.readInt();
+		// 是否压缩
+		int zlib = (dataLength & 0xFF000000) >> 24;
+		dataLength = dataLength & 0x00FFFFFF;
 
-		if (length > in.readableBytes()) { // wait until bytes enough
+		if (in.readableBytes() < dataLength) {
 			in.resetReaderIndex();
 			return;
 		}
 
-		if (!rateCheck(ctx, MESSAGE_COUNT_NUM, MESSAGE_COUNT_MSEC)) {
-			ContextUtil.close(ctx, "发送频率过高");;
-			return;
-		}
-
-		int messageId = in.readInt();
-
-		Message message = MessagePool.getInstance().createMessage(messageId);
+		// 消息Id
+		int msgId = in.readInt();
+		// 消息
+		Message message = MessagePool.getInstance().createMessage(msgId);
 		if (message == null) {
-			ContextUtil.close(ctx, "找不到消息:" + messageId);;
-			return;
+			logger.error("message不存在.id:" + msgId);
+			return ;
 		}
 
-		if (!message.read(in)) {
-			ContextUtil.close(ctx, "读取消息错误:" + messageId);;
-			return;
+		if (zlib == 1) {
+			// 读取指定长度的字节数
+			byte[] msgBodyBytes = new byte[dataLength - 4];
+			in.readBytes(msgBodyBytes);
+
+			// 解压字节
+			msgBodyBytes = ZLibUtil.decompress(msgBodyBytes);
+
+			ByteBuf msgBuffer = Unpooled.buffer(msgBodyBytes.length);
+			msgBuffer.writeBytes(msgBodyBytes);
+			// 读取消息
+			message.read(msgBuffer);
+		} else {
+			// 读取消息
+			message.read(in);
 		}
 
 		out.add(message);
-	}
-
-	private boolean rateCheck(ChannelHandlerContext ctx, int maxNum, int perMsec) {
-		
-		Object object = ctx.attr(MESSAGE_TIME).get();
-		if (object == null) {
-			object = System.currentTimeMillis();
-			ctx.attr(MESSAGE_TIME).set(object);
-			ctx.attr(MESSAGE_COUNT).set(0);
-			return true;
-		}
-
-		long time = (Long) object;
-		long nowTime = System.currentTimeMillis();
-		if (time - nowTime > perMsec) {
-			ctx.attr(MESSAGE_TIME).set(nowTime);
-			ctx.attr(MESSAGE_COUNT).set(0);
-			return true;
-		}
-
-		int count = (Integer) ctx.attr(MESSAGE_COUNT).get();
-		if (count > maxNum) {
-			return false;
-		}
-		ctx.attr(MESSAGE_COUNT).set(count + 1);
-		return true;
 	}
 
 	public static void main(String[] args) {

@@ -46,15 +46,18 @@ public abstract class Client extends Thread {
 			b.handler(new ChannelInitializer<SocketChannel>() {
 				@Override
 				public void initChannel(SocketChannel ch) throws Exception {
-					ch.pipeline().addLast(new Encoder());
-					ch.pipeline().addLast(new Decoder());
-					ch.pipeline().addLast(createHandlerAdapter());
+					ch.pipeline().addLast("encoder", new Encoder());
+					ch.pipeline().addLast("decoder", new Decoder());
+					ch.pipeline().addLast("handler", createHandlerAdapter());
 				}
 			});
 
-			ChannelFuture f = b.connect(host, port).sync();
-
-			f.channel().closeFuture().sync();
+			try {
+				ChannelFuture f = b.connect(host, port).sync();
+				f.channel().closeFuture().sync();
+			} catch (Exception e) {
+				logger.error(e, e);
+			}
 		} catch (Exception e) {
 			logger.error(e, e);
 			System.exit(-1);
