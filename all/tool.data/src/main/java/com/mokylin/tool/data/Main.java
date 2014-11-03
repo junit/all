@@ -3,6 +3,8 @@ package com.mokylin.tool.data;
 import java.awt.EventQueue;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.FileInputStream;
+import java.util.Properties;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -51,7 +53,9 @@ public class Main extends JFrame {
 	 */
 	@SuppressWarnings("rawtypes")
 	public Main() throws Exception {
-		generator = new Generator();
+		Properties properties = new Properties();
+		properties.load(new FileInputStream("config.properties"));
+		generator = new Generator(properties);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 734, 793);
 		contentPane = new JPanel();

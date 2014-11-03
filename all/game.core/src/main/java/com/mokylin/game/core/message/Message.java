@@ -1,4 +1,4 @@
-package com.mokylin.game.core.message.bean;
+package com.mokylin.game.core.message;
 
 /**
  * Created by game on 4/2/14.

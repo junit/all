@@ -1,4 +1,4 @@
-package com.mokylin.game.core.netty.coder;
+package com.mokylin.game.core.netty;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.log4j.Logger;
 
-import com.mokylin.game.core.message.bean.Message;
+import com.mokylin.game.core.message.Message;
 
 public final class Encoder extends MessageToByteEncoder<Message> {
 	@SuppressWarnings("unused")

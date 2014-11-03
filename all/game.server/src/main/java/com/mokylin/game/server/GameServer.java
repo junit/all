@@ -13,7 +13,7 @@ public class GameServer extends Server {
 
 	@Override
 	protected boolean init() {
-		messageManager.init();
+//		messageManager.init();
 		return true;
 	}
 

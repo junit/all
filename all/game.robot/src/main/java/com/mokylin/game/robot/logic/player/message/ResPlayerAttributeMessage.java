@@ -2,8 +2,10 @@ package com.mokylin.game.robot.logic.player.message;
 
 
 import com.mokylin.game.robot.logic.player.bean.*;
-import com.mokylin.game.core.message.bean.Message;
+import com.mokylin.game.core.message.Message;
+
 import io.netty.buffer.ByteBuf;
+
 import org.apache.log4j.Logger;
 
 /** 

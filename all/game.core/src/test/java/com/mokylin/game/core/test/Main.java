@@ -1,25 +1,24 @@
 package com.mokylin.game.core.test;
 
-import java.util.HashSet;
-
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 public class Main {
 	public static void main(String[] args) {
-//		Injector inj = Guice.createInjector(new Module() {
-//			@Override
-//			public void configure(Binder binder) {
-//				binder.bindInterceptor(Matchers.subclassesOf(Service.class), Matchers.any(), new MyMethodInterceptor());
-//			}
-//		});
-//		Service demo = inj.getInstance(Service.class);
-//		demo.sayHello();
-		String str1 = "abc";
-		String str2 = "abc";
-		System.out.println(str1.hashCode());
-		System.out.println(str2.hashCode());
-		
-		HashSet<String> set = new HashSet<>();
-		set.add("a");
-		System.out.println(set.contains("a"));
+		ThreadPoolExecutor executor = new ThreadPoolExecutor(10, 10, 1, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
+		String str = "abc";
+		executor.execute(new Runnable() {
+//			final String s = str;
+			@Override
+			public void run() {
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				System.out.println(str);
+			}
+		});
 	}
 }

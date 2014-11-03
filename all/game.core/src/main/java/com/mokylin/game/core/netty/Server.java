@@ -14,15 +14,13 @@ import io.netty.handler.timeout.IdleStateHandler;
 
 import org.apache.log4j.Logger;
 
-import com.mokylin.game.core.netty.coder.Decoder;
-import com.mokylin.game.core.netty.coder.Encoder;
 import com.mokylin.game.core.system.SignalHandler;
 
 public abstract class Server extends Thread {
 	protected static Logger logger = Logger.getLogger(Server.class);
 	private int port;
-	private EventLoopGroup accepterGroup;
-	private EventLoopGroup clientGroup;
+	private EventLoopGroup bossGroup;
+	private EventLoopGroup workerGroup;
 
 	public Server(String name, int port) {
 		super(name);
@@ -40,12 +38,12 @@ public abstract class Server extends Thread {
 
 		initSignal();
 
-		accepterGroup = new NioEventLoopGroup();
-		clientGroup = new NioEventLoopGroup();
+		bossGroup = new NioEventLoopGroup();
+		workerGroup = new NioEventLoopGroup();
 
 		try {
 			ServerBootstrap b = new ServerBootstrap();
-			b.group(accepterGroup, clientGroup).channel(NioServerSocketChannel.class).childHandler(new ChannelInitializer<SocketChannel>() {
+			b.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class).childHandler(new ChannelInitializer<SocketChannel>() {
 				@Override
 				public void initChannel(SocketChannel ch) throws Exception {
 					ch.pipeline().addLast("encoder", new Encoder());
@@ -62,8 +60,8 @@ public abstract class Server extends Thread {
 			logger.error(e, e);
 			System.exit(-1);
 		} finally {
-			clientGroup.shutdownGracefully();
-			accepterGroup.shutdownGracefully();
+			workerGroup.shutdownGracefully();
+			bossGroup.shutdownGracefully();
 		}
 	}
 
@@ -79,8 +77,8 @@ public abstract class Server extends Thread {
 	public void stopManual() {
 		logger.error("服务器收到关闭信号");
 		// 关闭所有链接
-		clientGroup.shutdownGracefully();
-		accepterGroup.shutdownGracefully();
+		workerGroup.shutdownGracefully();
+		bossGroup.shutdownGracefully();
 		
 		onStop();
 		

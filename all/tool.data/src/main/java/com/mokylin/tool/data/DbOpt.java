@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 public class DbOpt {
 	private static DbOpt instance;
@@ -16,9 +17,9 @@ public class DbOpt {
 		return instance;
 	}
 	
-	public static DbOpt getInstance(String dataUrl, String dataUsr, String dataPwd, String configUrl, String configUsr, String configPwd) throws Exception {
+	public static DbOpt getInstance(Properties properties) throws Exception {
 		if (instance == null) {
-			instance = new DbOpt(dataUrl, dataUsr, dataPwd, configUrl, configUsr, configPwd);
+			instance = new DbOpt(properties);
 		}
 		return instance;
 	}
@@ -26,12 +27,12 @@ public class DbOpt {
 	private Connection config;
 	private Connection data;
 
-	private DbOpt(String dataUrl, String dataUsr, String dataPwd, String configUrl, String configUsr, String configPwd) throws Exception {
-		data = init(dataUrl, dataUsr, dataPwd);
-		config = init(configUrl, configUsr, configPwd);
+	private DbOpt(Properties properties) throws Exception {
+		data = init(properties.getProperty("data_url"));
+		config = init(properties.getProperty("config_url"));
 	}
 
-	private Connection init(String url, String user, String password) {
+	private Connection init(String url) {
 		Connection conn;
 		// 驱动程序名
 		String driver = "com.mysql.jdbc.Driver";
@@ -40,7 +41,7 @@ public class DbOpt {
 			Class.forName(driver);
 
 			// 连续数据库
-			conn = DriverManager.getConnection(url, user, password);
+			conn = DriverManager.getConnection(url);
 
 			if (!conn.isClosed())
 				System.out.println("Succeeded connecting to the Database!");

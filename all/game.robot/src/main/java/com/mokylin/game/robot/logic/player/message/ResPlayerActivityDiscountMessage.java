@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.ArrayList;
 
 import com.mokylin.game.robot.logic.player.bean.*;
-import com.mokylin.game.core.message.bean.Message;
+import com.mokylin.game.core.message.Message;
+
 import io.netty.buffer.ByteBuf;
+
 import org.apache.log4j.Logger;
 
 /** 

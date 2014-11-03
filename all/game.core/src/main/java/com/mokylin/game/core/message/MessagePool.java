@@ -4,9 +4,6 @@ import java.util.HashMap;
 
 import org.apache.log4j.Logger;
 
-import com.mokylin.game.core.message.bean.Handler;
-import com.mokylin.game.core.message.bean.Message;
-
 public final class MessagePool {
 	private static MessagePool instance = new MessagePool();
 	public static MessagePool getInstance() {

@@ -1,7 +1,9 @@
 package com.mokylin.game.server.logic.login.handler;
 
-import com.mokylin.game.core.message.bean.Handler;
+import com.mokylin.game.core.message.Handler;
+
 import org.apache.log4j.Logger;
+
 import com.mokylin.game.server.logic.login.message.ReqLoginMessage;
 
 public class ReqLoginHandler extends Handler{

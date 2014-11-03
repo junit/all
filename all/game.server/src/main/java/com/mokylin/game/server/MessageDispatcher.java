@@ -4,7 +4,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import io.netty.channel.ChannelHandlerContext;
 
-import com.mokylin.game.core.message.bean.Handler;
+import com.mokylin.game.core.message.Handler;
 import com.mokylin.game.core.netty.GameHandlerAdapter;
 
 public class MessageDispatcher extends GameHandlerAdapter {

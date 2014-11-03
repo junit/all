@@ -1,4 +1,4 @@
-package com.mokylin.game.core.netty.coder;
+package com.mokylin.game.core.netty;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -7,8 +7,8 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 
 import java.util.List;
 
+import com.mokylin.game.core.message.Message;
 import com.mokylin.game.core.message.MessagePool;
-import com.mokylin.game.core.message.bean.Message;
 import com.mokylin.game.core.util.ContextUtil;
 import com.mokylin.game.core.util.ZLibUtil;
 

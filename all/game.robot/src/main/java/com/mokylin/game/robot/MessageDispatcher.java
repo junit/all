@@ -5,7 +5,7 @@ import io.netty.channel.ConnectTimeoutException;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.mokylin.game.core.message.bean.Handler;
+import com.mokylin.game.core.message.Handler;
 import com.mokylin.game.core.netty.GameHandlerAdapter;
 import com.mokylin.game.robot.logic.login.message.ReqLoginMessage;
 import com.mokylin.game.robot.logic.player.message.ReqPlayerTestMessage;

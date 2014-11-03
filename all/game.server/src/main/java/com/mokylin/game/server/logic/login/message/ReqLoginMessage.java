@@ -1,8 +1,10 @@
 package com.mokylin.game.server.logic.login.message;
 
 
-import com.mokylin.game.core.message.bean.Message;
+import com.mokylin.game.core.message.Message;
+
 import io.netty.buffer.ByteBuf;
+
 import org.apache.log4j.Logger;
 
 /** 
