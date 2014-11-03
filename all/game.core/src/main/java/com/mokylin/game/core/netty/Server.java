@@ -40,7 +40,7 @@ public abstract class Server extends Thread {
 
 		accepterGroup = new NioEventLoopGroup();
 		clientGroup = new NioEventLoopGroup();
-		xxxxxxx
+		
 
 		try {
 			ServerBootstrap b = new ServerBootstrap();
