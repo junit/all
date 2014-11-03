@@ -8,9 +8,7 @@ public class ContextUtil {
 	private static Logger logger = Logger.getLogger(ContextUtil.class);
 
 	public static void close(ChannelHandlerContext ctx, String reason) {
-		// TODO 暂时关闭
-		return ;
-//		logger.error("close context:" + reason);
-//		ctx.close();
+		logger.error("close context:" + reason);
+		ctx.close();
 	}
 }
