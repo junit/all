@@ -1,7 +1,5 @@
 package com.mokylin.game.core.netty;
 
-import java.util.concurrent.TimeUnit;
-
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -12,6 +10,8 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.timeout.IdleStateHandler;
 
+import java.util.concurrent.TimeUnit;
+
 import org.apache.log4j.Logger;
 
 import com.mokylin.game.core.system.SignalHandler;
@@ -19,8 +19,8 @@ import com.mokylin.game.core.system.SignalHandler;
 public abstract class Server extends Thread {
 	protected static Logger logger = Logger.getLogger(Server.class);
 	private int port;
-	private EventLoopGroup bossGroup;
-	private EventLoopGroup workerGroup;
+	private EventLoopGroup accepterGroup;
+	private EventLoopGroup clientGroup;
 
 	public Server(String name, int port) {
 		super(name);
@@ -38,12 +38,13 @@ public abstract class Server extends Thread {
 
 		initSignal();
 
-		bossGroup = new NioEventLoopGroup();
-		workerGroup = new NioEventLoopGroup();
+		accepterGroup = new NioEventLoopGroup();
+		clientGroup = new NioEventLoopGroup();
+		xxxxxxx
 
 		try {
 			ServerBootstrap b = new ServerBootstrap();
-			b.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class).childHandler(new ChannelInitializer<SocketChannel>() {
+			b.group(accepterGroup, clientGroup).channel(NioServerSocketChannel.class).childHandler(new ChannelInitializer<SocketChannel>() {
 				@Override
 				public void initChannel(SocketChannel ch) throws Exception {
 					ch.pipeline().addLast("encoder", new Encoder());
@@ -60,8 +61,8 @@ public abstract class Server extends Thread {
 			logger.error(e, e);
 			System.exit(-1);
 		} finally {
-			workerGroup.shutdownGracefully();
-			bossGroup.shutdownGracefully();
+			clientGroup.shutdownGracefully();
+			accepterGroup.shutdownGracefully();
 		}
 	}
 
@@ -77,8 +78,8 @@ public abstract class Server extends Thread {
 	public void stopManual() {
 		logger.error("服务器收到关闭信号");
 		// 关闭所有链接
-		workerGroup.shutdownGracefully();
-		bossGroup.shutdownGracefully();
+		clientGroup.shutdownGracefully();
+		accepterGroup.shutdownGracefully();
 		
 		onStop();
 		
