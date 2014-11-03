@@ -31,17 +31,19 @@ public abstract class Server extends Thread {
 
 	@Override
 	public void run() {
+		
 		if (!init()) {
 			logger.error("初始化失败");
 			System.exit(-1);
 		}
 
+		
 		initSignal();
 
 		accepterGroup = new NioEventLoopGroup();
 		clientGroup = new NioEventLoopGroup();
-		
 
+		
 		try {
 			ServerBootstrap b = new ServerBootstrap();
 			b.group(accepterGroup, clientGroup).channel(NioServerSocketChannel.class).childHandler(new ChannelInitializer<SocketChannel>() {
