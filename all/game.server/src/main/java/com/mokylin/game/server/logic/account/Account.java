@@ -3,6 +3,8 @@ package com.mokylin.game.server.logic.account;
 import com.mokylin.game.server.config.Platform;
 
 public class Account {
+	private transient volatile int thread;
+	
 	private long id;
 	private String name;
 	private Platform platform;
@@ -52,5 +54,11 @@ public class Account {
 	}
 	public void setCreateTime(long createTime) {
 		this.createTime = createTime;
+	}
+	public int getThread() {
+		return thread;
+	}
+	public void setThread(int thread) {
+		this.thread = thread;
 	}
 }
