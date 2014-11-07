@@ -16,7 +16,7 @@ public class MessageDispatcher extends GameHandlerAdapter {
 	@Override
 	protected void channelRead(ChannelHandlerContext ctx, Message msg) {
 		Handler handler = MessagePool.getInstance().createHandler(msg.getId());
-		handler.exec();
+//		handler.exec();
 	}
 
 	private static AtomicInteger count = new AtomicInteger();
