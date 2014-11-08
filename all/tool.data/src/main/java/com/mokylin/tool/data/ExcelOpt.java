@@ -1,4 +1,4 @@
-package com.mokylin.tool.excel;
+package com.mokylin.tool.data;
 
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
@@ -25,35 +25,10 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
-public class Main {
+import com.mokylin.tool.excel.Field;
+import com.mokylin.tool.excel.Main;
 
-	private JFrame frame;
-	private Connection connection;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Main window = new Main();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the application.
-	 * 
-	 * @throws Exception
-	 */
-	public Main() throws Exception {
-		initialize();
-	}
+public class ExcelOpt {
 
 	/**
 	 * Initialize the contents of the frame.
@@ -208,44 +183,5 @@ public class Main {
 			return null;
 		}
 		return row.getCell(1).getStringCellValue();
-	}
-}
-
-class Field {
-	private String name;
-	private String type;
-	private String comment;
-	private String value;
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	public String getComment() {
-		return comment;
-	}
-
-	public void setComment(String comment) {
-		this.comment = comment;
-	}
-
-	public String getValue() {
-		return value;
-	}
-
-	public void setValue(String value) {
-		this.value = value;
 	}
 }

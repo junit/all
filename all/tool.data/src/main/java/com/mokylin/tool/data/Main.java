@@ -3,6 +3,7 @@ package com.mokylin.tool.data;
 import java.awt.EventQueue;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.io.FileInputStream;
 import java.util.Properties;
 
@@ -39,6 +40,7 @@ public class Main extends JFrame {
 
 	private JRadioButton config;
 	private JRadioButton data;
+	private JRadioButton excel;
 	private JButton genButton;
 	private JButton genButton2;
 	private JButton genButton3;
@@ -70,6 +72,7 @@ public class Main extends JFrame {
 			public void mouseReleased(MouseEvent e) {
 				try {
 					config.setSelected(false);
+					excel.setSelected(false);
 					list.setListData(DbOpt.getInstance().getDataTables());
 				} catch (Exception e1) {
 					e1.printStackTrace();
@@ -86,6 +89,7 @@ public class Main extends JFrame {
 			public void mouseReleased(MouseEvent e) {
 				try {
 					data.setSelected(false);
+					excel.setSelected(false);
 					list.setListData(DbOpt.getInstance().getConfigTables());
 				} catch (Exception e1) {
 					e1.printStackTrace();
@@ -94,6 +98,24 @@ public class Main extends JFrame {
 		});
 		config.setBounds(139, 6, 121, 23);
 		contentPane.add(config);
+		
+		excel = new JRadioButton("excel");
+		excel.addMouseListener(new MouseAdapter() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				try {
+					data.setSelected(false);
+					config.setSelected(false);
+					File excelDir = new File(properties.getProperty("excel"));
+					list.setListData(excelDir.list());
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		excel.setBounds(262, 6, 121, 23);
+		contentPane.add(excel);
 
 		list = new JList();
 
