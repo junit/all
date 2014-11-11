@@ -2,12 +2,18 @@ package com.mokylin.tool.message.bean;
 
 import java.util.HashMap;
 
-import com.mokylin.tool.core.bean.FtlType;
+import org.dom4j.Element;
+
 import com.mokylin.tool.core.bean.IFtl;
+import com.mokylin.tool.core.util.FileUtil;
+import com.mokylin.tool.message.FtlConfig;
 
 public class Handler extends IFtl {
-	public Handler(FtlType ftlType, String destRelativePath) {
-		super(ftlType, destRelativePath);
+	public Handler(Element root, int indexPrefix, String pkg, FtlConfig config) {
+		super(FileUtil.getFilePath(config.getCommon().getProperty(FtlConfig.PATH), FileUtil.getFilePath("logic", pkg, "handler"), root.attributeValue("name"), config.getCommon().getProperty(FtlConfig.SUFFIX)));
+		id = indexPrefix * 1000 + Integer.parseInt(root.attributeValue("id"));
+		this.pkg = pkg;
+		this.name = root.attributeValue("name");
 	}
 
 	private int id;

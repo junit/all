@@ -1,4 +1,4 @@
-package com.mokylin.tool.data.bean;
+package com.mokylin.tool.db.base;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,17 +7,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.mokylin.tool.Generator;
 import com.mokylin.tool.core.bean.FtlType;
 import com.mokylin.tool.core.bean.IFtl;
-import com.mokylin.tool.data.Generator;
 
-public class Mapper extends IFtl {
-	public Mapper(String table, String type, Map<String, String> map, FtlType ftlType, String destRelativePath) {
+public class Bean extends IFtl {
+	public Bean(String table, String type, Map<String, String> map, FtlType ftlType, String destRelativePath) {
 		super(ftlType, destRelativePath);
-		
-		this.type = type;
 		this.name = table;
-
+		this.type = type;
+		
 		Iterator<Entry<String, String>> it = map.entrySet().iterator();
 		while (it.hasNext()) {
 			Entry<String, String> entry = it.next();

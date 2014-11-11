@@ -2,14 +2,40 @@ package com.mokylin.tool.message.bean;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
-import com.mokylin.tool.core.bean.FtlType;
+import org.dom4j.Element;
+
 import com.mokylin.tool.core.bean.IFtl;
+import com.mokylin.tool.core.util.FileUtil;
+import com.mokylin.tool.message.FtlConfig;
 
 public class Bean extends IFtl {
-	public Bean(FtlType ftlType, String destRelativePath) {
-		super(ftlType, destRelativePath);
+	public Bean(Element root, String pkg, FtlConfig config) throws Exception {
+		super(FileUtil.getFilePath(config.getCommon().getProperty(FtlConfig.PATH), FileUtil.getFilePath("logic", pkg, "message"), root.attributeValue("name"), config.getCommon().getProperty(FtlConfig.SUFFIX)));
+		
+		setName(root.attributeValue("name"));
+		setNote(root.attributeValue("explain"));
+		setPkg(pkg);
+		
+		for (Iterator<?> i = root.elementIterator(); i.hasNext(); ) {
+			Element element = (Element)i.next();
+			Field field = new Field();
+			getFields().add(field);
+			
+			String clazz = config.getType().getProperty(element.attributeValue("class"));
+			if (clazz == null && !element.attributeValue("class").contains(".")) {
+				System.err.println("不支持的类型:" + element.attributeValue("class"));
+				throw new Exception();
+			}
+			field.setClazz(clazz == null ? element.attributeValue("class") : clazz);
+			field.setName(element.attributeValue("name"));
+			field.setNote(element.attributeValue("explain"));
+			if (element.getName().equals("list")) {
+				field.setListFlag(1);
+			}
+		}
 	}
 
 	private String pkg;

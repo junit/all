@@ -1,4 +1,4 @@
-package com.mokylin.tool.data;
+package com.mokylin.tool;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -11,12 +11,13 @@ import com.mokylin.tool.core.bean.Config;
 import com.mokylin.tool.core.bean.FtlType;
 import com.mokylin.tool.core.bean.IFtl;
 import com.mokylin.tool.core.util.FileUtil;
-import com.mokylin.tool.data.bean.Bean;
-import com.mokylin.tool.data.bean.Container;
-import com.mokylin.tool.data.bean.Dao;
 import com.mokylin.tool.data.bean.Manager;
-import com.mokylin.tool.data.bean.Mapper;
 import com.mokylin.tool.data.bean.Pool;
+import com.mokylin.tool.db.DbOpt;
+import com.mokylin.tool.db.base.Bean;
+import com.mokylin.tool.db.base.Dao;
+import com.mokylin.tool.db.base.Mapper;
+import com.mokylin.tool.db.config.Container;
 
 public class Generator {
 	public Generator(Properties properties) throws Exception {
@@ -67,7 +68,7 @@ public class Generator {
 		String mapperPath = FileUtil.getFilePath(ftlManager.getConfig().getDestPath().get(type), "db", "data", "mapper");
 		String configPath = ftlManager.getConfig().getDestPath().get(type).split("src")[0];
 		configPath = FileUtil.getFilePath(configPath, "config", "db-data.xml");
-		ftlManager.generate(new com.mokylin.tool.data.bean.Config("jdbc:mysql://192.168.1.120:3307/shell_data", "game", "game", type, configPath, mapperPath, "data"));
+		ftlManager.generate(new com.mokylin.tool.db.base.Config("jdbc:mysql://192.168.1.120:3307/shell_data", "game", "game", type, configPath, mapperPath, "data"));
 	}
 
 	public void generateConfig(String table, FtlType type) throws Exception {
@@ -86,7 +87,7 @@ public class Generator {
 		String mapperPath = FileUtil.getFilePath(ftlManager.getConfig().getDestPath().get(type), "db", "config", "mapper");
 		String configPath = ftlManager.getConfig().getDestPath().get(type).split("src")[0];
 		configPath = FileUtil.getFilePath(configPath, "config", "db-config.xml");
-		ftlManager.generate(new com.mokylin.tool.data.bean.Config("jdbc:mysql://192.168.1.120:3307/shell_config", "game", "game", type, configPath, mapperPath, "config"));
+		ftlManager.generate(new com.mokylin.tool.db.base.Config("jdbc:mysql://192.168.1.120:3307/shell_config", "game", "game", type, configPath, mapperPath, "config"));
 	}
 
 	public void mkDir(File file) {

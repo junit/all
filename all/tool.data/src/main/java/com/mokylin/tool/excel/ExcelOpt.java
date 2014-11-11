@@ -1,4 +1,4 @@
-package com.mokylin.tool.data;
+package com.mokylin.tool.excel;
 
 import java.io.File;
 import java.sql.Connection;
@@ -11,6 +11,8 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+
+import com.mokylin.tool.db.DbOpt;
 
 public class ExcelOpt {
 	private Connection connection;

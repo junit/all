@@ -5,23 +5,12 @@ public class Field {
 	private String name;
 	private String note;
 	private int listFlag; // 0非list 1为list
-	private int importFlag; // 0不用import 1为需要import
 	public String getClazz() {
 		return clazz;
 	}
 
 	public void setClazz(String clazz) {
-		String str = clazz;
-		if (str.equalsIgnoreCase("int")) {
-			str = "Integer";
-		} else if (str.equalsIgnoreCase("short")) {
-			str = "Short";
-		} else if (str.equalsIgnoreCase("long")) {
-			str = "Long";
-		} else if (str.equalsIgnoreCase("byte")) {
-			str = "Byte";
-		}
-		this.clazz = str;
+		this.clazz = clazz;
 	}
 
 	public String getName() {
@@ -46,13 +35,5 @@ public class Field {
 
 	public void setListFlag(int listFlag) {
 		this.listFlag = listFlag;
-	}
-
-	public int getImportFlag() {
-		return importFlag;
-	}
-
-	public void setImportFlag(int importFlag) {
-		this.importFlag = importFlag;
 	}
 }

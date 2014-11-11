@@ -3,22 +3,16 @@ package com.mokylin.tool.core.bean;
 import java.util.HashMap;
 
 public abstract class IFtl {
-	public IFtl(FtlType ftlType, String destRelativePath) {
-		this.ftlType = ftlType;
-		this.destRelativePath = destRelativePath;
+	public IFtl(String path) {
+		this.path = path;
 	}
-	private FtlType ftlType;
-	private String destRelativePath;
+	private String path;
 
 	public abstract HashMap<String, Object> getDataModel();
 
 	public abstract boolean isRewrite();
-
-	public FtlType getFtlType() {
-		return ftlType;
-	}
-
-	public String getDestRelativePath() {
-		return destRelativePath;
+	
+	public String getPath() {
+		return path;
 	}
 }

@@ -1,4 +1,4 @@
-package com.mokylin.tool.data;
+package com.mokylin.tool;
 
 import java.awt.EventQueue;
 import java.awt.event.MouseAdapter;
@@ -16,8 +16,9 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
-import com.mokylin.tool.core.bean.FtlType;
 import com.mokylin.tool.core.util.FileUtil;
+import com.mokylin.tool.db.DbOpt;
+import com.mokylin.tool.excel.ExcelOpt;
 
 public class Main extends JFrame {
 	private static final long serialVersionUID = 7975473610009954340L;

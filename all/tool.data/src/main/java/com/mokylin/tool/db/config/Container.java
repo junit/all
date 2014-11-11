@@ -1,4 +1,4 @@
-package com.mokylin.tool.data.bean;
+package com.mokylin.tool.db.config;
 
 import java.util.HashMap;
 

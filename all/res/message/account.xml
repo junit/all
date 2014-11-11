@@ -2,24 +2,24 @@
 <messages package="account" id="100">
 	<!-- 服务器接收消息 -->
 	<message id="101" type="CS" name="ReqAccountLogin" explain="登录">
-		<field class="String" name="accountName" explain="帐号名称"></field>
-		<field class="int" name="platform" explain="平台"></field>
-		<field class="int" name="server" explain="服务器"></field>
-		<field class="String" name="check" explain="验证key/密码"></field>
+		<field class="string" name="accountName" explain="帐号名称"></field>
+		<field class="int32" name="platform" explain="平台"></field>
+		<field class="int32" name="server" explain="服务器"></field>
+		<field class="string" name="check" explain="验证key/密码"></field>
 	</message>
 	
 	<message id="102" type="CS" name="ReqAccountTest" explain="测试">
-		<field class="String" name="str" explain="字符串"></field>
-		<field class="long" name="time" explain="time"></field>
+		<field class="string" name="str" explain="字符串"></field>
+		<field class="int64" name="time" explain="time"></field>
 	</message>
 	
 	<!-- 服务器发送消息 -->
 	<message id="201" type="SC" name="ResAccountLoginFailed" explain="登录失败">
-		<field class="byte" name="err" explain="错误代码"></field>
+		<field class="int8" name="err" explain="错误代码"></field>
 	</message>
 	
 	<message id="202" type="SC" name="ResAccountTest" explain="测试">
-		<field class="long" name="time" explain="time"></field>
-		<field class="String" name="str" explain="字符串"></field>
+		<field class="int64" name="time" explain="time"></field>
+		<field class="string" name="str" explain="字符串"></field>
 	</message>
 </messages>

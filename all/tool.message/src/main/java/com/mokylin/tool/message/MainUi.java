@@ -5,11 +5,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Properties;
 
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -17,19 +18,15 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
-import com.mokylin.tool.core.bean.FtlType;
-
 public class MainUi extends JFrame implements ActionListener {
 	private static final long serialVersionUID = -6067261849886344860L;
-	private JPanel contentPane;
 	@SuppressWarnings("rawtypes")
 	private JList list;
+	private List<CheckBox> checkBoxes = new ArrayList<>();
+	private Properties properties;
+	
 	private HashMap<String, String> messagePathes = new HashMap<>();
-	private Generator generator;
-	private JCheckBox javaServer;
-	private JCheckBox javaClient;
-	private JCheckBox asClient;
-
+	
 	/**
 	 * Launch the application.
 	 */
@@ -57,21 +54,14 @@ public class MainUi extends JFrame implements ActionListener {
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 600);
-		contentPane = new JPanel();
+		JPanel contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		javaServer = new JCheckBox("server");
-		javaServer.setBounds(6, 6, 103, 23);
-		contentPane.add(javaServer);
-
-		javaClient = new JCheckBox("robot");
-		javaClient.setBounds(6, 32, 103, 23);
-		contentPane.add(javaClient);
-
-		asClient = new JCheckBox("client");
-		asClient.setBounds(6, 57, 103, 23);
-		contentPane.add(asClient);
+		
+		for (CheckBox box : checkBoxes) {
+			contentPane.add(box);
+		}
 
 		list = new JList(messagePathes.keySet().toArray());
 
@@ -87,16 +77,24 @@ public class MainUi extends JFrame implements ActionListener {
 	}
 
 	public boolean init() throws Exception {
-		Properties properties = new Properties();
+		properties = new Properties();
 		properties.load(new FileReader("config.properties"));
-		
-		generator = new Generator(properties);
 		File dir = new File(properties.getProperty("message_xml_path"));
 		for (File file : dir.listFiles()) {
 			if (!file.getName().endsWith("xml")) {
 				continue;
 			}
 			messagePathes.put(file.getName(), file.getPath());
+		}
+		
+		File configDir = new File("config");
+		int count = 0;
+		for (File file : configDir.listFiles()) {
+			CheckBox checkBox = new CheckBox(file.getName());
+			checkBox.getConfig().init(file);
+			checkBox.setBounds(6, 6 + count * 26, 103, 23);
+			checkBoxes.add(checkBox);
+			++count;
 		}
 		return true;
 	}
@@ -108,28 +106,20 @@ public class MainUi extends JFrame implements ActionListener {
 			return ;
 		}
 		
-		if (!javaServer.isSelected() && !javaClient.isSelected() && !asClient.isSelected()) {
-			JOptionPane.showMessageDialog(null, "没有选择生成类型");
-			return ;
-		}
-		
-		try {
+		for (CheckBox box : checkBoxes) {
+			if (!box.isSelected()) {
+				continue;
+			}
 			for (Object value : list.getSelectedValuesList()) {
 				String path = messagePathes.get(value);
-				if (javaServer.isSelected()) {
-					generator.generate(FtlType.SERVER, path);
-				}
-				if (javaClient.isSelected()) {
-					generator.generate(FtlType.ROBOT, path);
-				}
-				if (asClient.isSelected()) {
-					generator.generate(FtlType.CLIENT, path);
+				try {
+					Generator.generate(path, box.getConfig());
+				} catch (Exception e1) {
+					e1.printStackTrace();
+					JOptionPane.showMessageDialog(null, "出错了，看日志");
+					return ;
 				}
 			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			JOptionPane.showMessageDialog(null, "操作失败");
-			return ;
 		}
 		
 		JOptionPane.showMessageDialog(null, "操作成功");

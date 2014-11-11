@@ -1,4 +1,4 @@
-package com.mokylin.tool.data.bean;
+package com.mokylin.tool.db.base;
 
 import java.io.File;
 import java.util.ArrayList;

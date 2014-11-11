@@ -1,4 +1,4 @@
-package com.mokylin.tool.data;
+package com.mokylin.tool.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
