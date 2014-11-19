@@ -13,7 +13,7 @@ import com.mokylin.game.server.logic.role.Role;
 public class AccountEvent {
 	private Logger logger = Logger.getLogger(this.getClass());
 
-	public void onLogin(Account account) {
+	public void onLogin(final Account account) {
 		account.setOnline(true);
 		ManagerPool.thread.getAccountThreadGroup().add(account);
 
@@ -27,7 +27,7 @@ public class AccountEvent {
 							return ;
 						}
 						
-						List<RoleBean> list = DaoPool.roleDao.selectByAccount(account.getId());
+						final List<RoleBean> list = DaoPool.roleDao.selectByAccount(account.getId());
 						
 						ManagerPool.thread.getAccountThreadGroup().add(account, new Command() {
 							@Override

@@ -8,7 +8,6 @@ import com.mokylin.game.robot.logic.login.message.ResLoginFailedMessage;
 
 public class ResLoginFailedHandler extends Handler{
 	private static Logger logger = Logger.getLogger(ResLoginFailedHandler.class);
-    @SuppressWarnings("unused")
 	@Override
     public void exec() {
     	try {
