@@ -1,4 +1,4 @@
-package com.mokylin.game.robot.logic.login.message;
+package com.mokylin.game.robot.logic.map.message;
 
 
 import com.mokylin.game.core.message.Bean;
@@ -11,17 +11,17 @@ import org.apache.log4j.Logger;
  * 
  * @version 1.0.0
  * 
- * 道具信息
+ * 坐标信息
  */
-public class TestBean extends Bean {
+public class CoordinateInfo extends Bean {
 
-	private static Logger log = Logger.getLogger(TestBean.class);
+	private static Logger log = Logger.getLogger(CoordinateInfo.class);
 	
-	//道具model
-	private Integer itemId;
+	//x
+	private Integer x;
 	
-	//道具数量
-	private Integer itemCount;
+	//y
+	private Integer y;
 	
 	
 	/**
@@ -29,10 +29,10 @@ public class TestBean extends Bean {
 	 */
 	public boolean write(ByteBuf buf){
 	    try {
-			//道具model
-			writeInt(buf, this.itemId);
-			//道具数量
-			writeInt(buf, this.itemCount);
+			//x
+			writeInt(buf, this.x);
+			//y
+			writeInt(buf, this.y);
         } catch (Exception e) {
             log.error(e, e);
             return false;
@@ -45,10 +45,10 @@ public class TestBean extends Bean {
 	 */
 	public boolean read(ByteBuf buf){
         try {
-			//道具model
-			this.itemId = readInt(buf);
-			//道具数量
-			this.itemCount = readInt(buf);
+			//x
+			this.x = readInt(buf);
+			//y
+			this.y = readInt(buf);
         } catch (Exception e) {
             log.error(e, e);
             return false;
@@ -57,42 +57,42 @@ public class TestBean extends Bean {
 	}
 	
 	/**
-	 * get 道具model
+	 * get x
 	 * @return 
 	 */
-	public Integer getItemId(){
-		return itemId;
+	public Integer getX(){
+		return x;
 	}
 	
 	/**
-	 * set 道具model
+	 * set x
 	 */
-	public void setItemId(Integer itemId){
-		this.itemId = itemId;
+	public void setX(Integer x){
+		this.x = x;
 	}
 	
 	/**
-	 * get 道具数量
+	 * get y
 	 * @return 
 	 */
-	public Integer getItemCount(){
-		return itemCount;
+	public Integer getY(){
+		return y;
 	}
 	
 	/**
-	 * set 道具数量
+	 * set y
 	 */
-	public void setItemCount(Integer itemCount){
-		this.itemCount = itemCount;
+	public void setY(Integer y){
+		this.y = y;
 	}
 	
 	@Override
 	public String toString(){
 		StringBuffer buf = new StringBuffer("[");
-		//道具model
-		buf.append("itemId:" + itemId +",");
-		//道具数量
-		buf.append("itemCount:" + itemCount +",");
+		//x
+		buf.append("x:" + x +",");
+		//y
+		buf.append("y:" + y +",");
 		if(buf.charAt(buf.length()-1)==',') buf.deleteCharAt(buf.length()-1);
 		buf.append("]");
 		return buf.toString();

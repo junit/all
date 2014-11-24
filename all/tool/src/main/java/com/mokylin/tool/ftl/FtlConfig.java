@@ -11,4 +11,6 @@ public interface FtlConfig {
 	public String convertType(String attributeValue);
 	public String getProjectPath();
 	public String getHandlerType();
+	public String getDbPkg();
+	public String getDbConfigFile();
 }

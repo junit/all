@@ -1,4 +1,4 @@
-package com.mokylin.game.robot.logic.login.message;
+package com.mokylin.game.robot.logic.account.message;
 
 
 import com.mokylin.game.core.message.Message;
@@ -10,26 +10,22 @@ import org.apache.log4j.Logger;
  * 
  * @version 1.0.0
  * 
- * 测试消息
+ * 登录失败消息
  */
-public class ReqLoginTestMessage extends Message{
+public class ResAccountLoginFailedMessage extends Message{
 
-	private static Logger log = Logger.getLogger(ReqLoginTestMessage.class);
+	private static Logger log = Logger.getLogger(ResAccountLoginFailedMessage.class);
 	
-	//字符串
-	private String str;
-	//time
-	private Long time;
+	//错误代码
+	private Byte err;
 	
 	/**
 	 * 写入字节缓存
 	 */
 	public boolean write(ByteBuf buf){
 	    try {
-			//字符串
-			writeString(buf, this.str);
-			//time
-			writeLong(buf, this.time);
+			//错误代码
+			writeByte(buf, this.err);
         } catch (Exception e) {
             log.error(e, e);
             return false;
@@ -42,10 +38,8 @@ public class ReqLoginTestMessage extends Message{
 	 */
 	public boolean read(ByteBuf buf){
         try {
-			//字符串
-			this.str = readString(buf);
-			//time
-			this.time = readLong(buf);
+			//错误代码
+			this.err = readByte(buf);
         } catch (Exception e) {
             log.error(e, e);
             return false;
@@ -54,48 +48,31 @@ public class ReqLoginTestMessage extends Message{
 	}
 	
 	/**
-	 * get 字符串
+	 * get 错误代码
 	 * @return 
 	 */
-	public String getStr(){
-		return str;
+	public Byte getErr(){
+		return err;
 	}
 	
 	/**
-	 * set 字符串
+	 * set 错误代码
 	 */
-	public void setStr(String str){
-		this.str = str;
-	}
-	
-	/**
-	 * get time
-	 * @return 
-	 */
-	public Long getTime(){
-		return time;
-	}
-	
-	/**
-	 * set time
-	 */
-	public void setTime(Long time){
-		this.time = time;
+	public void setErr(Byte err){
+		this.err = err;
 	}
 	
 	
 	@Override
 	public int getId() {
-		return 100102;
+		return 100201;
 	}
 	
 	@Override
 	public String toString(){
 		StringBuffer buf = new StringBuffer("[");
-		//字符串
-		if(this.str!=null) buf.append("str:" + str.toString() +",");
-		//time
-		buf.append("time:" + time +",");
+		//错误代码
+		buf.append("err:" + err +",");
 		if(buf.charAt(buf.length()-1)==',') buf.deleteCharAt(buf.length()-1);
 		buf.append("]");
 		return buf.toString();

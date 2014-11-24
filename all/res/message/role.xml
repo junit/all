@@ -2,15 +2,15 @@
 <messages package="role" id="101">
 	<!-- bean定义 -->
 	<bean name="RoleInfo" explain="角色信息">
-		<field class="long" name="id" explain="角色Id"></field>
-		<field class="String" name="name" explain="角色名称"></field>
-		<field class="byte" name="sex" explain="性别"></field>
+		<field class="int64" name="id" explain="角色Id"></field>
+		<field class="string" name="name" explain="角色名称"></field>
+		<field class="int8" name="sex" explain="性别"></field>
 	</bean>
 	
 	<!-- 服务器接收消息 -->
 	<message id="101" type="CS" name="ReqRoleCreate" explain="创建角色">
-		<field class="String" name="name" explain="角色名"></field>
-		<field class="byte" name="sex" explain="性别"></field>
+		<field class="string" name="name" explain="角色名"></field>
+		<field class="int8" name="sex" explain="性别"></field>
 	</message>
 
 	<!-- 服务器发送消息 -->

@@ -19,7 +19,7 @@ public class Bean implements Ftl {
 	protected Template template;
 	
 	public Bean(Element root, String pkg, FtlConfig config) throws Exception {
-		path = FileUtil.getFilePath(config.getCodePath(), pkg, "message", root.attributeValue("name") + "." + config.getSuffix());
+		path = FileUtil.getFilePath(config.getCodePath(), "logic", pkg, "message", root.attributeValue("name") + "." + config.getSuffix());
 		
 		map.put("pkg", pkg);
 		map.put("name", root.attributeValue("name"));

@@ -44,4 +44,16 @@ public class ClientFtlConfig implements FtlConfig {
 		return null;
 	}
 
+	@Override
+	public String getDbPkg() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getDbConfigFile() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

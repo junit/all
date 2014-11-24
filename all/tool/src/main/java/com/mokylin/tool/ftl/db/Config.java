@@ -5,17 +5,25 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.mokylin.tool.core.bean.FtlType;
-import com.mokylin.tool.core.bean.IFtl;
-import com.mokylin.tool.core.util.FileUtil;
+import com.mokylin.tool.ftl.Ftl;
+import com.mokylin.tool.ftl.FtlConfig;
+import com.mokylin.tool.util.FileUtil;
 
-public class Config extends IFtl {
-	public Config(String url, String usr, String pwd, FtlType ftlType, String destRelativePath, String mapperPath, String type) {
-		super(ftlType, destRelativePath);
-		this.url = url;
-		this.usr = usr;
-		this.pwd = pwd;
-		this.type = type;
+import freemarker.template.Template;
+
+public class Config implements Ftl {
+	private HashMap<String, Object> map = new HashMap<>();
+	protected String path;
+	protected Template template;
+	
+	public Config(String url, String usr, String pwd, FtlConfig config) {
+		String mapperPath = FileUtil.getFilePath(config.getCodePath(), "db", config.getDbPkg(), "mapper");
+		map.put("url", url);
+		map.put("usr", usr);
+		map.put("pwd", pwd);
+		map.put("path", mapperPath);
+		List<String> names = new ArrayList<>();
+		map.put("names", names);
 		
 		File dir = new File(FileUtil.getFileName(mapperPath));
 		if (dir.exists()) {
@@ -23,27 +31,28 @@ public class Config extends IFtl {
 				names.add(file.getName());
 			}
 		}
+		
+		path = FileUtil.getFilePath(config.getProjectPath(), "config", config.getDbConfigFile());
+		template = config.getTemplates().get("config");
 	}
-
-	private String url;
-	private String usr;
-	private String pwd;
-	private String type;
-	private List<String> names = new ArrayList<>();
 
 	@Override
 	public HashMap<String, Object> getDataModel() {
-		HashMap<String, Object> map = new HashMap<>();
-		map.put("url", url);
-		map.put("usr", usr);
-		map.put("pwd", pwd);
-		map.put("path", FileUtil.getFileName("com/mokylin/game/server/db/" + type + "/mapper"));
-		map.put("names", names);
 		return map;
 	}
 
 	@Override
 	public boolean isRewrite() {
 		return true;
+	}
+
+	@Override
+	public Template getTemplate() {
+		return template;
+	}
+
+	@Override
+	public String getPath() {
+		return path;
 	}
 }

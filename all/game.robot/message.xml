@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root>
+  <message id="101201" pkg="role" name="ResRoleInfo"/>
+  <message id="101202" pkg="role" name="ResRoleCreate"/>
+  <message id="100201" pkg="account" name="ResAccountLoginFailed"/>
+  <message id="102201" pkg="map" name="ResMapAllObject"/>
+  <message id="100202" pkg="account" name="ResAccountTest"/>
+  <message id="102202" pkg="map" name="ResMapRole"/>
+</root>

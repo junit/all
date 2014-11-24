@@ -1,46 +1,73 @@
 package com.mokylin.tool.ui.message;
 
+import java.io.File;
+import java.util.HashMap;
 import java.util.Map;
 
+import com.mokylin.tool.GlobalConfig;
 import com.mokylin.tool.ftl.FtlConfig;
 
+import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.Template;
 
 public class RobotFtlConfig implements FtlConfig {
+	public RobotFtlConfig() throws Exception {
+		File file = new File("config/message/robot/ftl");
+		
+		freemarker.template.Configuration cfg = new freemarker.template.Configuration();
+		cfg.setDefaultEncoding("UTF-8");
+		cfg.setObjectWrapper(new DefaultObjectWrapper());
+		cfg.setDirectoryForTemplateLoading(file);
+		for (File ftl : file.listFiles()) {
+			String[] split = ftl.getName().split("\\.");
+			templates.put(split[0], cfg.getTemplate(ftl.getName()));
+		}
+	}
+	
+	Map<String, Template> templates = new HashMap<>();
 
 	@Override
 	public Map<String, Template> getTemplates() {
-		// TODO Auto-generated method stub
-		return null;
+		return templates;
 	}
 
 	@Override
 	public String getSuffix() {
-		// TODO Auto-generated method stub
-		return null;
+		return "java";
 	}
 
 	@Override
 	public String getCodePath() {
-		// TODO Auto-generated method stub
-		return null;
+		return GlobalConfig.getInstance().getProperties().getProperty("robot_code_path");
 	}
 
 	@Override
-	public String convertType(String attributeValue) {
-		// TODO Auto-generated method stub
-		return null;
+	public String convertType(String xmlType) {
+		if (xmlType.equals("int8")) return "Byte";
+		if (xmlType.equals("int16")) return "Short";
+		if (xmlType.equals("int32")) return "Integer";
+		if (xmlType.equals("int64")) return "Long";
+		if (xmlType.equals("string")) return "String";
+		return xmlType;
 	}
 
 	@Override
 	public String getProjectPath() {
-		// TODO Auto-generated method stub
-		return null;
+		return GlobalConfig.getInstance().getProperties().getProperty("robot_project_path");
 	}
 
 	@Override
 	public String getHandlerType() {
-		// TODO Auto-generated method stub
+		return "SC";
+	}
+
+	@Override
+	public String getDbPkg() {
+		return null;
+	}
+
+	@Override
+	public String getDbConfigFile() {
 		return null;
 	}
 

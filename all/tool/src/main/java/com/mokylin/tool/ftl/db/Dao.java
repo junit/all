@@ -2,29 +2,42 @@ package com.mokylin.tool.ftl.db;
 
 import java.util.HashMap;
 
-import com.mokylin.tool.core.bean.FtlType;
-import com.mokylin.tool.core.bean.IFtl;
+import com.mokylin.tool.ftl.Ftl;
+import com.mokylin.tool.ftl.FtlConfig;
+import com.mokylin.tool.ui.database.Table;
+import com.mokylin.tool.util.FileUtil;
 
-public class Dao extends IFtl {
-	public Dao(String table, String type, FtlType ftlType, String destRelativePath) {
-		super(ftlType, destRelativePath);
-		this.name = table;
-		this.type = type;
+import freemarker.template.Template;
+
+public class Dao implements Ftl {
+	protected HashMap<String, Object> map = new HashMap<>();
+	protected String path;
+	protected Template template;
+	
+	public Dao(Table table, FtlConfig config) {
+		map.put("name", table.getName());
+		
+		path = FileUtil.getFilePath(config.getCodePath(), "db", config.getDbPkg(), "dao", table.getName() + "Dao." + config.getSuffix());
+		template = config.getTemplates().get("dao");
 	}
 
-	private String type;
-	private String name;
-	
 	@Override
 	public HashMap<String, Object> getDataModel() {
-		HashMap<String, Object> map = new HashMap<>();
-		map.put("type", type);
-		map.put("name", name);
 		return map;
 	}
 
 	@Override
 	public boolean isRewrite() {
 		return false;
+	}
+
+	@Override
+	public Template getTemplate() {
+		return template;
+	}
+
+	@Override
+	public String getPath() {
+		return path;
 	}
 }

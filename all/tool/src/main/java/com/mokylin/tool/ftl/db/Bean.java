@@ -1,48 +1,44 @@
 package com.mokylin.tool.ftl.db;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
-import com.mokylin.tool.Generator;
-import com.mokylin.tool.core.bean.FtlType;
-import com.mokylin.tool.core.bean.IFtl;
+import com.mokylin.tool.ftl.Ftl;
+import com.mokylin.tool.ftl.FtlConfig;
+import com.mokylin.tool.ui.database.Table;
+import com.mokylin.tool.util.FileUtil;
 
-public class Bean extends IFtl {
-	public Bean(String table, String type, Map<String, String> map, FtlType ftlType, String destRelativePath) {
-		super(ftlType, destRelativePath);
-		this.name = table;
-		this.type = type;
+import freemarker.template.Template;
+
+public class Bean implements Ftl {
+	protected HashMap<String, Object> map = new HashMap<>();
+	protected String path;
+	protected Template template;
+	
+	public Bean(Table table, FtlConfig config) {
+		map.put("name", table.getName());
+		map.put("fields", table.getFields());
 		
-		Iterator<Entry<String, String>> it = map.entrySet().iterator();
-		while (it.hasNext()) {
-			Entry<String, String> entry = it.next();
-			Field field = new Field();
-			fields.add(field);
-			field.setName(entry.getKey());
-			field.setDbType(Generator.getDbType(entry.getValue()));
-			field.setClazz(Generator.getJavaType(entry.getValue()));
-		}
+		path = FileUtil.getFilePath(config.getCodePath(), "db", config.getDbPkg(), "bean", table.getName() + "Bean." + config.getSuffix());
+		template = config.getTemplates().get("bean");
 	}
-
-	private String type;
-	private String name;
-	private List<Field> fields = new ArrayList<>();
 
 	@Override
 	public HashMap<String, Object> getDataModel() {
-		HashMap<String, Object> map = new HashMap<>();
-		map.put("type", type);
-		map.put("name", name);
-		map.put("fields", fields);
 		return map;
 	}
 
 	@Override
 	public boolean isRewrite() {
 		return true;
+	}
+
+	@Override
+	public Template getTemplate() {
+		return template;
+	}
+
+	@Override
+	public String getPath() {
+		return path;
 	}
 }

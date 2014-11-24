@@ -1,7 +1,8 @@
-package com.mokylin.game.robot.logic.login.message;
+package com.mokylin.game.server.logic.map.message;
 
 
-import com.mokylin.game.core.message.Message;
+import com.mokylin.game.core.message.Bean;
+
 import io.netty.buffer.ByteBuf;
 import org.apache.log4j.Logger;
 
@@ -10,22 +11,28 @@ import org.apache.log4j.Logger;
  * 
  * @version 1.0.0
  * 
- * 登录失败消息
+ * 坐标信息
  */
-public class ResLoginFailedMessage extends Message{
+public class CoordinateInfo extends Bean {
 
-	private static Logger log = Logger.getLogger(ResLoginFailedMessage.class);
+	private static Logger log = Logger.getLogger(CoordinateInfo.class);
 	
-	//错误代码
-	private Byte err;
+	//x
+	private Integer x;
+	
+	//y
+	private Integer y;
+	
 	
 	/**
 	 * 写入字节缓存
 	 */
 	public boolean write(ByteBuf buf){
 	    try {
-			//错误代码
-			writeByte(buf, this.err);
+			//x
+			writeInt(buf, this.x);
+			//y
+			writeInt(buf, this.y);
         } catch (Exception e) {
             log.error(e, e);
             return false;
@@ -38,8 +45,10 @@ public class ResLoginFailedMessage extends Message{
 	 */
 	public boolean read(ByteBuf buf){
         try {
-			//错误代码
-			this.err = readByte(buf);
+			//x
+			this.x = readInt(buf);
+			//y
+			this.y = readInt(buf);
         } catch (Exception e) {
             log.error(e, e);
             return false;
@@ -48,31 +57,42 @@ public class ResLoginFailedMessage extends Message{
 	}
 	
 	/**
-	 * get 错误代码
+	 * get x
 	 * @return 
 	 */
-	public Byte getErr(){
-		return err;
+	public Integer getX(){
+		return x;
 	}
 	
 	/**
-	 * set 错误代码
+	 * set x
 	 */
-	public void setErr(Byte err){
-		this.err = err;
+	public void setX(Integer x){
+		this.x = x;
 	}
 	
+	/**
+	 * get y
+	 * @return 
+	 */
+	public Integer getY(){
+		return y;
+	}
 	
-	@Override
-	public int getId() {
-		return 100201;
+	/**
+	 * set y
+	 */
+	public void setY(Integer y){
+		this.y = y;
 	}
 	
 	@Override
 	public String toString(){
 		StringBuffer buf = new StringBuffer("[");
-		//错误代码
-		buf.append("err:" + err +",");
+		//x
+		buf.append("x:" + x +",");
+		//y
+		buf.append("y:" + y +",");
 		if(buf.charAt(buf.length()-1)==',') buf.deleteCharAt(buf.length()-1);
 		buf.append("]");
 		return buf.toString();

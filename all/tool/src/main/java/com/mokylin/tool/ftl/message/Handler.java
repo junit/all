@@ -18,7 +18,7 @@ public class Handler implements Ftl {
 	private String pkg;
 	
 	public Handler(Element root, int indexPrefix, String pkg, FtlConfig config) {
-		path = FileUtil.getFilePath(config.getCodePath(), pkg, "handler", root.attributeValue("name") + "Handler." + config.getSuffix());
+		path = FileUtil.getFilePath(config.getCodePath(), "logic", pkg, "handler", root.attributeValue("name") + "Handler." + config.getSuffix());
 		map.put("name", root.attributeValue("name"));
 		map.put("pkg", pkg);
 		
