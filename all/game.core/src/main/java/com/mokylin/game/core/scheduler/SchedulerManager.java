@@ -56,5 +56,12 @@ public class SchedulerManager {
 		}
 		return true;
 	}
+	
+	public static void main(String[] args) throws InterruptedException {
+		SchedulerManager manager = new SchedulerManager();
+		manager.init();
+		
+		Thread.sleep(10000);
+	}
 }
 

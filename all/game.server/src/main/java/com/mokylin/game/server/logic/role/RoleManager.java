@@ -60,7 +60,7 @@ public class RoleManager {
 		role.setName(name);
 		init(role);
 		
-		RoleBean bean = create(account, role);
+		final RoleBean bean = create(account, role);
 		try {
 			ManagerPool.thread.getSaveThreadGroup().add(account, new Command() {
 				@Override

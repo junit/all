@@ -25,7 +25,7 @@ public class Main {
 
 		int processors = Runtime.getRuntime().availableProcessors();
 		ThreadPoolExecutor executor = new ThreadPoolExecutor(2 * processors, 2 * processors, 0, TimeUnit.DAYS, new LinkedBlockingQueue<>());
-		RobotClient client = new RobotClient(IP, PORT);
+		final RobotClient client = new RobotClient(IP, PORT);
 		for (int i = 0; i < COUNT; ++i) {
 			executor.execute(new Runnable() {
 				@Override
