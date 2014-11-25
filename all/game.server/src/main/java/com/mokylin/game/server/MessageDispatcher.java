@@ -21,7 +21,14 @@ public class MessageDispatcher extends GameHandlerAdapter {
 	@Override
 	protected void channelRead(ChannelHandlerContext ctx, Message msg) {
 		if (msg instanceof ReqAccountLoginMessage) { // 登录
-			ManagerPool.account.login(ctx, (ReqAccountLoginMessage)msg);
+			Handler handler = MessagePool.getInstance().createHandler(msg.getId());
+			handler.setExcutor(ctx);
+			handler.setMessage(msg);
+			try {
+				handler.exec();
+			} catch (Exception e) {
+				logger.error(e, e);
+			}
 			return ;
 		}
 		
@@ -41,6 +48,7 @@ public class MessageDispatcher extends GameHandlerAdapter {
 		
 		Handler handler = MessagePool.getInstance().createHandler(msg.getId());
 		handler.setExcutor(account);
+		handler.setMessage(msg);
 		
 		try {
 			ManagerPool.thread.getAccountThreadGroup().add(account, handler);

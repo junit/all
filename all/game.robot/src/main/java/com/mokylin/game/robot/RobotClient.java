@@ -1,17 +1,20 @@
 package com.mokylin.game.robot;
 
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.util.AttributeKey;
-
 import com.mokylin.game.core.netty.Client;
 import com.mokylin.game.core.netty.GameHandlerAdapter;
 
 
 public class RobotClient extends Client {
-	private static final AttributeKey<RobotClient> key = AttributeKey.valueOf("client");
-	
-	public RobotClient(String host, int port) {
+//	private String account;
+//	private String check;
+//	private int platform;
+//	private int server;
+	public RobotClient(String host, int port/*, String account, String check, int platform, int server*/) {
 		super(host, port);
+//		this.account = account;
+//		this.check = check;
+//		this.platform = platform;
+//		this.server = server;
 	}
 
 	@Override
@@ -21,14 +24,39 @@ public class RobotClient extends Client {
 
 	@Override
 	protected GameHandlerAdapter createHandlerAdapter() {
-		return new MessageDispatcher();
+		return new MessageDispatcher(this);
 	}
 
-	public static void set(ChannelHandlerContext ctx, RobotClient robot) {
-		ctx.attr(key).set(robot);
-	}
-
-	public static RobotClient get(ChannelHandlerContext ctx) {
-		return ctx.attr(key).get();
-	}
+//	public String getAccount() {
+//		return account;
+//	}
+//
+//	public void setAccount(String account) {
+//		this.account = account;
+//	}
+//
+//	public String getCheck() {
+//		return check;
+//	}
+//
+//	public void setCheck(String check) {
+//		this.check = check;
+//	}
+//
+//	public int getPlatform() {
+//		return platform;
+//	}
+//
+//	public void setPlatform(int platform) {
+//		this.platform = platform;
+//	}
+//
+//	public int getServer() {
+//		return server;
+//	}
+//
+//	public void setServer(int server) {
+//		this.server = server;
+//	}
+	
 }

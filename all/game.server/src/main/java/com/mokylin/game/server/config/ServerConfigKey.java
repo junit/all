@@ -24,4 +24,18 @@ public class ServerConfigKey {
 	public void setServer(int server) {
 		this.server = server;
 	}
+	
+	@Override
+	public int hashCode() {
+		return platform.getValue() << 20 | server;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof ServerConfigKey) {
+			ServerConfigKey key = (ServerConfigKey)obj;
+			return key.platform == this.platform && key.server == this.server;
+		}
+		return false;
+	}
 }

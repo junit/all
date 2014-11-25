@@ -5,11 +5,13 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.log4j.Logger;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
 public class ConfigManager {
+	private Logger logger = Logger.getLogger(ConfigManager.class);
 	private int gamePort;
 	private int maxSession;
 	private ConcurrentHashMap<ServerConfigKey, ServerConfig> configs = new ConcurrentHashMap<>(); // 多服务器配置
@@ -22,7 +24,8 @@ public class ConfigManager {
 		return maxSession;
 	}
 
-	public void init() throws Exception {
+	public boolean init() {
+		try {
 		File file = new File("config/server.xml");
 		SAXReader reader = new SAXReader();
 		Document doc = reader.read(file);
@@ -38,6 +41,11 @@ public class ConfigManager {
 			ServerConfig oneConfig = ServerConfig.create(element);
 			configs.put(oneConfig.getKey(), oneConfig);
 		}
+		} catch (Exception e) {
+			logger.error(e, e);
+			return false;
+		}
+		return true;
 	}
 	
 	public Collection<ServerConfig> getConfigs() {

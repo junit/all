@@ -31,6 +31,7 @@ public class AccountManager {
 
 	public Account create(String name, Platform platform, int server) {
 		if (!ManagerPool.name.check(name)) {
+			logger.debug("创建失败:" + name + "," + platform + "," + server);
 			return null;
 		}
 
@@ -42,6 +43,7 @@ public class AccountManager {
 		account.setCreateTime(System.currentTimeMillis());
 
 		add(account);
+		logger.debug("创建成功:" + name + "," + platform + "," + server);
 		return account;
 	}
 

@@ -11,6 +11,7 @@ public class GameServer extends Server {
 
 	@Override
 	protected boolean init() {
+		if (!ManagerPool.config.init()) return false;
 		if (!ManagerPool.message.init())	return false;
 		if (!ManagerPool.account.init()) return false;
 		if (!ManagerPool.scheduler.init()) return false;

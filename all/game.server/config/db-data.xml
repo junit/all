@@ -10,7 +10,7 @@
             <transactionManager type="JDBC"/>
             <dataSource type="POOLED">
                 <property name="driver" value="com.mysql.jdbc.Driver"/>
-                <property name="url" value="jdbc:mysql://192.168.1.120:3307/shell_data?autoReconnect=true"/>
+                <property name="url" value="jdbc:mysql://192.168.5.102:3306/data?autoReconnect=true"/>
                 <property name="username" value="game"/>
                 <property name="password" value="game"/>
                 <property name="poolPingQuery" value="select 1"/>

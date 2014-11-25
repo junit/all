@@ -1,7 +1,11 @@
 package com.mokylin.game.server.logic.role.handler;
 
 import com.mokylin.game.core.message.Handler;
+
 import org.apache.log4j.Logger;
+
+import com.mokylin.game.server.ManagerPool;
+import com.mokylin.game.server.logic.account.Account;
 import com.mokylin.game.server.logic.role.message.ReqRoleCreateMessage;
 
 public class ReqRoleCreateHandler extends Handler{
@@ -10,7 +14,7 @@ public class ReqRoleCreateHandler extends Handler{
     public void exec() {
     	try {
     		ReqRoleCreateMessage msg = (ReqRoleCreateMessage)this.getMessage();
-    		// TODO
+    		ManagerPool.role.create((Account)this.getExcutor(), msg);
       } catch (Exception e) {
 			logger.error(e, e);
 		}
