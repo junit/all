@@ -19,8 +19,7 @@ import com.mokylin.game.server.logic.role.consts.Sex;
 import com.mokylin.game.server.logic.role.message.ReqRoleCreateMessage;
 import com.mokylin.game.server.logic.role.message.ResRoleCreateMessage;
 import com.mokylin.game.server.logic.role.message.RoleInfo;
-import com.mokylin.game.server.logic.role.proto.RoleProto;
-import com.mokylin.game.server.logic.role.proto.RoleProto.Role.Builder;
+import com.mokylin.game.server.proto.ProtoUtil;
 
 public class RoleManager {
 	private Logger logger = Logger.getLogger(this.getClass());
@@ -41,21 +40,7 @@ public class RoleManager {
 	}
 
 	private Role create(RoleBean bean) {
-		try {
-			com.mokylin.game.server.logic.role.proto.RoleProto.Role roleProto = RoleProto.Role.parseFrom(bean.getData());
-			Role role = new Role();
-			role.setId(roleProto.getId());
-			role.setName(roleProto.getName());
-			role.setSex(Sex.get((byte) roleProto.getSex()));
-			
-			role.getMap().setModel(roleProto.getMapData().getModel());
-			role.getMap().getCoordinate().setX(roleProto.getMapData().getX());
-			role.getMap().getCoordinate().setY(roleProto.getMapData().getY());
-			return role;
-		} catch (InvalidProtocolBufferException e) {
-			logger.error(e, e);
-			return null;
-		}
+		return ProtoUtil.createRole(bean.getData());
 //		Role role = JSON.parseObject(bean.getData(), Role.class);
 //		return role;
 	}
@@ -106,25 +91,14 @@ public class RoleManager {
 		RoleBean bean = new RoleBean();
 		bean.setId(role.getId());
 		bean.setAccount(account.getId());
+		
 		long s1 = System.currentTimeMillis();
-		
-		Builder builder = RoleProto.Role.newBuilder();
-		com.mokylin.game.server.logic.role.proto.RoleProto.MapData.Builder mapBuilder = RoleProto.MapData.newBuilder();
-		mapBuilder.setModel(role.getMap().getModel());
-		mapBuilder.setX(role.getMap().getCoordinate().getX());
-		mapBuilder.setY(role.getMap().getCoordinate().getY());
-		
-		builder.setId(role.getId());
-		builder.setName(role.getName());
-		builder.setSex(role.getSex().getValue());
-		builder.setMapData(mapBuilder.build());
-		
-		bean.setData(builder.build().toByteArray());
-		
+		bean.setData(ProtoUtil.toBytes(role));
 //		bean.setData(JSON.toJSONBytes(role));
 		long s2 = System.currentTimeMillis();
 		s.addAndGet(s2 - s1);
 		System.err.println("总共:" + s);
+		
 		return bean;
 	}
 
@@ -142,34 +116,34 @@ public class RoleManager {
 		return cache.getRole(id);
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InvalidProtocolBufferException {
 		Role role = new Role();
 		role.setId(123);
 		role.setName("abc");
 		int count = 1000000;
-		
+		byte[] proto_buf = null;
+		byte[] json_buf = null;
 		long s1 = System.currentTimeMillis();
 		for (int i = 0; i < count; ++i) {
-			Builder builder = RoleProto.Role.newBuilder();
-			com.mokylin.game.server.logic.role.proto.RoleProto.MapData.Builder mapBuilder = RoleProto.MapData.newBuilder();
-			mapBuilder.setModel(role.getMap().getModel());
-			mapBuilder.setX(role.getMap().getCoordinate().getX());
-			mapBuilder.setY(role.getMap().getCoordinate().getY());
-			
-			builder.setId(role.getId());
-			builder.setName(role.getName());
-			builder.setSex(role.getSex().getValue());
-			builder.setMapData(mapBuilder.build());
-			
-			byte[] b = builder.build().toByteArray();
+			proto_buf = ProtoUtil.toBytes(role);
 		}
 		
 		long s2 = System.currentTimeMillis();
 		for (int i = 0; i < count; ++i) {
-			String string = JSON.toJSONString(role, SerializerFeature.WriteClassName);
-//			byte[] b = JSON.toJSONBytes(role, SerializerFeature.WriteClassName);
+			json_buf = JSON.toJSONBytes(role, SerializerFeature.WriteClassName);
 		}
 		long s3 = System.currentTimeMillis();
-		System.err.println("proto:" + (s2 - s1) + ",json:" + (s3 - s2));
+		System.err.println("序列化测试proto:" + (s2 - s1) + ",json:" + (s3 - s2));
+		
+		long s4 = System.currentTimeMillis();
+		for (int i = 0; i < count; ++i) {
+			Role r = ProtoUtil.createRole(proto_buf);
+		}
+		long s5 = System.currentTimeMillis();
+		for (int i = 0; i < count; ++i) {
+			Role r = JSON.parseObject(json_buf, Role.class);
+		}
+		long s6 = System.currentTimeMillis();
+		System.err.println("反序列化测试proto:" + (s5 - s4) + ",json:" + (s6 - s5));
 	}
 }

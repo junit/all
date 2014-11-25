@@ -1,0 +1,9 @@
+option java_package = "com.mokylin.game.server.proto.bean";
+option java_outer_classname = "MapProto";
+
+message MapDataProto
+{
+	required int32 model = 1;
+	required int32 x = 2;
+	required int32 y = 3;
+}
