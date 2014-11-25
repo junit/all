@@ -10,7 +10,8 @@ public class ResAccountTestHandler extends Handler{
     public void exec() {
     	try {
     		ResAccountTestMessage msg = (ResAccountTestMessage)this.getMessage();
-    		// TODO
+    		logger.error(msg.getStr());
+    		logger.error(msg.getTime());
       } catch (Exception e) {
 			logger.error(e, e);
 		}

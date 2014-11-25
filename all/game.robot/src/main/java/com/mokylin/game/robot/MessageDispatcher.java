@@ -1,5 +1,7 @@
 package com.mokylin.game.robot;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import org.apache.log4j.Logger;
 
 import io.netty.channel.ChannelHandlerContext;
@@ -13,28 +15,35 @@ import com.mokylin.game.robot.logic.account.message.ReqAccountLoginMessage;
 
 public class MessageDispatcher extends GameHandlerAdapter {
 	private static Logger logger = Logger.getLogger(MessageDispatcher.class);
-	@SuppressWarnings("unused")
-	private final RobotClient robot;
-	public MessageDispatcher(RobotClient robot) {
-		this.robot = robot;
-	}
 	@Override
 	protected void channelRead(ChannelHandlerContext ctx, Message msg) {
 		Handler handler = MessagePool.getInstance().createHandler(msg.getId());
 		try {
+			handler.setExcutor(ctx);
+			handler.setMessage(msg);
 			handler.exec();
 		} catch (Exception e) {
 
 		}
 	}
+	
+	private static AtomicInteger index = new AtomicInteger(0);
 
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
+		Robot robot = new Robot();
+		robot.setAccount("shell_" + index.incrementAndGet());
+		robot.setCheck("null");
+		robot.setPlatform(1);
+		robot.setServer(1);
+		
+		Robot.bind(ctx, robot);
+		
 		ReqAccountLoginMessage msg = new ReqAccountLoginMessage();
-		msg.setAccountName("shell1");
-		msg.setCheck("check");
-		msg.setPlatform(1);
-		msg.setServer(1);
+		msg.setAccountName(robot.getAccount());
+		msg.setCheck(robot.getCheck());
+		msg.setPlatform(robot.getPlatform());
+		msg.setServer(robot.getServer());
 		ContextUtil.write(ctx, msg);
 	}
 

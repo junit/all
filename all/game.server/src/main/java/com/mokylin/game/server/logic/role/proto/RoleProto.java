@@ -33,29 +33,37 @@ public final class RoleProto {
   /**
    * Protobuf type {@code Coordinate}
    */
-  public  static final class Coordinate extends
+  public static final class Coordinate extends
       com.google.protobuf.GeneratedMessage implements
       // @@protoc_insertion_point(message_implements:Coordinate)
       CoordinateOrBuilder {
     // Use Coordinate.newBuilder() to construct.
-    private Coordinate(com.google.protobuf.GeneratedMessage.Builder builder) {
+    private Coordinate(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
+      this.unknownFields = builder.getUnknownFields();
     }
-    private Coordinate() {
-      x_ = 0;
-      y_ = 0;
+    private Coordinate(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final Coordinate defaultInstance;
+    public static Coordinate getDefaultInstance() {
+      return defaultInstance;
     }
 
+    public Coordinate getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
     @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
+        getUnknownFields() {
       return this.unknownFields;
     }
     private Coordinate(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
+      initFields();
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
@@ -108,7 +116,7 @@ public final class RoleProto {
               com.mokylin.game.server.logic.role.proto.RoleProto.Coordinate.class, com.mokylin.game.server.logic.role.proto.RoleProto.Coordinate.Builder.class);
     }
 
-    public static final com.google.protobuf.Parser<Coordinate> PARSER =
+    public static com.google.protobuf.Parser<Coordinate> PARSER =
         new com.google.protobuf.AbstractParser<Coordinate>() {
       public Coordinate parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
@@ -154,6 +162,10 @@ public final class RoleProto {
       return y_;
     }
 
+    private void initFields() {
+      x_ = 0;
+      y_ = 0;
+    }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -181,7 +193,7 @@ public final class RoleProto {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         output.writeInt32(2, y_);
       }
-      unknownFields.writeTo(output);
+      getUnknownFields().writeTo(output);
     }
 
     private int memoizedSerializedSize = -1;
@@ -198,12 +210,18 @@ public final class RoleProto {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(2, y_);
       }
-      size += unknownFields.getSerializedSize();
+      size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
       return size;
     }
 
     private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
     public static com.mokylin.game.server.logic.role.proto.RoleProto.Coordinate parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -257,7 +275,7 @@ public final class RoleProto {
       return PARSER.parseFrom(input, extensionRegistry);
     }
 
-    public static Builder newBuilder() { return new Builder(); }
+    public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder(com.mokylin.game.server.logic.role.proto.RoleProto.Coordinate prototype) {
       return newBuilder().mergeFrom(prototype);
@@ -303,6 +321,10 @@ public final class RoleProto {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
         }
       }
+      private static Builder create() {
+        return new Builder();
+      }
+
       public Builder clear() {
         super.clear();
         x_ = 0;
@@ -310,6 +332,10 @@ public final class RoleProto {
         y_ = 0;
         bitField0_ = (bitField0_ & ~0x00000002);
         return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
       }
 
       public com.google.protobuf.Descriptors.Descriptor
@@ -363,8 +389,7 @@ public final class RoleProto {
         if (other.hasY()) {
           setY(other.getY());
         }
-        this.mergeUnknownFields(other.unknownFields);
-        onChanged();
+        this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
 
@@ -466,19 +491,12 @@ public final class RoleProto {
       // @@protoc_insertion_point(builder_scope:Coordinate)
     }
 
+    static {
+      defaultInstance = new Coordinate(true);
+      defaultInstance.initFields();
+    }
+
     // @@protoc_insertion_point(class_scope:Coordinate)
-    private static final com.mokylin.game.server.logic.role.proto.RoleProto.Coordinate defaultInstance;static {
-      defaultInstance = new com.mokylin.game.server.logic.role.proto.RoleProto.Coordinate();
-    }
-
-    public static com.mokylin.game.server.logic.role.proto.RoleProto.Coordinate getDefaultInstance() {
-      return defaultInstance;
-    }
-
-    public com.mokylin.game.server.logic.role.proto.RoleProto.Coordinate getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-
   }
 
   public interface MapDataOrBuilder extends
@@ -510,28 +528,37 @@ public final class RoleProto {
   /**
    * Protobuf type {@code MapData}
    */
-  public  static final class MapData extends
+  public static final class MapData extends
       com.google.protobuf.GeneratedMessage implements
       // @@protoc_insertion_point(message_implements:MapData)
       MapDataOrBuilder {
     // Use MapData.newBuilder() to construct.
-    private MapData(com.google.protobuf.GeneratedMessage.Builder builder) {
+    private MapData(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
+      this.unknownFields = builder.getUnknownFields();
     }
-    private MapData() {
-      model_ = 0;
+    private MapData(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final MapData defaultInstance;
+    public static MapData getDefaultInstance() {
+      return defaultInstance;
     }
 
+    public MapData getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
     @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
+        getUnknownFields() {
       return this.unknownFields;
     }
     private MapData(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
+      initFields();
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
@@ -592,7 +619,7 @@ public final class RoleProto {
               com.mokylin.game.server.logic.role.proto.RoleProto.MapData.class, com.mokylin.game.server.logic.role.proto.RoleProto.MapData.Builder.class);
     }
 
-    public static final com.google.protobuf.Parser<MapData> PARSER =
+    public static com.google.protobuf.Parser<MapData> PARSER =
         new com.google.protobuf.AbstractParser<MapData>() {
       public MapData parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
@@ -635,15 +662,19 @@ public final class RoleProto {
      * <code>required .Coordinate coordinate = 2;</code>
      */
     public com.mokylin.game.server.logic.role.proto.RoleProto.Coordinate getCoordinate() {
-      return coordinate_ == null ? com.mokylin.game.server.logic.role.proto.RoleProto.Coordinate.getDefaultInstance() : coordinate_;
+      return coordinate_;
     }
     /**
      * <code>required .Coordinate coordinate = 2;</code>
      */
     public com.mokylin.game.server.logic.role.proto.RoleProto.CoordinateOrBuilder getCoordinateOrBuilder() {
-      return coordinate_ == null ? com.mokylin.game.server.logic.role.proto.RoleProto.Coordinate.getDefaultInstance() : coordinate_;
+      return coordinate_;
     }
 
+    private void initFields() {
+      model_ = 0;
+      coordinate_ = com.mokylin.game.server.logic.role.proto.RoleProto.Coordinate.getDefaultInstance();
+    }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -673,9 +704,9 @@ public final class RoleProto {
         output.writeInt32(1, model_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeMessage(2, getCoordinate());
+        output.writeMessage(2, coordinate_);
       }
-      unknownFields.writeTo(output);
+      getUnknownFields().writeTo(output);
     }
 
     private int memoizedSerializedSize = -1;
@@ -690,14 +721,20 @@ public final class RoleProto {
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(2, getCoordinate());
+          .computeMessageSize(2, coordinate_);
       }
-      size += unknownFields.getSerializedSize();
+      size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
       return size;
     }
 
     private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
     public static com.mokylin.game.server.logic.role.proto.RoleProto.MapData parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -751,7 +788,7 @@ public final class RoleProto {
       return PARSER.parseFrom(input, extensionRegistry);
     }
 
-    public static Builder newBuilder() { return new Builder(); }
+    public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder(com.mokylin.game.server.logic.role.proto.RoleProto.MapData prototype) {
       return newBuilder().mergeFrom(prototype);
@@ -798,17 +835,25 @@ public final class RoleProto {
           getCoordinateFieldBuilder();
         }
       }
+      private static Builder create() {
+        return new Builder();
+      }
+
       public Builder clear() {
         super.clear();
         model_ = 0;
         bitField0_ = (bitField0_ & ~0x00000001);
         if (coordinateBuilder_ == null) {
-          coordinate_ = null;
+          coordinate_ = com.mokylin.game.server.logic.role.proto.RoleProto.Coordinate.getDefaultInstance();
         } else {
           coordinateBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000002);
         return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
       }
 
       public com.google.protobuf.Descriptors.Descriptor
@@ -866,8 +911,7 @@ public final class RoleProto {
         if (other.hasCoordinate()) {
           mergeCoordinate(other.getCoordinate());
         }
-        this.mergeUnknownFields(other.unknownFields);
-        onChanged();
+        this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
 
@@ -938,7 +982,7 @@ public final class RoleProto {
         return this;
       }
 
-      private com.mokylin.game.server.logic.role.proto.RoleProto.Coordinate coordinate_ = null;
+      private com.mokylin.game.server.logic.role.proto.RoleProto.Coordinate coordinate_ = com.mokylin.game.server.logic.role.proto.RoleProto.Coordinate.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.mokylin.game.server.logic.role.proto.RoleProto.Coordinate, com.mokylin.game.server.logic.role.proto.RoleProto.Coordinate.Builder, com.mokylin.game.server.logic.role.proto.RoleProto.CoordinateOrBuilder> coordinateBuilder_;
       /**
@@ -952,7 +996,7 @@ public final class RoleProto {
        */
       public com.mokylin.game.server.logic.role.proto.RoleProto.Coordinate getCoordinate() {
         if (coordinateBuilder_ == null) {
-          return coordinate_ == null ? com.mokylin.game.server.logic.role.proto.RoleProto.Coordinate.getDefaultInstance() : coordinate_;
+          return coordinate_;
         } else {
           return coordinateBuilder_.getMessage();
         }
@@ -993,7 +1037,6 @@ public final class RoleProto {
       public Builder mergeCoordinate(com.mokylin.game.server.logic.role.proto.RoleProto.Coordinate value) {
         if (coordinateBuilder_ == null) {
           if (((bitField0_ & 0x00000002) == 0x00000002) &&
-              coordinate_ != null &&
               coordinate_ != com.mokylin.game.server.logic.role.proto.RoleProto.Coordinate.getDefaultInstance()) {
             coordinate_ =
               com.mokylin.game.server.logic.role.proto.RoleProto.Coordinate.newBuilder(coordinate_).mergeFrom(value).buildPartial();
@@ -1012,7 +1055,7 @@ public final class RoleProto {
        */
       public Builder clearCoordinate() {
         if (coordinateBuilder_ == null) {
-          coordinate_ = null;
+          coordinate_ = com.mokylin.game.server.logic.role.proto.RoleProto.Coordinate.getDefaultInstance();
           onChanged();
         } else {
           coordinateBuilder_.clear();
@@ -1035,8 +1078,7 @@ public final class RoleProto {
         if (coordinateBuilder_ != null) {
           return coordinateBuilder_.getMessageOrBuilder();
         } else {
-          return coordinate_ == null ?
-              com.mokylin.game.server.logic.role.proto.RoleProto.Coordinate.getDefaultInstance() : coordinate_;
+          return coordinate_;
         }
       }
       /**
@@ -1059,19 +1101,12 @@ public final class RoleProto {
       // @@protoc_insertion_point(builder_scope:MapData)
     }
 
+    static {
+      defaultInstance = new MapData(true);
+      defaultInstance.initFields();
+    }
+
     // @@protoc_insertion_point(class_scope:MapData)
-    private static final com.mokylin.game.server.logic.role.proto.RoleProto.MapData defaultInstance;static {
-      defaultInstance = new com.mokylin.game.server.logic.role.proto.RoleProto.MapData();
-    }
-
-    public static com.mokylin.game.server.logic.role.proto.RoleProto.MapData getDefaultInstance() {
-      return defaultInstance;
-    }
-
-    public com.mokylin.game.server.logic.role.proto.RoleProto.MapData getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-
   }
 
   public interface RoleOrBuilder extends
@@ -1126,30 +1161,37 @@ public final class RoleProto {
   /**
    * Protobuf type {@code Role}
    */
-  public  static final class Role extends
+  public static final class Role extends
       com.google.protobuf.GeneratedMessage implements
       // @@protoc_insertion_point(message_implements:Role)
       RoleOrBuilder {
     // Use Role.newBuilder() to construct.
-    private Role(com.google.protobuf.GeneratedMessage.Builder builder) {
+    private Role(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
+      this.unknownFields = builder.getUnknownFields();
     }
-    private Role() {
-      id_ = 0L;
-      name_ = "";
-      sex_ = 0;
+    private Role(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final Role defaultInstance;
+    public static Role getDefaultInstance() {
+      return defaultInstance;
     }
 
+    public Role getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
     @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
+        getUnknownFields() {
       return this.unknownFields;
     }
     private Role(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
+      initFields();
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
@@ -1221,7 +1263,7 @@ public final class RoleProto {
               com.mokylin.game.server.logic.role.proto.RoleProto.Role.class, com.mokylin.game.server.logic.role.proto.RoleProto.Role.Builder.class);
     }
 
-    public static final com.google.protobuf.Parser<Role> PARSER =
+    public static com.google.protobuf.Parser<Role> PARSER =
         new com.google.protobuf.AbstractParser<Role>() {
       public Role parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
@@ -1321,15 +1363,21 @@ public final class RoleProto {
      * <code>required .MapData mapData = 4;</code>
      */
     public com.mokylin.game.server.logic.role.proto.RoleProto.MapData getMapData() {
-      return mapData_ == null ? com.mokylin.game.server.logic.role.proto.RoleProto.MapData.getDefaultInstance() : mapData_;
+      return mapData_;
     }
     /**
      * <code>required .MapData mapData = 4;</code>
      */
     public com.mokylin.game.server.logic.role.proto.RoleProto.MapDataOrBuilder getMapDataOrBuilder() {
-      return mapData_ == null ? com.mokylin.game.server.logic.role.proto.RoleProto.MapData.getDefaultInstance() : mapData_;
+      return mapData_;
     }
 
+    private void initFields() {
+      id_ = 0L;
+      name_ = "";
+      sex_ = 0;
+      mapData_ = com.mokylin.game.server.logic.role.proto.RoleProto.MapData.getDefaultInstance();
+    }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -1373,9 +1421,9 @@ public final class RoleProto {
         output.writeInt32(3, sex_);
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        output.writeMessage(4, getMapData());
+        output.writeMessage(4, mapData_);
       }
-      unknownFields.writeTo(output);
+      getUnknownFields().writeTo(output);
     }
 
     private int memoizedSerializedSize = -1;
@@ -1398,14 +1446,20 @@ public final class RoleProto {
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(4, getMapData());
+          .computeMessageSize(4, mapData_);
       }
-      size += unknownFields.getSerializedSize();
+      size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
       return size;
     }
 
     private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
     public static com.mokylin.game.server.logic.role.proto.RoleProto.Role parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -1459,7 +1513,7 @@ public final class RoleProto {
       return PARSER.parseFrom(input, extensionRegistry);
     }
 
-    public static Builder newBuilder() { return new Builder(); }
+    public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder(com.mokylin.game.server.logic.role.proto.RoleProto.Role prototype) {
       return newBuilder().mergeFrom(prototype);
@@ -1506,6 +1560,10 @@ public final class RoleProto {
           getMapDataFieldBuilder();
         }
       }
+      private static Builder create() {
+        return new Builder();
+      }
+
       public Builder clear() {
         super.clear();
         id_ = 0L;
@@ -1515,12 +1573,16 @@ public final class RoleProto {
         sex_ = 0;
         bitField0_ = (bitField0_ & ~0x00000004);
         if (mapDataBuilder_ == null) {
-          mapData_ = null;
+          mapData_ = com.mokylin.game.server.logic.role.proto.RoleProto.MapData.getDefaultInstance();
         } else {
           mapDataBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000008);
         return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
       }
 
       public com.google.protobuf.Descriptors.Descriptor
@@ -1594,8 +1656,7 @@ public final class RoleProto {
         if (other.hasMapData()) {
           mergeMapData(other.getMapData());
         }
-        this.mergeUnknownFields(other.unknownFields);
-        onChanged();
+        this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
 
@@ -1782,7 +1843,7 @@ public final class RoleProto {
         return this;
       }
 
-      private com.mokylin.game.server.logic.role.proto.RoleProto.MapData mapData_ = null;
+      private com.mokylin.game.server.logic.role.proto.RoleProto.MapData mapData_ = com.mokylin.game.server.logic.role.proto.RoleProto.MapData.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           com.mokylin.game.server.logic.role.proto.RoleProto.MapData, com.mokylin.game.server.logic.role.proto.RoleProto.MapData.Builder, com.mokylin.game.server.logic.role.proto.RoleProto.MapDataOrBuilder> mapDataBuilder_;
       /**
@@ -1796,7 +1857,7 @@ public final class RoleProto {
        */
       public com.mokylin.game.server.logic.role.proto.RoleProto.MapData getMapData() {
         if (mapDataBuilder_ == null) {
-          return mapData_ == null ? com.mokylin.game.server.logic.role.proto.RoleProto.MapData.getDefaultInstance() : mapData_;
+          return mapData_;
         } else {
           return mapDataBuilder_.getMessage();
         }
@@ -1837,7 +1898,6 @@ public final class RoleProto {
       public Builder mergeMapData(com.mokylin.game.server.logic.role.proto.RoleProto.MapData value) {
         if (mapDataBuilder_ == null) {
           if (((bitField0_ & 0x00000008) == 0x00000008) &&
-              mapData_ != null &&
               mapData_ != com.mokylin.game.server.logic.role.proto.RoleProto.MapData.getDefaultInstance()) {
             mapData_ =
               com.mokylin.game.server.logic.role.proto.RoleProto.MapData.newBuilder(mapData_).mergeFrom(value).buildPartial();
@@ -1856,7 +1916,7 @@ public final class RoleProto {
        */
       public Builder clearMapData() {
         if (mapDataBuilder_ == null) {
-          mapData_ = null;
+          mapData_ = com.mokylin.game.server.logic.role.proto.RoleProto.MapData.getDefaultInstance();
           onChanged();
         } else {
           mapDataBuilder_.clear();
@@ -1879,8 +1939,7 @@ public final class RoleProto {
         if (mapDataBuilder_ != null) {
           return mapDataBuilder_.getMessageOrBuilder();
         } else {
-          return mapData_ == null ?
-              com.mokylin.game.server.logic.role.proto.RoleProto.MapData.getDefaultInstance() : mapData_;
+          return mapData_;
         }
       }
       /**
@@ -1903,19 +1962,12 @@ public final class RoleProto {
       // @@protoc_insertion_point(builder_scope:Role)
     }
 
+    static {
+      defaultInstance = new Role(true);
+      defaultInstance.initFields();
+    }
+
     // @@protoc_insertion_point(class_scope:Role)
-    private static final com.mokylin.game.server.logic.role.proto.RoleProto.Role defaultInstance;static {
-      defaultInstance = new com.mokylin.game.server.logic.role.proto.RoleProto.Role();
-    }
-
-    public static com.mokylin.game.server.logic.role.proto.RoleProto.Role getDefaultInstance() {
-      return defaultInstance;
-    }
-
-    public com.mokylin.game.server.logic.role.proto.RoleProto.Role getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-
   }
 
   private static final com.google.protobuf.Descriptors.Descriptor
