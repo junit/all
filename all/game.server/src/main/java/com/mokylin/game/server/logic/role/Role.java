@@ -4,6 +4,8 @@ import com.mokylin.game.server.logic.account.Account;
 import com.mokylin.game.server.logic.map.MapRoleData;
 import com.mokylin.game.server.logic.role.consts.Sex;
 import com.mokylin.game.server.logic.role.message.RoleInfo;
+import com.mokylin.game.server.proto.RoleProto;
+import com.mokylin.game.server.proto.RoleProto.RoleData;
 
 public class Role {
 	private long id;
@@ -59,6 +61,29 @@ public class Role {
 
 	public void setMap(MapRoleData map) {
 		this.map = map;
+	}
+
+	public static Role create(byte[] data) throws Exception {
+		RoleData proto = RoleProto.RoleData.parseFrom(data);
+		
+		Role role = new Role();
+		role.setId(proto.getId());
+		role.setName(proto.getName());
+		role.setSex(Sex.get((byte) proto.getSex()));
+		
+		role.getMap().init(proto.getMap());
+		return role;
+	}
+
+	public byte[] toBytes() {
+		com.mokylin.game.server.proto.RoleProto.RoleData.Builder builder = RoleProto.RoleData.newBuilder();
+
+		builder.setId(this.getId());
+		builder.setName(this.getName());
+		builder.setSex(this.getSex().getValue());
+		
+		builder.setMap(this.map.toProto());
+		return builder.build().toByteArray();
 	}
 
 }

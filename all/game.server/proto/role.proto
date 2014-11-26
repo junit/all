@@ -1,11 +1,12 @@
 import "map.proto";
-option java_package = "com.mokylin.game.server.proto.bean";
+
+option java_package = "com.mokylin.game.server.proto";
 option java_outer_classname = "RoleProto";
 
-message RoleDataProto
+message RoleData
 {
 	required int64 id = 1;
 	required string name = 2;
 	required int32 sex = 3;
-	required MapDataProto map = 4;
+	required MapData map = 4;
 }

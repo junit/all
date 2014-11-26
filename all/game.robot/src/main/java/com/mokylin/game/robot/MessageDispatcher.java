@@ -32,7 +32,7 @@ public class MessageDispatcher extends GameHandlerAdapter {
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
 		Robot robot = new Robot();
-		robot.setAccount("shell_" + index.incrementAndGet());
+		robot.setAccount("shell1_" + index.incrementAndGet());
 		robot.setCheck("null");
 		robot.setPlatform(1);
 		robot.setServer(1);

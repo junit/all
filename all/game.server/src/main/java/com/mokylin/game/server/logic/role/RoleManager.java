@@ -8,7 +8,6 @@ import org.apache.log4j.Logger;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.google.protobuf.InvalidProtocolBufferException;
 import com.mokylin.game.core.message.Command;
 import com.mokylin.game.core.util.CommonUtil;
 import com.mokylin.game.server.ManagerPool;
@@ -19,7 +18,6 @@ import com.mokylin.game.server.logic.role.consts.Sex;
 import com.mokylin.game.server.logic.role.message.ReqRoleCreateMessage;
 import com.mokylin.game.server.logic.role.message.ResRoleCreateMessage;
 import com.mokylin.game.server.logic.role.message.RoleInfo;
-import com.mokylin.game.server.proto.ProtoUtil;
 
 public class RoleManager {
 	private Logger logger = Logger.getLogger(this.getClass());
@@ -33,16 +31,15 @@ public class RoleManager {
 		Vector<Role> roles = new Vector<Role>();
 		
 		for (RoleBean bean : list) {
-			roles.add(create(bean));
+			try {
+				Role role = Role.create(bean.getData());
+				roles.add(role);
+			} catch (Exception e) {
+				logger.error(e, e);
+			}
 		}
 		
 		cache.put(account, roles);
-	}
-
-	private Role create(RoleBean bean) {
-		return ProtoUtil.createRole(bean.getData());
-//		Role role = JSON.parseObject(bean.getData(), Role.class);
-//		return role;
 	}
 
 	public List<RoleInfo> getRoleInfoList(Account account, List<RoleInfo> list) {
@@ -93,7 +90,7 @@ public class RoleManager {
 		bean.setAccount(account.getId());
 		
 		long s1 = System.currentTimeMillis();
-		bean.setData(ProtoUtil.toBytes(role));
+		bean.setData(role.toBytes());
 //		bean.setData(JSON.toJSONBytes(role));
 		long s2 = System.currentTimeMillis();
 		s.addAndGet(s2 - s1);
@@ -116,7 +113,8 @@ public class RoleManager {
 		return cache.getRole(id);
 	}
 	
-	public static void main(String[] args) throws InvalidProtocolBufferException {
+	@SuppressWarnings("unused")
+	public static void main(String[] args) throws Exception {
 		Role role = new Role();
 		role.setId(123);
 		role.setName("abc");
@@ -125,7 +123,7 @@ public class RoleManager {
 		byte[] json_buf = null;
 		long s1 = System.currentTimeMillis();
 		for (int i = 0; i < count; ++i) {
-			proto_buf = ProtoUtil.toBytes(role);
+			proto_buf = role.toBytes();
 		}
 		
 		long s2 = System.currentTimeMillis();
@@ -133,11 +131,11 @@ public class RoleManager {
 			json_buf = JSON.toJSONBytes(role, SerializerFeature.WriteClassName);
 		}
 		long s3 = System.currentTimeMillis();
-		System.err.println("序列化测试proto:" + (s2 - s1) + ",json:" + (s3 - s2));
+		System.err.println("序列化测试proto:" + (s2 - s1) + ":" + proto_buf.length + ",json:" + (s3 - s2) + ":" + json_buf.length);
 		
 		long s4 = System.currentTimeMillis();
 		for (int i = 0; i < count; ++i) {
-			Role r = ProtoUtil.createRole(proto_buf);
+			Role create = Role.create(proto_buf);
 		}
 		long s5 = System.currentTimeMillis();
 		for (int i = 0; i < count; ++i) {

@@ -12,7 +12,7 @@ public class Main {
 	// private static final String IP = "183.60.122.232";
 	private static final String IP = "192.168.5.102";
 	private static final int PORT = 5241;
-	public static final int COUNT = 10000;
+	public static final int COUNT = 1;
 
 	public static AtomicInteger count = new AtomicInteger();
 

@@ -1,9 +1,10 @@
-option java_package = "com.mokylin.game.server.proto.bean";
+import "coordinate.proto";
+
+option java_package = "com.mokylin.game.server.proto";
 option java_outer_classname = "MapProto";
 
-message MapDataProto
+message MapData
 {
 	required int32 model = 1;
-	required int32 x = 2;
-	required int32 y = 3;
+	required CoordinateData coordinate = 2;
 }

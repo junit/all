@@ -1,5 +1,9 @@
 package com.mokylin.game.server.logic.map;
 
+import com.mokylin.game.server.proto.CoordinateProto;
+import com.mokylin.game.server.proto.CoordinateProto.CoordinateData;
+import com.mokylin.game.server.proto.CoordinateProto.CoordinateData.Builder;
+
 public class Coordinate {
 	private int x;
 	private int y;
@@ -18,5 +22,17 @@ public class Coordinate {
 
 	public void setY(int y) {
 		this.y = y;
+	}
+
+	public void init(CoordinateData coordinate) {
+		this.x = coordinate.getX();
+		this.y = coordinate.getY();
+	}
+
+	public CoordinateData toProto() {
+		Builder builder = CoordinateProto.CoordinateData.newBuilder();
+		builder.setX(x);
+		builder.setY(y);
+		return builder.build();
 	}
 }
