@@ -18,7 +18,7 @@ import com.mokylin.tool.message.FtlConfig;
 
 public class Manager extends IFtl {
 	public Manager(FtlConfig config) throws Exception {
-		super(FileUtil.getFilePath(config.getCommon().getProperty(FtlConfig.PATH), "message.xml"));
+		super(FileUtil.getFilePath(config.getSrcPath(), "message.xml"));
 
 		File file = new File(super.getPath());
 		if (file.exists()) {

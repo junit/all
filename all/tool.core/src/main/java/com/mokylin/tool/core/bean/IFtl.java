@@ -6,7 +6,7 @@ public abstract class IFtl {
 	public IFtl(String path) {
 		this.path = path;
 	}
-	private String path;
+	protected String path;
 
 	public abstract HashMap<String, Object> getDataModel();
 

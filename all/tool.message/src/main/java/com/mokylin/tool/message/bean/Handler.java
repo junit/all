@@ -10,7 +10,8 @@ import com.mokylin.tool.message.FtlConfig;
 
 public class Handler extends IFtl {
 	public Handler(Element root, int indexPrefix, String pkg, FtlConfig config) {
-		super(FileUtil.getFilePath(config.getCommon().getProperty(FtlConfig.PATH), FileUtil.getFilePath("logic", pkg, "handler"), root.attributeValue("name"), config.getCommon().getProperty(FtlConfig.SUFFIX)));
+		super("");
+		super.path = FileUtil.getFilePath(config.getSrcPath(), "logic", pkg, "handler", root.attributeValue("name") + this.getClass().getSimpleName() + "." + config.getFileSuffix());
 		id = indexPrefix * 1000 + Integer.parseInt(root.attributeValue("id"));
 		this.pkg = pkg;
 		this.name = root.attributeValue("name");

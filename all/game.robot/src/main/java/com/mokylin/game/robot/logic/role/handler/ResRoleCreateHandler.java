@@ -10,7 +10,7 @@ public class ResRoleCreateHandler extends Handler{
     public void exec() {
     	try {
     		ResRoleCreateMessage msg = (ResRoleCreateMessage)this.getMessage();
-    		logger.error("创建角色成功:" + msg.getRole().getName());
+    		// TODO
       } catch (Exception e) {
 			logger.error(e, e);
 		}

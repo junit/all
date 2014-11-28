@@ -9,40 +9,26 @@ import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.Template;
 
 public class FtlConfig {
-	public final static String PATH="path";
-	public final static String SUFFIX="suffix";
-	
-	private Properties common;
-	private Properties type;
+	private String srcPath;
+	private HashMap<String, String> types = new HashMap<String, String>();
+	private String fileSuffix;
+	private String handlerFlag;
 	private HashMap<String, Template> templates;
-	
-	public Properties getCommon() {
-		return common;
-	}
-	public void setCommon(Properties common) {
-		this.common = common;
-	}
-	public Properties getType() {
-		return type;
-	}
-	public void setType(Properties type) {
-		this.type = type;
-	}
-	public HashMap<String, Template> getTemplates() {
-		return templates;
-	}
-	public void setTemplates(HashMap<String, Template> templates) {
-		this.templates = templates;
-	}
 	
 	public void init(File dir) throws Exception {
 		for (File file : dir.listFiles()) {
 			if (file.getName().equalsIgnoreCase("common.properties")) {
-				common = new Properties();
+				Properties common = new Properties();
 				common.load(new FileInputStream(file));
-			} else if (file.getName().equalsIgnoreCase("type.properties")) {
-				type = new Properties();
-				type.load(new FileInputStream(file));
+				srcPath = common.getProperty("src_path");
+				fileSuffix = common.getProperty("file_suffix");
+				handlerFlag = common.getProperty("handler_flag");
+				String[] split = common.getProperty("types").split(",");
+				types.put("int8", split[0]);
+				types.put("int16", split[1]);
+				types.put("int32", split[2]);
+				types.put("int64", split[3]);
+				types.put("string", split[4]);
 			} else if (file.getName().equalsIgnoreCase("ftl")) {
 				templates = new HashMap<>();
 				freemarker.template.Configuration cfg = new freemarker.template.Configuration();
@@ -56,5 +42,45 @@ public class FtlConfig {
 				}
 			}
 		}
+	}
+
+	public String getSrcPath() {
+		return srcPath;
+	}
+
+	public void setSrcPath(String srcPath) {
+		this.srcPath = srcPath;
+	}
+
+	public HashMap<String, String> getTypes() {
+		return types;
+	}
+
+	public void setTypes(HashMap<String, String> types) {
+		this.types = types;
+	}
+
+	public String getFileSuffix() {
+		return fileSuffix;
+	}
+
+	public void setFileSuffix(String fileSuffix) {
+		this.fileSuffix = fileSuffix;
+	}
+
+	public String getHandlerFlag() {
+		return handlerFlag;
+	}
+
+	public void setHandlerFlag(String handlerFlag) {
+		this.handlerFlag = handlerFlag;
+	}
+
+	public HashMap<String, Template> getTemplates() {
+		return templates;
+	}
+
+	public void setTemplates(HashMap<String, Template> templates) {
+		this.templates = templates;
 	}
 }

@@ -24,6 +24,9 @@ public class Generator {
 		List<IFtl> ftls = parse(xml, config, manager);
 		for (IFtl ftl : ftls) {
 			generate(ftl, config);
+			if (ftl instanceof Handler) {
+				manager.add(((Handler) ftl).getId(), ((Handler) ftl).getPkg(), ((Handler) ftl).getName());
+			}
 		}
 		generate(manager, config);
 		manager.update();
@@ -75,7 +78,7 @@ public class Generator {
 			ftls.add(new Bean(root, pkg, config));
 		} else if (root.getName().equals("message")) {
 			ftls.add(new Message(root, indexPrefix, pkg, config));
-			if (root.attributeValue("type").equalsIgnoreCase(config.getCommon().getProperty("handler"))) {
+			if (root.attributeValue("type").equalsIgnoreCase(config.getHandlerFlag())) {
 				ftls.add(new Handler(root, indexPrefix, pkg, config));
 			}
 		}

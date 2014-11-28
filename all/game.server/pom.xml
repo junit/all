@@ -2,6 +2,18 @@
 <project
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+	<repositories>
+		<repository>
+			<id>central</id>
+			<url>http://192.168.5.102:8081/nexus/content/repositories/central/</url>
+		</repository>
+		<repository>
+			<id>thirdparty</id>
+			<url>http://192.168.5.102:8081/nexus/content/repositories/thirdparty/</url>
+		</repository>
+	</repositories>
+
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.mokylin</groupId>
@@ -65,6 +77,31 @@
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<transformers>
+								<!--transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer"> 
+									<resource>META-INF/spring.handlers</resource> </transformer -->
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+									<mainClass>com.mokylin.game.server.Main</mainClass>
+								</transformer>
+								<!-- transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer"> 
+									<resource>META-INF/spring.schemas</resource> </transformer -->
+							</transformers>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 			<!-- 指定JDK版本 -->
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>

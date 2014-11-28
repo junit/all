@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<repositories>
+		<repository>
+			<id>central</id>
+			<url>http://192.168.5.102:8081/nexus/content/repositories/central/</url>
+		</repository>
+		<repository>
+			<id>thirdparty</id>
+			<url>http://192.168.5.102:8081/nexus/content/repositories/thirdparty/</url>
+		</repository>
+	</repositories>
+
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.mokylin</groupId>
@@ -16,15 +28,14 @@
 	</properties>
 
 	<modules>
-		<module>tool.data</module>
 		<module>tool.core</module>
-		<module>game.core</module>
-		<module>tool.analyzer</module>
-		<module>game.server</module>
-		<module>game.robot</module>
+		<module>tool.data</module>
 		<module>tool.message</module>
 		<module>tool.excel</module>
-		<module>tool</module>
+		
+		<module>game.core</module>
+		<module>game.server</module>
+		<module>game.robot</module>
 		<module>game.supserver</module>
 		<module>game.pserver</module>
 	</modules>
@@ -34,7 +45,7 @@
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
-				<version>3.8.1</version>
+				<version>4.11</version>
 			</dependency>
 			<dependency>
 				<groupId>org.freemarker</groupId>
@@ -115,9 +126,24 @@
 			<artifactId>junit</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.maven.plugins</groupId>
-			<artifactId>maven-resources-plugin</artifactId>
-			<version>2.4.3</version>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-all</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.zookeeper</groupId>
+			<artifactId>zookeeper</artifactId>
 		</dependency>
 	</dependencies>
 
