@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.mokylin.game.core.message.Command;
+import com.mokylin.game.core.event.GameEvent;
 import com.mokylin.game.server.ManagerPool;
 import com.mokylin.game.server.db.data.DaoPool;
 import com.mokylin.game.server.db.data.bean.RoleBean;
@@ -20,7 +20,7 @@ public class AccountEvent {
 		List<Role> roles = ManagerPool.role.getRoles(account);
 		if (roles == null) {
 			try {
-				ManagerPool.thread.getLoadThreadGroup().add(account, new Command() {
+				ManagerPool.thread.getLoadThreadGroup().add(account, new GameEvent() {
 					@Override
 					public void exec() throws Exception {
 						if (ManagerPool.role.getRoles(account) != null) {
@@ -29,7 +29,7 @@ public class AccountEvent {
 						
 						final List<RoleBean> list = DaoPool.roleDao.selectByAccount(account.getId());
 						
-						ManagerPool.thread.getAccountThreadGroup().add(account, new Command() {
+						ManagerPool.thread.getAccountThreadGroup().add(account, new GameEvent() {
 							@Override
 							public void exec() {
 								ManagerPool.role.put(account, list);

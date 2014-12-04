@@ -1,7 +1,7 @@
 package com.mokylin.game.robot;
 
 import com.mokylin.game.core.netty.Client;
-import com.mokylin.game.core.netty.GameHandlerAdapter;
+import com.mokylin.game.core.netty.HandlerAdapter;
 
 
 public class RobotClient extends Client {
@@ -15,7 +15,7 @@ public class RobotClient extends Client {
 	}
 
 	@Override
-	protected GameHandlerAdapter createHandlerAdapter() {
+	protected HandlerAdapter createHandlerAdapter() {
 		return new MessageDispatcher();
 	}
 }

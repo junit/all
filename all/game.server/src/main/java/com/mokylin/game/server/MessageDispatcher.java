@@ -9,18 +9,28 @@ import org.apache.log4j.Logger;
 import com.mokylin.game.core.message.Handler;
 import com.mokylin.game.core.message.Message;
 import com.mokylin.game.core.message.MessagePool;
-import com.mokylin.game.core.netty.GameHandlerAdapter;
+import com.mokylin.game.core.netty.HandlerAdapter;
 import com.mokylin.game.core.util.ContextUtil;
 import com.mokylin.game.server.context.ContextAttribute;
 import com.mokylin.game.server.logic.account.Account;
 import com.mokylin.game.server.logic.account.message.ReqAccountLoginMessage;
 
-public class MessageDispatcher extends GameHandlerAdapter {
+public class MessageDispatcher extends HandlerAdapter {
 	private static Logger logger = Logger.getLogger(MessageDispatcher.class);
 
 	@Override
 	protected void channelRead(ChannelHandlerContext ctx, Message msg) {
+		Long accountId = null;
+		synchronized (ctx) { // 改变和获取的时候,加锁
+			accountId = ctx.attr(ContextAttribute.ACCOUNT_ID).get();
+		}
+		
 		if (msg instanceof ReqAccountLoginMessage) { // 登录
+			if (accountId != null) {
+				ContextUtil.close(ctx, "已经登录过的账号");
+				return ;
+			}
+			
 			Handler handler = MessagePool.getInstance().createHandler(msg.getId());
 			handler.setExcutor(ctx);
 			handler.setMessage(msg);
@@ -32,17 +42,13 @@ public class MessageDispatcher extends GameHandlerAdapter {
 			return ;
 		}
 		
-		Long accountId = null;
-		synchronized (ctx) { // 改变和获取的时候,加锁
-			accountId = ctx.attr(ContextAttribute.ACCOUNT_ID).get();
-		}
 		if (accountId == null) {
 			ContextUtil.close(ctx, "未登录的帐号");
 			return ;
 		}
 		Account account = ManagerPool.account.get(accountId);
 		if (account == null) {
-			ContextUtil.close(ctx, "未登录的帐号");
+			ContextUtil.close(ctx, "登录未完成的账号");
 			return ;
 		}
 		
@@ -51,7 +57,7 @@ public class MessageDispatcher extends GameHandlerAdapter {
 		handler.setMessage(msg);
 		
 		try {
-			ManagerPool.thread.getAccountThreadGroup().add(account, handler);
+//			ManagerPool.thread.getAccountThreadGroup().add(account, handler);
 		} catch (Exception e) {
 			logger.error(e, e);
 		}

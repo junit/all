@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.log4j.Logger;
 
-import com.mokylin.game.core.message.Command;
+import com.mokylin.game.core.event.GameEvent;
 import com.mokylin.game.core.util.CommonUtil;
 import com.mokylin.game.core.util.ContextUtil;
 import com.mokylin.game.server.ManagerPool;
@@ -52,7 +52,7 @@ public class AccountManager {
 
 		final AccountBean bean = create(account); 
 		try {
-			ManagerPool.thread.getSaveThreadGroup().add(account, new Command() {
+			ManagerPool.thread.getSaveThreadGroup().add(account, new GameEvent() {
 				
 				@Override
 				public void exec() throws Exception {

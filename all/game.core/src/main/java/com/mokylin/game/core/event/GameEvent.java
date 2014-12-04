@@ -1,11 +1,11 @@
-package com.mokylin.game.core.message;
+package com.mokylin.game.core.event;
 
-public interface Command {
+public interface GameEvent {
 	 public void exec() throws Exception;
 	 /*
 	  * 超时毫秒数
 	  */
 	 public default int timeOutMs() {
-		 return 5;
+		 return 1;
 	 }
 }

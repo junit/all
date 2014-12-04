@@ -14,14 +14,14 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 
-public abstract class Client {
+public final class Client {
 	private static Logger logger = Logger.getLogger(Client.class);
 	private String host;
 	private int port;
 	private EventLoopGroup workerGroup = new NioEventLoopGroup();
 	private Bootstrap bootstrap;
 
-	public Client(String host, int port) {
+	public Client(String host, int port, HandlerAdapter handlerAdapter) {
 		this.host = host;
 		this.port = port;
 		
@@ -37,31 +37,22 @@ public abstract class Client {
 				ch.pipeline().addLast("encoder", new Encoder());
 				ch.pipeline().addLast("decoder", new Decoder());
 				ch.pipeline().addLast("idle", new IdleStateHandler(1, 60, 60, TimeUnit.SECONDS));
-				ch.pipeline().addLast("handler", createHandlerAdapter());
+				ch.pipeline().addLast("handler", handlerAdapter);
 			}
 		});
 	}
 
-	protected abstract boolean init();
-
 	public void connect() {
-		if (!init()) {
-			logger.error("初始化失败");
-			System.exit(-1);
-		}
-
 		try {
 			ChannelFuture f = bootstrap.connect(host, port);
 			f.awaitUninterruptibly();
 		} catch (Exception e) {
 			logger.error(e, e);
 			System.exit(-1);
-		} finally {
-//			workerGroup.shutdownGracefully();
 		}
-
-//		System.exit(0);
 	}
-
-	protected abstract GameHandlerAdapter createHandlerAdapter();
+	
+	public void shutdown() {
+		workerGroup.shutdownGracefully();
+	}
 }
