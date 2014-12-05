@@ -15,9 +15,9 @@ import com.mokylin.game.robot.message.MessageFactoryImpl;
 
 public class Main {
 	public static final String PREFIX = "s1_";
-	private static final String IP = "192.168.5.102";
+	private static final String IP = "192.168.5.71";
 	private static final int PORT = 5241;
-	public static final int COUNT = 1;
+	public static final int COUNT = 1000;
 
 	public static AtomicInteger count = new AtomicInteger();
 

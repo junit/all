@@ -8,8 +8,8 @@ public class CtxHandler implements GameEventHandler<ChannelHandlerContext, CtxMe
 
 	@Override
 	public void onEvent(ChannelHandlerContext owner, CtxMessage event) {
-		// TODO Auto-generated method stub
-		
+		CtxMessage ret = new CtxMessage();
+		owner.writeAndFlush(ret);
 	}
 
 }

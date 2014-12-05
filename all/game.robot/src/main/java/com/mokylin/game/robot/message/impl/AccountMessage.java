@@ -8,8 +8,7 @@ public class AccountMessage extends Message {
 
 	@Override
 	public int getId() {
-		// TODO Auto-generated method stub
-		return 0;
+		return 2;
 	}
 
 	@Override

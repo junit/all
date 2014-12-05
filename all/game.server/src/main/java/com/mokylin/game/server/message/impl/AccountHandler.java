@@ -1,15 +1,11 @@
 package com.mokylin.game.server.message.impl;
 
-import io.netty.channel.ChannelHandlerContext;
-
 import com.mokylin.game.core.event.GameEventHandler;
+import com.mokylin.game.server.logic.account.Account;
 
-public class AccountHandler implements GameEventHandler<ChannelHandlerContext, AccountMessage>{
+public class AccountHandler implements GameEventHandler<Account, AccountMessage>{
 
 	@Override
-	public void onEvent(ChannelHandlerContext owner, AccountMessage event) {
-		// TODO Auto-generated method stub
-		
+	public void onEvent(Account owner, AccountMessage event) {
 	}
-
 }

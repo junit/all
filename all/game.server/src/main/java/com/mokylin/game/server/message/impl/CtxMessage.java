@@ -8,8 +8,7 @@ public class CtxMessage extends Message {
 
 	@Override
 	public int getId() {
-		// TODO Auto-generated method stub
-		return 0;
+		return 1;
 	}
 
 	@Override

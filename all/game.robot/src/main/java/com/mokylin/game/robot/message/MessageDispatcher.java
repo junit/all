@@ -10,7 +10,6 @@ import org.apache.log4j.Logger;
 import com.google.inject.Inject;
 import com.mokylin.game.core.message.Message;
 import com.mokylin.game.core.netty.HandlerAdapter;
-import com.mokylin.game.robot.message.impl.AccountMessage;
 import com.mokylin.game.robot.message.impl.CtxMessage;
 
 @Sharable
@@ -28,9 +27,6 @@ public class MessageDispatcher extends HandlerAdapter {
 		if (msg instanceof CtxMessage) {
 			CtxMessage ret = new CtxMessage();
 			ctx.writeAndFlush(ret);
-		} else {
-			AccountMessage ret = new AccountMessage();
-			ctx.writeAndFlush(ret);
 		}
 	}
 	
@@ -38,6 +34,8 @@ public class MessageDispatcher extends HandlerAdapter {
 
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
+		CtxMessage ret = new CtxMessage();
+		ctx.writeAndFlush(ret);
 		logger.error("当前连接数量:" + count.incrementAndGet());
 	}
 	
