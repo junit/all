@@ -3,12 +3,14 @@ package com.mokylin.game.server.logic.account;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.mokylin.game.server.ManagerPool;
+import com.google.inject.Inject;
 import com.mokylin.game.server.config.Platform;
 import com.mokylin.game.server.db.data.DaoPool;
 import com.mokylin.game.server.db.data.bean.AccountBean;
 
 public class AccountCache {
+	@Inject
+	private AccountManager accountManager;
 	private ConcurrentHashMap<Long, Account> accounts = new ConcurrentHashMap<>();
 	private ConcurrentHashMap<String, ConcurrentHashMap<Platform, ConcurrentHashMap<Integer, Account>>> accounts0 = new ConcurrentHashMap<>();
 
@@ -48,7 +50,7 @@ public class AccountCache {
 	public boolean init() {
 		List<AccountBean> list = DaoPool.accountDao.select();
 		for (AccountBean bean : list) {
-			add(ManagerPool.account.create(bean));
+			add(accountManager.create(bean));
 		}
 		return true;
 	}

@@ -1,7 +1,6 @@
 package com.mokylin.game.server.logic.role;
 
 import com.mokylin.game.server.logic.account.Account;
-import com.mokylin.game.server.logic.map.MapRoleData;
 import com.mokylin.game.server.logic.role.consts.Sex;
 import com.mokylin.game.server.logic.role.message.RoleInfo;
 import com.mokylin.game.server.proto.RoleProto;
@@ -11,7 +10,6 @@ public class Role {
 	private long id;
 	private String name;
 	private Sex sex = Sex.MALE;
-	private MapRoleData map = new MapRoleData();
 
 	private transient Account account;
 
@@ -55,14 +53,6 @@ public class Role {
 		this.account = account;
 	}
 
-	public MapRoleData getMap() {
-		return map;
-	}
-
-	public void setMap(MapRoleData map) {
-		this.map = map;
-	}
-
 	public static Role create(byte[] data) throws Exception {
 		RoleData proto = RoleProto.RoleData.parseFrom(data);
 		
@@ -71,7 +61,6 @@ public class Role {
 		role.setName(proto.getName());
 		role.setSex(Sex.get((byte) proto.getSex()));
 		
-		role.getMap().init(proto.getMap());
 		return role;
 	}
 
@@ -82,7 +71,6 @@ public class Role {
 		builder.setName(this.getName());
 		builder.setSex(this.getSex().getValue());
 		
-		builder.setMap(this.map.toProto());
 		return builder.build().toByteArray();
 	}
 

@@ -5,8 +5,10 @@ import java.util.HashSet;
 
 import org.apache.log4j.Logger;
 
+import com.google.inject.Singleton;
 import com.mokylin.game.core.word.WordFilter;
 
+@Singleton
 public class NameManager {
 	@SuppressWarnings("unused")
 	private static Logger logger = Logger.getLogger(NameManager.class);

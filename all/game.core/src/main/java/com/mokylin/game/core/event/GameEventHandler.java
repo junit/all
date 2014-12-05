@@ -1,7 +1,5 @@
 package com.mokylin.game.core.event;
 
-import com.lmax.disruptor.EventHandler;
-
-public interface GameEventHandler<T extends GameEvent> extends EventHandler<T> {
-
+public interface GameEventHandler<OWNER, EVENT> {
+	public void onEvent(OWNER owner, EVENT event);
 }

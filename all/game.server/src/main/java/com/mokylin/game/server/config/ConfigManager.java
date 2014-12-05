@@ -10,6 +10,9 @@ import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
+import com.google.inject.Singleton;
+
+@Singleton
 public class ConfigManager {
 	private Logger logger = Logger.getLogger(ConfigManager.class);
 	private int gamePort;

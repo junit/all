@@ -2,30 +2,44 @@ package com.mokylin.game.server.logic.account;
 
 import io.netty.channel.ChannelHandlerContext;
 
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import org.apache.log4j.Logger;
 
-import com.mokylin.game.core.event.GameEvent;
-import com.mokylin.game.core.util.CommonUtil;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.mokylin.game.core.common.IdFactory;
 import com.mokylin.game.core.util.ContextUtil;
-import com.mokylin.game.server.ManagerPool;
+import com.mokylin.game.server.config.ConfigManager;
 import com.mokylin.game.server.config.Platform;
 import com.mokylin.game.server.context.ContextAttribute;
-import com.mokylin.game.server.db.data.DaoPool;
+import com.mokylin.game.server.context.ContextManager;
 import com.mokylin.game.server.db.data.bean.AccountBean;
-import com.mokylin.game.server.logic.GameEventPool;
 import com.mokylin.game.server.logic.account.consts.RetCode;
 import com.mokylin.game.server.logic.account.message.ReqAccountLoginMessage;
 import com.mokylin.game.server.logic.account.message.ResAccountLoginFailedMessage;
+import com.mokylin.game.server.logic.role.RoleManager;
 import com.mokylin.game.server.logic.role.message.ResRoleInfoMessage;
+import com.mokylin.game.server.name.NameManager;
 
+@Singleton
 public class AccountManager {
+	private final NameManager nameManager;
+	private final ConfigManager configManager;
+	private final ContextManager contextManager;
+	private final RoleManager roleManager;
+	private final AccountCache cache;
+	private final IdFactory idFactory;
+	
+	@Inject
+	public AccountManager(NameManager nameManager, ConfigManager configManager, ContextManager contextManager, RoleManager roleManager, AccountCache cache, IdFactory factory) {
+		this.nameManager = nameManager;
+		this.configManager = configManager;
+		this.contextManager = contextManager;
+		this.roleManager = roleManager;
+		this.cache = cache;
+		this.idFactory = factory;
+	}
+	
 	private Logger logger = Logger.getLogger(this.getClass());
-	private AccountCache cache = new AccountCache();
 
 	public boolean init() {
 		if (!cache.init()) return false;
@@ -37,12 +51,12 @@ public class AccountManager {
 	}
 
 	public Account create(String name, Platform platform, int server) {
-		if (!ManagerPool.name.check(name)) {
+		if (!nameManager.check(name)) {
 			return null;
 		}
 
 		Account account = new Account();
-		account.setId(CommonUtil.uid(platform.getValue(), server));
+		account.setId(idFactory.uid(platform.getValue(), server));
 		account.setName(name);
 		account.setPlatform(platform);
 		account.setServer(server);
@@ -50,23 +64,23 @@ public class AccountManager {
 
 		add(account);
 
-		final AccountBean bean = create(account); 
-		try {
-			ManagerPool.thread.getSaveThreadGroup().add(account, new GameEvent() {
-				
-				@Override
-				public void exec() throws Exception {
-					DaoPool.accountDao.insert(bean);
-				}
-				
-				@Override
-				public int timeOutMs() {
-					return 100;
-				}
-			});
-		} catch (Exception e) {
-			logger.error(e, e);
-		}
+//		final AccountBean bean = create(account); 
+//		try {
+//			ManagerPool.thread.getSaveThreadGroup().add(account, new Event() {
+//				
+//				@Override
+//				public void exec() throws Exception {
+//					DaoPool.accountDao.insert(bean);
+//				}
+//				
+//				@Override
+//				public int timeOutMs() {
+//					return 100;
+//				}
+//			});
+//		} catch (Exception e) {
+//			logger.error(e, e);
+//		}
 		return account;
 	}
 
@@ -104,14 +118,14 @@ public class AccountManager {
     			return ;
     		}
     		
-    		if (ManagerPool.config.getServerConfig(Platform.get(msg.getPlatform()), msg.getServer()) == null) { // server 判定
+    		if (configManager.getServerConfig(Platform.get(msg.getPlatform()), msg.getServer()) == null) { // server 判定
     			sendError(ctx, RetCode.SERVER_ERROR);
     			return ;
     		}
     		
-    		Account account = ManagerPool.account.get(msg.getAccountName(), Platform.get(msg.getPlatform()), msg.getServer());
+    		Account account = get(msg.getAccountName(), Platform.get(msg.getPlatform()), msg.getServer());
     		if (account == null) {
-    			account = ManagerPool.account.create(msg.getAccountName(), Platform.get(msg.getPlatform()), msg.getServer());
+    			account = create(msg.getAccountName(), Platform.get(msg.getPlatform()), msg.getServer());
     		}
     		
     		if (account == null) {
@@ -119,7 +133,7 @@ public class AccountManager {
     			return ;
     		}
     		
-    		if (!ManagerPool.account.checkKey(account, msg.getCheck())) {
+    		if (!checkKey(account, msg.getCheck())) {
     			sendError(ctx, RetCode.KEY_ERROR);
     			return ;
     		}
@@ -131,29 +145,29 @@ public class AccountManager {
     }
 	
 	private void onLoginSuc(ChannelHandlerContext context, Account account) {
-		ChannelHandlerContext oldContext = ManagerPool.context.getContexts().get(account.getId());
+		ChannelHandlerContext oldContext = contextManager.getContexts().get(account.getId());
 		if (oldContext != null) {
 			ContextUtil.close(oldContext, "顶号");
 		}
-		ManagerPool.context.getContexts().put(account.getId(), context);
+		contextManager.getContexts().put(account.getId(), context);
 		synchronized (context) { // 改变和获取的时候,加锁
 			context.attr(ContextAttribute.ACCOUNT_ID).set(account.getId());
 		}
 		sendError(context, RetCode.SUC);
-		
-		GameEventPool.account.onLogin(account);
+
+		// TODO
 	}
 
 	private void sendError(ChannelHandlerContext ctx, RetCode code) {
 		ResAccountLoginFailedMessage msg = new ResAccountLoginFailedMessage();
 		msg.setErr(code.getValue());
-		ManagerPool.context.write(ctx, msg);
+		contextManager.write(ctx, msg);
 	}
 
 	public void send(Account account) {
 		ResRoleInfoMessage msg = new ResRoleInfoMessage();
-		msg.setRoles(ManagerPool.role.getRoleInfoList(account, msg.getRoles()));
-		ManagerPool.context.write(account, msg);
+		msg.setRoles(roleManager.getRoleInfoList(account, msg.getRoles()));
+		contextManager.write(account, msg);
 	}
 
 	public Account create(AccountBean bean) {
@@ -164,35 +178,5 @@ public class AccountManager {
 		account.setServer(bean.getServer());
 		account.setCreateTime(bean.getCreateTime());
 		return account;
-	}
-	
-	private static AtomicInteger suc = new AtomicInteger(0);
-	private static AtomicInteger fail = new AtomicInteger(0);
-	public static void main(String[] args) {
-		ManagerPool.name.init();
-		ManagerPool.config.init();
-		ReqAccountLoginMessage msg = new ReqAccountLoginMessage();
-		msg.setAccountName("shell");
-		msg.setCheck("");
-		msg.setPlatform(1);
-		msg.setServer(1);
-		
-		ThreadPoolExecutor excutor = new ThreadPoolExecutor(100, 100, 0, TimeUnit.DAYS, new LinkedBlockingQueue<>());
-		for (int i = 0; i < 100; ++i) {
-			excutor.execute(new Runnable() {
-				@Override
-				public void run() {
-					ManagerPool.account.login(null, msg);
-				}
-			});
-		}
-		
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		System.err.println("suc:" + suc);
-		System.err.println("fail:" + fail);
 	}
 }

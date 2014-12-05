@@ -14,17 +14,21 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 
+import com.mokylin.game.core.message.MessageFactory;
+
 public final class Server extends Thread {
 	protected static Logger logger = Logger.getLogger(Server.class);
 	private int port;
 	private EventLoopGroup accepterGroup;
 	private EventLoopGroup clientGroup;
 	private HandlerAdapter handlerAdapter;
+	private MessageFactory factory;
 
-	public Server(String name, int port, HandlerAdapter handlerAdapter) {
+	public Server(String name, int port, HandlerAdapter handlerAdapter, MessageFactory factory) {
 		super(name);
 		this.port = port;
 		this.handlerAdapter = handlerAdapter;
+		this.factory = factory;
 	}
 
 	@Override
@@ -40,7 +44,7 @@ public final class Server extends Thread {
 				@Override
 				public void initChannel(SocketChannel ch) throws Exception {
 					ch.pipeline().addLast("encoder", new Encoder());
-					ch.pipeline().addLast("decoder", new Decoder());
+					ch.pipeline().addLast("decoder", new Decoder(factory));
 					ch.pipeline().addLast("idle", new IdleStateHandler(60, 60, 60, TimeUnit.SECONDS));
 					ch.pipeline().addLast("handler", handlerAdapter);
 				}

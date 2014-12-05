@@ -1,10 +1,9 @@
 package com.mokylin.game.server.logic.account;
 
-import com.mokylin.game.core.thread.GameObject;
 import com.mokylin.game.server.config.Platform;
 import com.mokylin.game.server.logic.role.Role;
 
-public class Account extends GameObject {
+public class Account {
 	private long id;
 	private String name;
 	private Platform platform;

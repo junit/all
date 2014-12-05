@@ -14,6 +14,8 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 
+import com.mokylin.game.core.message.MessageFactory;
+
 public final class Client {
 	private static Logger logger = Logger.getLogger(Client.class);
 	private String host;
@@ -21,7 +23,7 @@ public final class Client {
 	private EventLoopGroup workerGroup = new NioEventLoopGroup();
 	private Bootstrap bootstrap;
 
-	public Client(String host, int port, HandlerAdapter handlerAdapter) {
+	public Client(String host, int port, HandlerAdapter handlerAdapter, MessageFactory factory) {
 		this.host = host;
 		this.port = port;
 		
@@ -35,7 +37,7 @@ public final class Client {
 			@Override
 			public void initChannel(SocketChannel ch) throws Exception {
 				ch.pipeline().addLast("encoder", new Encoder());
-				ch.pipeline().addLast("decoder", new Decoder());
+				ch.pipeline().addLast("decoder", new Decoder(factory));
 				ch.pipeline().addLast("idle", new IdleStateHandler(1, 60, 60, TimeUnit.SECONDS));
 				ch.pipeline().addLast("handler", handlerAdapter);
 			}

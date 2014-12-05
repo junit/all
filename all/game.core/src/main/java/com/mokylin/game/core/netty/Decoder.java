@@ -9,14 +9,19 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.mokylin.game.core.message.Message;
-import com.mokylin.game.core.message.MessagePool;
+import com.mokylin.game.core.message.MessageFactory;
 import com.mokylin.game.core.util.ContextUtil;
 import com.mokylin.game.core.util.ZLibUtil;
 
 public final class Decoder extends ByteToMessageDecoder {
+	private final MessageFactory factory;
 	private ByteBuf buf = Unpooled.buffer();
 	private AtomicInteger num = new AtomicInteger(0);
 	private static final int MAX_LENGTH = 1 * 1024 * 1024;
+	
+	public Decoder(MessageFactory factory) {
+		this.factory = factory;
+	}
 
 	@Override
 	protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
@@ -54,7 +59,7 @@ public final class Decoder extends ByteToMessageDecoder {
 			int msgId = in.readInt(); // 3
 			read -= 4;
 			// 消息
-			Message message = MessagePool.getInstance().createMessage(msgId);
+			Message message = factory.newInstance(msgId);
 			if (message == null) {
 				ContextUtil.close(ctx, "无此消息" + msgId);
 				return;
