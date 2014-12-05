@@ -13,8 +13,8 @@ public class ExcutorGroup {
 	private Excutor<Account, Message> accountExcutor;
 	
 	public ExcutorGroup() throws Exception {
-		loginExcutor = new Excutor<>(Thread.MAX_PRIORITY, 64 * 1024);
-		accountExcutor = new Excutor<>(Thread.MAX_PRIORITY, 128 * 1024);
+		loginExcutor = new Excutor<>("login-excutor", Thread.MAX_PRIORITY, 64 * 1024);
+		accountExcutor = new Excutor<>("account-excutor", Thread.MAX_PRIORITY, 128 * 1024);
 	}
 	
 	public Excutor<Account, Message> getAccountExcutor() {

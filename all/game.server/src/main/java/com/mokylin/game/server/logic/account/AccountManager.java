@@ -41,11 +41,6 @@ public class AccountManager {
 	
 	private Logger logger = Logger.getLogger(this.getClass());
 
-	public boolean init() {
-		if (!cache.init()) return false;
-		return true;
-	}
-
 	public Account get(String accountName, Platform platform, int server) {
 		return cache.get(accountName, platform, server);
 	}
@@ -84,7 +79,7 @@ public class AccountManager {
 		return account;
 	}
 
-	private AccountBean create(Account account) {
+	public static AccountBean create(Account account) {
 		AccountBean bean = new AccountBean();
 		bean.setId(account.getId());
 		bean.setName(account.getName());
@@ -170,7 +165,7 @@ public class AccountManager {
 		contextManager.write(account, msg);
 	}
 
-	public Account create(AccountBean bean) {
+	public static Account create(AccountBean bean) {
 		Account account = new Account();
 		account.setId(bean.getId());
 		account.setName(bean.getName());

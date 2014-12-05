@@ -7,6 +7,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.apache.log4j.Logger;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.mokylin.game.core.message.Message;
 import com.mokylin.game.core.netty.HandlerAdapter;
 import com.mokylin.game.core.util.ContextUtil;
@@ -16,6 +17,7 @@ import com.mokylin.game.server.logic.account.Account;
 import com.mokylin.game.server.logic.account.AccountManager;
 import com.mokylin.game.server.logic.account.message.ReqAccountLoginMessage;
 
+@Singleton
 public class MessageDispatcher extends HandlerAdapter {
 	private static Logger logger = Logger.getLogger(MessageDispatcher.class);
 	private final ExcutorGroup excutors;

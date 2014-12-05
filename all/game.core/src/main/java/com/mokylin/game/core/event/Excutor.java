@@ -10,7 +10,7 @@ public class Excutor<OWNER, EVENT> {
 	Disruptor<Event<OWNER, EVENT>> disruptor;
 
 	@SuppressWarnings("unchecked")
-	public Excutor(final int threadPriority, int buffSize) throws Exception {
+	public Excutor(final String name, final int threadPriority, int buffSize) throws Exception {
 		if (buffSize < 2 || (buffSize & (buffSize - 1)) != 0) {
 			throw new Exception();
 		}
@@ -18,7 +18,7 @@ public class Excutor<OWNER, EVENT> {
 		java.util.concurrent.Executor executor = Executors.newSingleThreadExecutor(new ThreadFactory() {
 			@Override
 			public Thread newThread(Runnable r) {
-				Thread thread = new Thread(r);
+				Thread thread = new Thread(r, name);
 				thread.setPriority(threadPriority);
 				return thread;
 			}

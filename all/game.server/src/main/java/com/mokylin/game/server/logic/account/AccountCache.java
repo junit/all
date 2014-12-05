@@ -4,15 +4,23 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.mokylin.game.server.config.Platform;
-import com.mokylin.game.server.db.data.DaoPool;
 import com.mokylin.game.server.db.data.bean.AccountBean;
+import com.mokylin.game.server.db.data.dao.AccountDao;
 
+@Singleton
 public class AccountCache {
-	@Inject
-	private AccountManager accountManager;
 	private ConcurrentHashMap<Long, Account> accounts = new ConcurrentHashMap<>();
 	private ConcurrentHashMap<String, ConcurrentHashMap<Platform, ConcurrentHashMap<Integer, Account>>> accounts0 = new ConcurrentHashMap<>();
+	
+	@Inject
+	public AccountCache(AccountDao dao) {
+		List<AccountBean> list = dao.select();
+		for (AccountBean bean : list) {
+			add(AccountManager.create(bean));
+		}
+	}
 
 	public synchronized Account get(String accountName, Platform platform, int server) {
 		ConcurrentHashMap<Platform, ConcurrentHashMap<Integer, Account>> accounts1 = accounts0.get(accountName);
@@ -45,13 +53,5 @@ public class AccountCache {
 
 	public Account get(long id) {
 		return accounts.get(id);
-	}
-
-	public boolean init() {
-		List<AccountBean> list = DaoPool.accountDao.select();
-		for (AccountBean bean : list) {
-			add(accountManager.create(bean));
-		}
-		return true;
 	}
 }
