@@ -1,5 +1,6 @@
 package com.mokylin.game.robot.message;
 
+import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -9,7 +10,10 @@ import org.apache.log4j.Logger;
 import com.google.inject.Inject;
 import com.mokylin.game.core.message.Message;
 import com.mokylin.game.core.netty.HandlerAdapter;
+import com.mokylin.game.robot.message.impl.AccountMessage;
+import com.mokylin.game.robot.message.impl.CtxMessage;
 
+@Sharable
 public class MessageDispatcher extends HandlerAdapter {
 	private static Logger logger = Logger.getLogger(MessageDispatcher.class);
 	private final MessageHandlerGroup handlerGroup;
@@ -21,7 +25,13 @@ public class MessageDispatcher extends HandlerAdapter {
 
 	@Override
 	protected void channelRead(ChannelHandlerContext ctx, Message msg) {
-		
+		if (msg instanceof CtxMessage) {
+			CtxMessage ret = new CtxMessage();
+			ctx.writeAndFlush(ret);
+		} else {
+			AccountMessage ret = new AccountMessage();
+			ctx.writeAndFlush(ret);
+		}
 	}
 	
 	private static AtomicInteger count = new AtomicInteger(0);

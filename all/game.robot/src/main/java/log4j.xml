@@ -184,7 +184,7 @@
 		<appender-ref ref="MessageHandler" />
 	</logger>
 	<root>
-		<level value="debug" />
+		<level value="info" />
 		<appender-ref ref="CONSOLE" />
 	</root>
 </log4j:configuration>

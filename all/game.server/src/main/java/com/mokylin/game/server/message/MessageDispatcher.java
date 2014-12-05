@@ -1,6 +1,7 @@
 package com.mokylin.game.server.message;
 
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelHandler.Sharable;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -18,6 +19,7 @@ import com.mokylin.game.server.logic.account.AccountManager;
 import com.mokylin.game.server.logic.account.message.ReqAccountLoginMessage;
 
 @Singleton
+@Sharable
 public class MessageDispatcher extends HandlerAdapter {
 	private static Logger logger = Logger.getLogger(MessageDispatcher.class);
 	private final ExcutorGroup excutors;
