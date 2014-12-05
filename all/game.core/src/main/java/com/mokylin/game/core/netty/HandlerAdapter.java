@@ -8,8 +8,8 @@ import org.apache.log4j.Logger;
 
 import com.mokylin.game.core.message.Message;
 
-public abstract class GameHandlerAdapter extends ChannelInboundHandlerAdapter {
-	protected static Logger logger = Logger.getLogger(GameHandlerAdapter.class);
+public abstract class HandlerAdapter extends ChannelInboundHandlerAdapter {
+	protected static Logger logger = Logger.getLogger(HandlerAdapter.class);
 
 	protected abstract void channelRead(ChannelHandlerContext ctx, Message msg);
 	protected abstract void readIdle(ChannelHandlerContext ctx);
@@ -17,28 +17,7 @@ public abstract class GameHandlerAdapter extends ChannelInboundHandlerAdapter {
 	protected abstract void allIdle(ChannelHandlerContext ctx);
 
 	@Override
-	public void channelRead(ChannelHandlerContext ctx, Object obj) { // (2)
-		if (!(obj instanceof Message)) {
-			return;
-		}
-
-//		com.mokylin.game.core.message.Handler handler = null;
-//		try {
-//			handler = MessagePool.getInstance().createHandler(msg.getId());
-//		} catch (Exception e) {
-//			ContextUtil.close(ctx, "exception");
-//			logger.error(e, e);
-//			return;
-//		}
-//
-//		if (handler == null) {
-//			ContextUtil.close(ctx, "no handler:" + msg.getId());
-//			return;
-//		}
-//
-//		handler.setMessage(msg);
-//		handler.setContext(ctx);
-
+	public void channelRead(ChannelHandlerContext ctx, Object obj) {
 		channelRead(ctx, (Message) obj);
 	}
 	

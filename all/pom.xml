@@ -32,7 +32,7 @@
 		<module>tool.data</module>
 		<module>tool.message</module>
 		<module>tool.excel</module>
-		
+
 		<module>game.core</module>
 		<module>game.server</module>
 		<module>game.robot</module>
@@ -113,9 +113,9 @@
 				<version>2.6.1</version>
 			</dependency>
 			<dependency>
-				<groupId>org.apache.zookeeper</groupId>
-				<artifactId>zookeeper</artifactId>
-				<version>3.4.6</version>
+				<groupId>com.lmax</groupId>
+				<artifactId>disruptor</artifactId>
+				<version>3.3.0</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -140,10 +140,6 @@
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.zookeeper</groupId>
-			<artifactId>zookeeper</artifactId>
 		</dependency>
 	</dependencies>
 

@@ -1,10 +1,8 @@
 package com.mokylin.game.core.message;
 
+import com.mokylin.game.core.event.GameEvent;
 
-/**
- * Created by game on 3/31/14.
- */
-public abstract class Handler implements Command {
+public abstract class Handler implements GameEvent {
 	private Message message; // message
 	private Object excutor;
 

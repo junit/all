@@ -7,7 +7,6 @@ import com.mokylin.game.server.logic.account.AccountManager;
 import com.mokylin.game.server.logic.map.MapManager;
 import com.mokylin.game.server.logic.role.RoleManager;
 import com.mokylin.game.server.name.NameManager;
-import com.mokylin.game.server.thread.ThreadManager;
 
 public class ManagerPool {
 	public static MessageManager message = new MessageManager(); // 消息管理
@@ -16,7 +15,16 @@ public class ManagerPool {
 	public static ContextManager context = new ContextManager(); // 网络上下文管理
 	public static ConfigManager config = new ConfigManager(); // 配置管理
 	public static NameManager name = new NameManager(); // 名字管理
-	public static ThreadManager thread = new ThreadManager(); // 线程管理
 	public static RoleManager role = new RoleManager(); // 角色管理
 	public static MapManager map = new MapManager(); // 地图管理
+	
+	public boolean init() {
+		if (!config.init()) return false;
+		if (!message.init())	return false;
+		if (!account.init()) return false;
+		if (!scheduler.init()) return false;
+		if (!name.init()) return false;
+		if (!map.init()) return false;
+		return true;
+	}
 }

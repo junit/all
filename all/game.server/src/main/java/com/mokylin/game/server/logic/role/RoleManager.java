@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.mokylin.game.core.message.Command;
+import com.mokylin.game.core.event.GameEvent;
 import com.mokylin.game.core.util.CommonUtil;
 import com.mokylin.game.server.ManagerPool;
 import com.mokylin.game.server.db.data.DaoPool;
@@ -65,7 +65,7 @@ public class RoleManager {
 		
 		final RoleBean bean = create(account, role);
 		try {
-			ManagerPool.thread.getSaveThreadGroup().add(account, new Command() {
+			ManagerPool.thread.getSaveThreadGroup().add(account, new GameEvent() {
 				@Override
 				public void exec() throws Exception {
 					DaoPool.roleDao.insert(bean);

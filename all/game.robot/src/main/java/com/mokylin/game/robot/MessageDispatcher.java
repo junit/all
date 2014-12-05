@@ -9,11 +9,11 @@ import io.netty.channel.ChannelHandlerContext;
 import com.mokylin.game.core.message.Handler;
 import com.mokylin.game.core.message.Message;
 import com.mokylin.game.core.message.MessagePool;
-import com.mokylin.game.core.netty.GameHandlerAdapter;
+import com.mokylin.game.core.netty.HandlerAdapter;
 import com.mokylin.game.core.util.ContextUtil;
 import com.mokylin.game.robot.logic.account.message.ReqAccountLoginMessage;
 
-public class MessageDispatcher extends GameHandlerAdapter {
+public class MessageDispatcher extends HandlerAdapter {
 	private static Logger logger = Logger.getLogger(MessageDispatcher.class);
 	@Override
 	protected void channelRead(ChannelHandlerContext ctx, Message msg) {
