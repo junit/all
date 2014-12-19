@@ -24,10 +24,10 @@ public class MessageDispatcher extends HandlerAdapter {
 
 	@Override
 	protected void channelRead(ChannelHandlerContext ctx, Message msg) {
-		if (msg instanceof CtxMessage) {
-			CtxMessage ret = new CtxMessage();
-			ctx.writeAndFlush(ret);
-		}
+//		if (msg instanceof CtxMessage) {
+//			CtxMessage ret = new CtxMessage();
+//			ctx.writeAndFlush(ret);
+//		}
 	}
 	
 	private static AtomicInteger count = new AtomicInteger(0);

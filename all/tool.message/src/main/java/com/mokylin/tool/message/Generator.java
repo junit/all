@@ -28,9 +28,29 @@ public class Generator {
 				manager.add(((Handler) ftl).getId(), ((Handler) ftl).getPkg(), ((Handler) ftl).getName());
 			}
 		}
-		generate(manager, config);
+		if (config.getHandlerFlag().equals("CS")) { // 后端java
+			String prefix = config.getSrcPath() + File.separator + "message" + File.separator;
+			generate(manager, config, prefix + "MessageHandlerGroup.java", "handlergroup");
+			generate(manager, config, prefix + "MessageFactoryImpl.java", "messagefactory");
+		} else { // 前端as
+			String prefix = config.getSrcPath() + File.separator + "net" + File.separator;
+			generate(manager, config, prefix + "MessagePool.as", "manager");
+		}
 		manager.update();
 		return true;
+	}
+	
+	private static void generate(IFtl ftl, FtlConfig config, String dstFileName, String ftlName) throws Exception {
+		Template template = config.getTemplates().get(ftlName);
+		File file = new File(dstFileName);
+		if (file.exists() && !ftl.isRewrite()) {
+			return ;
+		}
+		if (!file.getParentFile().exists()) {
+			mkDir(file.getParentFile());
+		}
+		file.createNewFile();
+		template.process(ftl.getDataModel(), new FileWriterWithEncoding(file, "UTF-8"));
 	}
 	
 	private static void generate(IFtl ftl, FtlConfig config) throws Exception {

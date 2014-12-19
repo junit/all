@@ -1,70 +1,157 @@
-using ClientDemon.message;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ClientDemon.logic.${pkg}
-{
-    public class ${name} : Message
-    {
-    	<#list fields as field>
+<#import "Class.ftl" as Class>
+package logic.${pkg}.message{
+	import net.Bean;
+	import utils.long;
+	
+	/** 
+	 * @author Commuication Auto Maker
+	 * 
+	 * @version 1.0.0
+	 * 
+	 * @since 2011-5-8
+	 * 
+	 * ${note}
+	 */
+	public class ${name} extends Bean {
+	
+		<#list fields as field>
 		<#if field.listFlag==1>
 		//${field.note}
-		private List<${field.clazz?cap_first}> ${field.name} = new ArrayList<>();
+		private var _${field.name}: Vector.<${.globals[field.clazz]!field.clazz}> = new Vector.<${.globals[field.clazz]!field.clazz}>();
 		<#else>
 		//${field.note}
-		private ${field.clazz} ${field.name};
+		private var _${field.name}: ${.globals[field.clazz]!field.clazz};
 		
 		</#if>
 		</#list>
-        private string accountName;
-        private int platform;
-        private int server;
-        private string check;
-        
-        public override int getId()
-        {
-            return 100101;
-        }
-
-        public override void read(ByteBuf stream)
-        {
-            accountName = ByteBufUtil.readString(stream);
-            platform = ByteBufUtil.readInt(stream);
-            server = ByteBufUtil.readInt(stream);
-            check = ByteBufUtil.readString(stream);
-        }
-
-        public override void write(ByteBuf stream)
-        {
-            ByteBufUtil.writeString(stream, accountName);
-            ByteBufUtil.writeInt(stream, platform);
-            ByteBufUtil.writeInt(stream, server);
-            ByteBufUtil.writeString(stream, check);
-        }
-
-        public string Check
-        {
-            get { return check; }
-            set { check = value; }
-        }
-        public int Server
-        {
-            get { return server; }
-            set { server = value; }
-        }
-        public string AccountName
-        {
-            get { return accountName; }
-            set { accountName = value; }
-        }
-        public int Platform
-        {
-            get { return platform; }
-            set { platform = value; }
-        }
-    }
+		/**
+		 * 写入字节缓存
+		 */
+		override protected function writing(): Boolean{
+			<#list fields as field>
+			<#if field.listFlag==1>
+			//${field.note}
+			writeShort(_${field.name}.length);
+			for (var i: int = 0; i < _${field.name}.length; i++) {
+				<#if field.clazz=="int">
+				writeInt(_${field.name}[i]);
+				<#elseif field.clazz=="short">
+				writeShort(_${field.name}[i]);
+				<#elseif field.clazz=="float">
+				writeFloat(_${field.name}[i]);
+				<#elseif field.clazz=="long">
+				writeLong(_${field.name}[i]);
+				<#elseif field.clazz=="byte">
+				writeByte(_${field.name}[i]);
+				<#elseif field.clazz=="String">
+				writeString(_${field.name}[i]);
+				<#else>
+				writeBean(_${field.name}[i]);
+				</#if>
+			}
+			<#else>
+			//${field.note}
+			<#if field.clazz=="int">
+			writeInt(_${field.name});
+			<#elseif field.clazz=="short">
+			writeShort(_${field.name});
+			<#elseif field.clazz=="float">
+			writeFloat(_${field.name});
+			<#elseif field.clazz=="long">
+			writeLong(_${field.name});
+			<#elseif field.clazz=="byte">
+			writeByte(_${field.name});
+			<#elseif field.clazz=="String">
+			writeString(_${field.name});
+			<#else>
+			writeBean(_${field.name});
+			</#if>
+			</#if>
+			</#list>
+			return true;
+		}
+		
+		/**
+		 * 读取字节缓存
+		 */
+		override protected function reading(): Boolean{
+			<#list fields as field>
+			<#if field.listFlag==1>
+			//${field.note}
+			var ${field.name}_length : int = readShort();
+			for (var i: int = 0; i < ${field.name}_length; i++) {
+				<#if field.clazz=="int">
+				_${field.name}[i] = readInt();
+				<#elseif field.clazz=="short">
+				_${field.name}[i] = readShort();
+				<#elseif field.clazz=="float">
+				_${field.name}[i] = readFloat();
+				<#elseif field.clazz=="long">
+				_${field.name}[i] = readLong();
+				<#elseif field.clazz=="byte">
+				_${field.name}[i] = readByte();
+				<#elseif field.clazz=="String">
+				_${field.name}[i] = readString();
+				<#else>
+				_${field.name}[i] = readBean(${field.clazz}) as ${field.clazz};
+				</#if>
+			}
+			<#else>
+			//${field.note}
+			<#if field.clazz=="int">
+			_${field.name} = readInt();
+			<#elseif field.clazz=="short">
+			_${field.name} = readShort();
+			<#elseif field.clazz=="float">
+			_${field.name} = readFloat();
+			<#elseif field.clazz=="long">
+			_${field.name} = readLong();
+			<#elseif field.clazz=="byte">
+			_${field.name} = readByte();
+			<#elseif field.clazz=="String">
+			_${field.name} = readString();
+			<#else>
+			_${field.name} = readBean(${field.clazz}) as ${field.clazz};
+			</#if>
+			</#if>
+			</#list>
+			return true;
+		}
+		
+		<#list fields as field>
+		<#if field.listFlag==1>
+		/**
+		 * get ${field.note}
+		 * @return 
+		 */
+		public function get ${field.name}(): Vector.<${.globals[field.clazz]!field.clazz}>{
+			return _${field.name};
+		}
+		
+		/**
+		 * set ${field.note}
+		 */
+		public function set ${field.name}(value: Vector.<${.globals[field.clazz]!field.clazz}>): void{
+			this._${field.name} = value;
+		}
+		
+		<#else>
+		/**
+		 * get ${field.note}
+		 * @return 
+		 */
+		public function get ${field.name}(): ${.globals[field.clazz]!field.clazz}{
+			return _${field.name};
+		}
+		
+		/**
+		 * set ${field.note}
+		 */
+		public function set ${field.name}(value: ${.globals[field.clazz]!field.clazz}): void{
+			this._${field.name} = value;
+		}
+		
+		</#if>
+		</#list>
+	}
 }

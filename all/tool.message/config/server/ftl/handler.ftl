@@ -1,18 +1,29 @@
-package com.mokylin.game.server.logic.${pkg}.handler;
+package logic.${pkg}.handler;
 
-import com.mokylin.game.core.message.Handler;
-import org.apache.log4j.Logger;
-import com.mokylin.game.server.logic.${pkg}.message.${name}Message;
+import event.GameEventHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import logic.${pkg}.message.${name}Message;
 
-public class ${name}Handler extends Handler{
-	private static Logger logger = Logger.getLogger(${name}Handler.class);
-    @Override
-    public void exec() {
-    	try {
-    		${name}Message msg = (${name}Message)this.getMessage();
-    		// TODO
-      } catch (Exception e) {
-			logger.error(e, e);
+<#if owner==1>
+import io.netty.channel.ChannelHandlerContext;
+
+public class ${name}Handler implements GameEventHandler<ChannelHandlerContext, ${name}Message> {
+	@Override
+	public void onEvent(ChannelHandlerContext owner, ${name}Message event) {
+<#else>
+import logic.account.Account;
+
+public class ${name}Handler implements GameEventHandler<Account, ${name}Message> {
+	@Override
+	public void onEvent(Account owner, ${name}Message event) {
+</#if>
+		try {
+			// TODO 事件处理
+		} catch (Exception e) {
+			logger.error("", e);
 		}
-    }
+	}
+	
+	private final static Logger logger = LoggerFactory.getLogger(${name}Handler.class);
 }

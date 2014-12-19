@@ -14,13 +14,13 @@ public class CtxMessage extends Message {
 	@Override
 	public boolean read(ByteBuf buf) {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean write(ByteBuf buf) {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 }

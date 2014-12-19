@@ -1,4 +1,4 @@
-package com.mokylin.game.server.logic.${pkg}.message;
+package logic.${pkg}.message;
 
 <#list fields as field>
 <#if field.listFlag==1>
@@ -8,9 +8,10 @@ import java.util.ArrayList;
 </#if>
 </#list>
 
-import com.mokylin.game.core.message.Message;
+import message.Message;
 import io.netty.buffer.ByteBuf;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /** 
  * @author messageGenerator
@@ -21,7 +22,7 @@ import org.apache.log4j.Logger;
  */
 public class ${name}Message extends Message{
 
-	private static Logger log = Logger.getLogger(${name}Message.class);
+	private static Logger logger = LoggerFactory.getLogger(${name}Message.class);
 	
 	<#list fields as field>
 	<#if field.listFlag==1>
@@ -32,6 +33,11 @@ public class ${name}Message extends Message{
 	private ${field.clazz} ${field.name};
 	</#if>
 	</#list>
+	
+	@Override
+	public String getSign() {
+		return "${sign}";
+	}
 	
 	/**
 	 * 写入字节缓存
@@ -83,7 +89,7 @@ public class ${name}Message extends Message{
 			</#if>
 			</#list>
         } catch (Exception e) {
-            log.error(e, e);
+            logger.error("", e);
             return false;
         }
         return true;
@@ -139,7 +145,7 @@ public class ${name}Message extends Message{
 			</#if>
 			</#list>
         } catch (Exception e) {
-            log.error(e, e);
+            logger.error("", e);
             return false;
         }
         return true;

@@ -1,19 +1,13 @@
-using ClientDemon.logic.${pkg}.message;
-using ClientDemon.message;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+package logic.${pkg}.handler{
 
-namespace ClientDemon.logic.${pkg}.handler
-{
-    public class ${name}Handler : Handler
-    {
-        public override void exec(Message iMsg)
-        {
-        	${name}Message msg = (${name}Message)iMsg;
-        	// TODO
-        }
-    }
+	import logic.${pkg}.message.${name}Message;
+	import net.Handler;
+
+	public class ${name}Handler extends Handler {
+	
+		public override function action(): void{
+			var msg: ${name}Message = ${name}Message(this.message);
+			//TODO 添加消息处理
+		}
+	}
 }

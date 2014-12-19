@@ -1,107 +1,178 @@
-using ClientDemon.message;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ClientDemon.logic.${pkg}.message
-{
-    public class ${name}Message : Message
-    {
-        <#list fields as field>
+<#import "Class.ftl" as Class>
+package logic.${pkg}.message{
+	import net.Message;
+	import utils.long;
+	
+	/** 
+	 * @author Commuication Auto Maker
+	 * 
+	 * @version 1.0.0
+	 * 
+	 * @since 2011-5-8
+	 * 
+	 * ${note}
+	 */
+	public class ${name}Message extends Message {
+	
+		<#list fields as field>
 		<#if field.listFlag==1>
 		//${field.note}
-		private List<${field.clazz?cap_first}> ${field.name} = new ArrayList<>();
+		private var _${field.name}: Vector.<${.globals[field.clazz]!field.clazz}> = new Vector.<${.globals[field.clazz]!field.clazz}>();
 		<#else>
 		//${field.note}
-		private ${field.clazz} ${field.name};
+		private var _${field.name}: ${.globals[field.clazz]!field.clazz};
+		
 		</#if>
 		</#list>
 		
-        public override int getId()
-        {
-            return ${id?c};;
-        }
-        
-        /**
+		/**
 		 * 写入字节缓存
 		 */
-		public override void write(ByteBuf buf){
+		override protected function writing(): Boolean{
+			<#list fields as field>
+			<#if field.listFlag==1>
+			var i: int = 0;
+			<#break>
+			</#if>
+			</#list>
 			<#list fields as field>
 			<#if field.listFlag==1>
 			//${field.note}
-			writeShort(buf, (short)${field.name}.size());
-			for (int i = 0; i < ${field.name}.size(); i++) {
-				<#if field.clazz?index_of(".")==-1>
-				write${field.clazz?cap_first}(buf, this.${field.name});
+			writeShort(_${field.name}.length);
+			for (i = 0; i < _${field.name}.length; i++) {
+				<#if field.clazz=="int">
+				writeInt(_${field.name}[i]);
+				<#elseif field.clazz=="short">
+				writeShort(_${field.name}[i]);
+				<#elseif field.clazz=="float">
+				writeFloat(_${field.name}[i]);
+				<#elseif field.clazz=="long">
+				writeLong(_${field.name}[i]);
+				<#elseif field.clazz=="byte">
+				writeByte(_${field.name}[i]);
+				<#elseif field.clazz=="String">
+				writeString(_${field.name}[i]);
 				<#else>
-				write(buf, ${field.name}.get(i));
+				writeBean(_${field.name}[i]);
 				</#if>
 			}
 			<#else>
 			//${field.note}
-			<#if field.clazz?index_of(".")==-1>
-			write${field.clazz?cap_first}(buf, this.${field.name});
+			<#if field.clazz=="int">
+			writeInt(_${field.name});
+			<#elseif field.clazz=="short">
+			writeShort(_${field.name});
+			<#elseif field.clazz=="float">
+			writeFloat(_${field.name});
+			<#elseif field.clazz=="long">
+			writeLong(_${field.name});
+			<#elseif field.clazz=="byte">
+			writeByte(_${field.name});
+			<#elseif field.clazz=="String">
+			writeString(_${field.name});
 			<#else>
-			write(buf, this.${field.name});
+			writeBean(_${field.name});
 			</#if>
 			</#if>
 			</#list>
+			return true;
 		}
 		
 		/**
 		 * 读取字节缓存
 		 */
-		public override void read(ByteBuf buf){
+		override protected function reading(): Boolean{
+			<#list fields as field>
+			<#if field.listFlag==1>
+			var i: int = 0;
+			<#break>
+			</#if>
+			</#list>
 			<#list fields as field>
 			<#if field.listFlag==1>
 			//${field.note}
-			int ${field.name}_length = readShort(buf);
-			for (int i = 0; i < ${field.name}_length; i++) {
-				<#if field.clazz?index_of(".")==-1>
-				${field.name}.add(read${field.clazz?cap_first}(buf));
+			var ${field.name}_length : int = readShort();
+			for (i = 0; i < ${field.name}_length; i++) {
+				<#if field.clazz=="int">
+				_${field.name}[i] = readInt();
+				<#elseif field.clazz=="short">
+				_${field.name}[i] = readShort();
+				<#elseif field.clazz=="float">
+				_${field.name}[i] = readFloat();
+				<#elseif field.clazz=="long">
+				_${field.name}[i] = readLong();
+				<#elseif field.clazz=="byte">
+				_${field.name}[i] = readByte();
+				<#elseif field.clazz=="String">
+				_${field.name}[i] = readString();
 				<#else>
-				${field.name}.add(read(buf));
+				_${field.name}[i] = readBean(${field.clazz}) as ${field.clazz};
 				</#if>
 			}
 			<#else>
 			//${field.note}
-			<#if field.clazz?index_of(".")==-1>
-			this.${field.name} = read${field.clazz?cap_first}(buf);
+			<#if field.clazz=="int">
+			_${field.name} = readInt();
+			<#elseif field.clazz=="short">
+			_${field.name} = readShort();
+			<#elseif field.clazz=="float">
+			_${field.name} = readFloat();
+			<#elseif field.clazz=="long">
+			_${field.name} = readLong();
+			<#elseif field.clazz=="byte">
+			_${field.name} = readByte();
+			<#elseif field.clazz=="String">
+			_${field.name} = readString();
 			<#else>
-			this.${field.name} = (${field.clazz})read(buf);
+			_${field.name} = readBean(${field.clazz}) as ${field.clazz};
 			</#if>
 			</#if>
 			</#list>
+			return true;
 		}
-
-        <#list fields as field>
+		
+		/**
+		 * get id
+		 * @return 
+		 */
+		override public function getId(): int {
+			return ${id?c};
+		}
+		
+		<#list fields as field>
 		<#if field.listFlag==1>
 		/**
 		 * get ${field.note}
 		 * @return 
 		 */
-		public List<${field.clazz?cap_first}> get${field.name?cap_first}(){
-			return ${field.name};
+		public function get ${field.name}(): Vector.<${.globals[field.clazz]!field.clazz}>{
+			return _${field.name};
 		}
 		
 		/**
 		 * set ${field.note}
 		 */
-		public void set${field.name?cap_first}(List<${field.clazz?cap_first}> ${field.name}){
-			this.${field.name} = ${field.name};
+		public function set ${field.name}(value: Vector.<${.globals[field.clazz]!field.clazz}>): void{
+			this._${field.name} = value;
 		}
 		
 		<#else>
-		public ${field.clazz} ${field.name?cap_first}
-        {
-            get { return ${field.name}; }
-            set { ${field.name} = value; }
-        }
-        
+		/**
+		 * get ${field.note}
+		 * @return 
+		 */
+		public function get ${field.name}(): ${.globals[field.clazz]!field.clazz}{
+			return _${field.name};
+		}
+		
+		/**
+		 * set ${field.note}
+		 */
+		public function set ${field.name}(value: ${.globals[field.clazz]!field.clazz}): void{
+			this._${field.name} = value;
+		}
+		
 		</#if>
 		</#list>
-    }
+	}
 }

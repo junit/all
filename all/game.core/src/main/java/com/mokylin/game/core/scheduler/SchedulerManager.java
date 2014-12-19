@@ -46,22 +46,14 @@ public class SchedulerManager {
 		return true;
 	}
 
-	public boolean init() {
+	public SchedulerManager() {
 		try {
 			scheduler = StdSchedulerFactory.getDefaultScheduler();
 			scheduler.start();
 		} catch (SchedulerException e) {
 			logger.error(e, e);
-			return false;
+			System.exit(-1);
 		}
-		return true;
-	}
-	
-	public static void main(String[] args) throws InterruptedException {
-		SchedulerManager manager = new SchedulerManager();
-		manager.init();
-		
-		Thread.sleep(10000);
 	}
 }
 

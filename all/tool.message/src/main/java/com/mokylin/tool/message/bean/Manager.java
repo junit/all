@@ -20,18 +20,21 @@ public class Manager extends IFtl {
 	public Manager(FtlConfig config) throws Exception {
 		super(FileUtil.getFilePath(config.getSrcPath(), "message.xml"));
 
-		File file = new File(super.getPath());
-		if (file.exists()) {
-			SAXReader reader = new SAXReader();
-			Document doc = reader.read(file);
-			Element root = doc.getRootElement();
+		try {
+			File file = new File(super.getPath());
+			if (file.exists()) {
+				SAXReader reader = new SAXReader();
+				Document doc = reader.read(file);
+				Element root = doc.getRootElement();
 
-			for (Iterator<?> i = root.elementIterator("message"); i.hasNext();) {
-				Element element = (Element) i.next();
-				add(Integer.parseInt(element.attributeValue("id")), element.attributeValue("pkg"), element.attributeValue("name"));
+				for (Iterator<?> i = root.elementIterator("message"); i.hasNext();) {
+					Element element = (Element) i.next();
+					add(Integer.parseInt(element.attributeValue("id")), element.attributeValue("pkg"), element.attributeValue("name"));
+				}
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-
 	}
 
 	private HashMap<Integer, Detail> details = new HashMap<>();
@@ -100,16 +103,16 @@ public class Manager extends IFtl {
 	public void update() throws Exception {
 		Document document = DocumentHelper.createDocument();
 		Element root = document.addElement("root");
-		
+
 		for (Manager.Detail detail : getDetails().values()) {
 			Element element = root.addElement("message");
 			element.addAttribute("id", String.valueOf(detail.getId()));
 			element.addAttribute("pkg", detail.getPkg());
 			element.addAttribute("name", detail.getName());
 		}
-		
+
 		OutputFormat format = OutputFormat.createPrettyPrint();
-        format.setEncoding("UTF-8");// 设置XML文件的编码格式
+		format.setEncoding("UTF-8");// 设置XML文件的编码格式
 		XMLWriter writer = new XMLWriter(new FileWriterWithEncoding(new File(getPath()), "UTF-8"), format);
 		writer.write(document);
 		writer.close();

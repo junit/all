@@ -15,17 +15,22 @@ public class Handler extends IFtl {
 		id = indexPrefix * 1000 + Integer.parseInt(root.attributeValue("id"));
 		this.pkg = pkg;
 		this.name = root.attributeValue("name");
+		if (root.attributeValue("sign") != null && root.attributeValue("sign").equalsIgnoreCase("login")) {
+			this.owner = 1;
+		}
 	}
 
 	private int id;
 	private String pkg;
 	private String name;
+	private int owner; // 0:Account 1:ChannelHandlerContext
 
 	@Override
 	public HashMap<String, Object> getDataModel() {
 		HashMap<String, Object> map = new HashMap<>();
 		map.put("pkg", pkg);
 		map.put("name", name);
+		map.put("owner", owner);
 		return map;
 	}
 
@@ -56,6 +61,14 @@ public class Handler extends IFtl {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public int getOwner() {
+		return owner;
+	}
+
+	public void setOwner(int owner) {
+		this.owner = owner;
 	}
 
 }
