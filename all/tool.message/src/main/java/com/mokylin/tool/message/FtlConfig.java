@@ -29,6 +29,7 @@ public class FtlConfig {
 				types.put("int32", split[2]);
 				types.put("int64", split[3]);
 				types.put("string", split[4]);
+				types.put("int8[]", split[5]);
 			} else if (file.getName().equalsIgnoreCase("ftl")) {
 				templates = new HashMap<>();
 				freemarker.template.Configuration cfg = new freemarker.template.Configuration();

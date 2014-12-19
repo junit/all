@@ -47,6 +47,8 @@ package logic.${pkg}.message{
 				writeByte(_${field.name}[i]);
 				<#elseif field.clazz=="String">
 				writeString(_${field.name}[i]);
+				<#elseif field.clazz=="byte[]">
+				writeBytes(_${field.name}[i]);
 				<#else>
 				writeBean(_${field.name}[i]);
 				</#if>
@@ -65,6 +67,8 @@ package logic.${pkg}.message{
 			writeByte(_${field.name});
 			<#elseif field.clazz=="String">
 			writeString(_${field.name});
+			<#elseif field.clazz=="byte[]">
+			writeBytes(_${field.name}[i]);
 			<#else>
 			writeBean(_${field.name});
 			</#if>
@@ -94,6 +98,8 @@ package logic.${pkg}.message{
 				_${field.name}[i] = readByte();
 				<#elseif field.clazz=="String">
 				_${field.name}[i] = readString();
+				<#elseif field.clazz=="byte[]">
+				_${field.name}[i] = readBytes();
 				<#else>
 				_${field.name}[i] = readBean(${field.clazz}) as ${field.clazz};
 				</#if>
@@ -112,6 +118,8 @@ package logic.${pkg}.message{
 			_${field.name} = readByte();
 			<#elseif field.clazz=="String">
 			_${field.name} = readString();
+			<#elseif field.clazz=="byte[]">
+			_${field.name}[i] = readBytes();
 			<#else>
 			_${field.name} = readBean(${field.clazz}) as ${field.clazz};
 			</#if>
