@@ -1,7 +1,9 @@
 <#import "Class.ftl" as Class>
 package logic.${pkg}.message{
 	import net.Bean;
-	import utils.long;
+	import utils.long;<#list imports as import>
+	import ${import};
+	</#list>
 	
 	/** 
 	 * @author Commuication Auto Maker

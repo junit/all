@@ -56,6 +56,9 @@ public class Manager extends IFtl {
 
 	public void add(int id, String pkg, String name) {
 		Detail detail = new Detail(id, pkg, name);
+		if (details.containsKey(id)) {
+			System.err.println("重复的消息id:" + id);
+		}
 		details.put(detail.getId(), detail);
 	}
 

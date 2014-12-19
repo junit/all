@@ -7,6 +7,9 @@ import java.util.ArrayList;
 <#break>
 </#if>
 </#list>
+<#list imports as import>
+import ${import};
+</#list>
 
 import message.Bean;
 

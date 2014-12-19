@@ -2,8 +2,10 @@ package com.mokylin.tool.message.bean;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.dom4j.Element;
 
@@ -29,6 +31,10 @@ public class Bean extends IFtl {
 			String clazz = element.attributeValue("class");
 			if (config.getTypes().containsKey(clazz)) {
 				clazz = config.getTypes().get(clazz);
+			} else if (clazz.contains(".")) {
+				imports.add(clazz);
+				String[] split = clazz.split("\\.");
+				clazz = split[split.length - 1];
 			}
 			field.setClazz(clazz);
 			field.setName(element.attributeValue("name"));
@@ -43,6 +49,7 @@ public class Bean extends IFtl {
 	private String note;
 	private String name;
 	private List<Field> fields = new ArrayList<>();
+	private Set<String> imports = new HashSet<>();
 
 	@Override
 	public HashMap<String, Object> getDataModel() {
@@ -51,6 +58,7 @@ public class Bean extends IFtl {
 		map.put("note", note);
 		map.put("name", name);
 		map.put("fields", fields);
+		map.put("imports", imports);
 		return map;
 	}
 
