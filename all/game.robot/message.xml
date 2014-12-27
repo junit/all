@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <root>
-  <message id="100100" pkg="test" name="ReqTest"/>
+  <message id="100200" pkg="test" name="ResTest"/>
 </root>
