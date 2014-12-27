@@ -22,6 +22,7 @@
 		<module>tool.analyzer</module>
 		<module>game.server</module>
 		<module>game.robot</module>
+		<module>tool.message</module>
 	</modules>
 
 	<dependencyManagement>
@@ -60,6 +61,11 @@
 				<groupId>log4j</groupId>
 				<artifactId>log4j</artifactId>
 				<version>1.2.17</version>
+			</dependency>
+			<dependency>
+				<groupId>io.netty</groupId>
+				<artifactId>netty-all</artifactId>
+				<version>4.0.23.Final</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

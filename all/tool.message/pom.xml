@@ -8,8 +8,8 @@
 		<artifactId>all</artifactId>
 		<version>1.0</version>
 	</parent>
-	<artifactId>game.server</artifactId>
-	<name>game.server</name>
+	<artifactId>tool.message</artifactId>
+	<name>tool.message</name>
 	<url>http://maven.apache.org</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -21,20 +21,8 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.mybatis</groupId>
-			<artifactId>mybatis</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>io.netty</groupId>
-			<artifactId>netty-all</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>com.mokylin</groupId>
-			<artifactId>game.core</artifactId>
+			<artifactId>tool.core</artifactId>
 			<version>1.0</version>
 		</dependency>
 	</dependencies>

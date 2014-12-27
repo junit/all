@@ -58,7 +58,7 @@ public class Generator {
 			ftlManager.generate(ftl);
 		}
 		
-		ftlManager.generate(new com.mokylin.tool.data.bean.Config("url", "usr", "pwd", type, "config/db-data.xml"));
+		ftlManager.generate(new com.mokylin.tool.data.bean.Config("url", "usr", "pwd", type, "config/db-data.xml", ftlManager.getConfig().getDestPath().get(type).getProjectPath(), "config"));
 	}
 
 	public void generateConfig(String table, FtlType type) throws Exception {
@@ -70,7 +70,7 @@ public class Generator {
 		}
 		
 		ftlManager.generate(new Manager(type, "src/main/java/com/mokylin/game/server/db/config/DbConfigManager.java", ftlManager.getConfig().getDestPath().get(type).getProjectPath()));
-		ftlManager.generate(new com.mokylin.tool.data.bean.Config("url", "usr", "pwd", type, "config/db-config.xml"));
+		ftlManager.generate(new com.mokylin.tool.data.bean.Config("url", "usr", "pwd", type, "config/db-config.xml", ftlManager.getConfig().getDestPath().get(type).getProjectPath(), "config"));
 	}
 
 	public void mkDir(File file) {
