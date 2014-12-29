@@ -42,7 +42,7 @@ public class Generator {
 			ftlManager.generate(ftl);
 			if (ftl instanceof Handler) {
 				Handler handler = (Handler)ftl;
-				manager.add(handler.getId(), handler.getPkg(), handler.getName());
+				manager.add(handler.getId(), getFullPkg(handler.getPkg(), ftlType), handler.getName());
 			}
 		}
 		ftlManager.generate(manager);
@@ -50,6 +50,12 @@ public class Generator {
 		return true;
 	}
 	
+	private String getFullPkg(String pkg, FtlType ftlType) {
+		ftlManager.getConfig().getDestPath().get(ftlType).getProjectName();
+		String ret = "com.mokylin." + ftlManager.getConfig().getDestPath().get(ftlType).getProjectName() + ".logic." + pkg;
+		return ret.replace("/", ".");
+	}
+
 	private void record(String path, Manager manager) throws Exception {
 		Document document = DocumentHelper.createDocument();
 		Element root = document.addElement("root");
@@ -69,7 +75,11 @@ public class Generator {
 	}
 
 	private Manager parseManager(String path, FtlType ftlType) throws Exception {
-		Manager manager = new Manager(ftlType, "message.xml");
+		StringBuilder builder = new StringBuilder();
+		builder.append("src/main/java/com/mokylin").append(File.separator);
+		builder.append(ftlManager.getConfig().getDestPath().get(ftlType).getProjectName()).append(File.separator);
+		builder.append("message/manager/MessageManager.java");
+		Manager manager = new Manager(ftlType, builder.toString());
 		File file = new File(path);
 		if (!file.exists()) {
 			return manager;
@@ -92,6 +102,8 @@ public class Generator {
 		Element root = doc.getRootElement();
 		int index = Integer.parseInt(root.attributeValue("id"));
 		String pkg = root.attributeValue("package");
+		String[] split = pkg.split("\\.");
+		pkg = split[split.length - 1];
 		
 		for (Iterator<?> i = root.elementIterator(); i.hasNext(); ) {
 			Element element = (Element)i.next();
@@ -106,7 +118,7 @@ public class Generator {
 			list.add(bean);
 			
 			bean.setName(root.attributeValue("name"));
-			bean.setNote(root.attributeValue("note"));
+			bean.setNote(root.attributeValue("explain"));
 			bean.setPkg(pkg);
 			
 			for (Iterator<?> i = root.elementIterator(); i.hasNext(); ) {
@@ -116,7 +128,7 @@ public class Generator {
 				
 				field.setClazz(element.attributeValue("class"));
 				field.setName(element.attributeValue("name"));
-				field.setNote(element.attributeValue("note"));
+				field.setNote(element.attributeValue("explain"));
 				if (element.getName().equals("list")) {
 					field.setListFlag(1);
 				}
@@ -129,7 +141,7 @@ public class Generator {
 			list.add(message);
 			
 			message.setName(root.attributeValue("name"));
-			message.setNote(root.attributeValue("note"));
+			message.setNote(root.attributeValue("explain"));
 			message.setPkg(pkg);
 			message.setId(index * 1000 + Integer.parseInt(root.attributeValue("id")));
 			
@@ -140,7 +152,7 @@ public class Generator {
 				
 				field.setClazz(element.attributeValue("class"));
 				field.setName(element.attributeValue("name"));
-				field.setNote(element.attributeValue("note"));
+				field.setNote(element.attributeValue("explain"));
 				if (element.getName().equals("list")) {
 					field.setListFlag(1);
 				}

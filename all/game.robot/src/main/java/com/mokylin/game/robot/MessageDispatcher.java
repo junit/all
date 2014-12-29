@@ -4,9 +4,13 @@ import io.netty.channel.ChannelHandlerContext;
 
 import com.mokylin.game.core.message.bean.Handler;
 import com.mokylin.game.core.netty.GameHandlerAdapter;
-import com.mokylin.game.robot.logic.test.message.ReqTestMessage;
+import com.mokylin.game.robot.logic.login.message.ReqLoginMessage;
 
 public class MessageDispatcher extends GameHandlerAdapter {
+	private String name;
+	public MessageDispatcher(String name) {
+		this.name = name;
+	}
 
 	@Override
 	protected void onRecvMsg(Handler handler) {
@@ -15,9 +19,10 @@ public class MessageDispatcher extends GameHandlerAdapter {
 
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
-		logger.error("connect success full");
-		ReqTestMessage msg = new ReqTestMessage();
-		msg.setTime(System.currentTimeMillis());
+		ReqLoginMessage msg = new ReqLoginMessage();
+		msg.setName(name);
+		msg.setServerId(1);
+		msg.setPassword("x");
 		ctx.writeAndFlush(msg);
 	}
 }

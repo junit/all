@@ -11,7 +11,17 @@ public class Field {
 	}
 
 	public void setClazz(String clazz) {
-		this.clazz = clazz;
+		String str = clazz;
+		if (str.equalsIgnoreCase("int")) {
+			str = "Integer";
+		} else if (str.equalsIgnoreCase("short")) {
+			str = "Short";
+		} else if (str.equalsIgnoreCase("long")) {
+			str = "Long";
+		} else if (str.equalsIgnoreCase("byte")) {
+			str = "Byte";
+		}
+		this.clazz = str;
 	}
 
 	public String getName() {
