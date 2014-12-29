@@ -1,5 +1,7 @@
 package com.mokylin.game.core.netty;
 
+import java.util.concurrent.TimeUnit;
+
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -8,6 +10,7 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.timeout.IdleStateHandler;
 
 import org.apache.log4j.Logger;
 
@@ -40,9 +43,10 @@ public abstract class Server extends Thread {
 			b.group(accepterGroup, clientGroup).channel(NioServerSocketChannel.class).childHandler(new ChannelInitializer<SocketChannel>() {
 				@Override
 				public void initChannel(SocketChannel ch) throws Exception {
-					ch.pipeline().addLast(new Encoder());
-					ch.pipeline().addLast(new Decoder());
-					ch.pipeline().addLast(createHandlerAdapter());
+					ch.pipeline().addLast("encoder", new Encoder());
+					ch.pipeline().addLast("decoder", new Decoder());
+					ch.pipeline().addLast("idle", new IdleStateHandler(60, 60, 60, TimeUnit.SECONDS));
+					ch.pipeline().addLast("handler", createHandlerAdapter());
 				}
 			}).option(ChannelOption.SO_BACKLOG, 128).childOption(ChannelOption.SO_KEEPALIVE, true);
 
