@@ -15,8 +15,6 @@ public class AccountKey {
 		this.id = id;
 	}
 	
-	
-	
 	public String getName() {
 		return name;
 	}

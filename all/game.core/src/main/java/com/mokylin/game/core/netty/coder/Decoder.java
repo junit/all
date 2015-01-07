@@ -18,7 +18,6 @@ public class Decoder extends ByteToMessageDecoder {
 	protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
 		// 校验消息长度（4个字节）
 		if (in.readableBytes() < Integer.SIZE / Byte.SIZE) {
-//			ContextUtil.close(ctx, "消息头太短");
 			return;
 		}
 

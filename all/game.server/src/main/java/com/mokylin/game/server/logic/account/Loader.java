@@ -27,4 +27,8 @@ public class Loader implements ILoader<AccountKey, Account> {
 		logger.error("保存失败:" + v);
 	}
 
+	@Override
+	public boolean canRemove(Account v) {
+		return !v.isOnline();
+	}
 }

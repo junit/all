@@ -16,10 +16,14 @@ import org.apache.log4j.Logger;
 
 import com.mokylin.game.core.netty.coder.Decoder;
 import com.mokylin.game.core.netty.coder.Encoder;
+import com.mokylin.game.core.system.SignalHandler;
 
 public abstract class Server extends Thread {
 	protected static Logger logger = Logger.getLogger(Server.class);
 	private int port;
+	private EventLoopGroup accepterGroup;
+	private EventLoopGroup clientGroup;
+
 	public Server(String name, int port) {
 		super(name);
 		this.port = port;
@@ -27,7 +31,6 @@ public abstract class Server extends Thread {
 
 	protected abstract boolean init();
 
-	
 	@Override
 	public void run() {
 		if (!init()) {
@@ -35,8 +38,10 @@ public abstract class Server extends Thread {
 			System.exit(-1);
 		}
 
-		EventLoopGroup accepterGroup = new NioEventLoopGroup();
-		EventLoopGroup clientGroup = new NioEventLoopGroup();
+		initSignal();
+
+		accepterGroup = new NioEventLoopGroup();
+		clientGroup = new NioEventLoopGroup();
 
 		try {
 			ServerBootstrap b = new ServerBootstrap();
@@ -60,8 +65,25 @@ public abstract class Server extends Thread {
 			clientGroup.shutdownGracefully();
 			accepterGroup.shutdownGracefully();
 		}
+	}
+
+	@SuppressWarnings("restriction")
+	private void initSignal() {
+		sun.misc.Signal.handle(new sun.misc.Signal("INT"), new SignalHandler(this)); // kill
+	}
+
+	protected abstract GameHandlerAdapter createHandlerAdapter();
+
+	public abstract void onStop();
+
+	public void stopManual() {
+		logger.error("服务器收到关闭信号");
+		// 关闭所有链接
+		clientGroup.shutdownGracefully();
+		accepterGroup.shutdownGracefully();
+		
+		onStop();
+		
 		System.exit(0);
 	}
-	
-	protected abstract GameHandlerAdapter createHandlerAdapter();
 }

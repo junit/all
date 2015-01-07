@@ -13,8 +13,13 @@ import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
 
 import com.mokylin.game.core.manager.Manager;
+import com.mokylin.game.core.manager.ManagerPool;
 
 public class SchedulerManager extends Manager {
+	public SchedulerManager(ManagerPool pool) {
+		super(pool);
+	}
+
 	private static Logger logger = Logger.getLogger(SchedulerManager.class);
 	private Scheduler scheduler;
 
@@ -32,11 +37,11 @@ public class SchedulerManager extends Manager {
 
 	@Override
 	public void onStop() {
-		try {
-			scheduler.shutdown();
-		} catch (SchedulerException e) {
-			logger.error(e, e);
-		}
+//		try {
+//			scheduler.shutdown();
+//		} catch (SchedulerException e) {
+//			logger.error(e, e);
+//		}
 	}
 
 	public boolean add(Class<? extends Job> jobClass, long interval) {
@@ -67,18 +72,6 @@ public class SchedulerManager extends Manager {
 			return false;
 		}
 		return true;
-	}
-
-	public static void main(String[] args) {
-		SchedulerManager manager = new SchedulerManager();
-		if (manager.onStart()) {
-			logger.error("start");
-		}
-		
-		manager.add(IntervaJob.class, 1000);
-		manager.add(CronJob.class, "0/1 * * * * ? *");
-		
-		logger.error("end");
 	}
 }
 

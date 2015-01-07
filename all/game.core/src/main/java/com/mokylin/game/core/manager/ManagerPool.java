@@ -2,14 +2,10 @@ package com.mokylin.game.core.manager;
 
 import java.util.HashSet;
 
-import com.mokylin.game.core.scheduler.SchedulerManager;
-
-public class ManagerPool {
-	private static HashSet<Manager> managers = new HashSet<>();
+public abstract class ManagerPool {
+	private HashSet<Manager> managers = new HashSet<>();
 	
-	public static SchedulerManager scheduler = new SchedulerManager();
-	
-	public static boolean onStart() {
+	public boolean onStart() {
 		for (Manager manager : managers) {
 			if (!manager.onStart()) {
 				return false;
@@ -18,13 +14,13 @@ public class ManagerPool {
 		return true;
 	}
 	
-	public static void onStop() {
+	public void onStop() {
 		for (Manager manager : managers) {
 			manager.onStop();
 		}
 	}
 	
-	public static void regist(Manager manager) {
+	public void regist(Manager manager) {
 		managers.add(manager);
 	}
 }
