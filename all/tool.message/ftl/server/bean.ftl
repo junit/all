@@ -49,38 +49,42 @@ public class ${name} extends Bean {
 			<#list fields as field>
 			<#if field.listFlag==1>
 			//${field.note}
-			writeShort(buf, ${field.name}.size());
+			writeShort(buf, (short)${field.name}.size());
 			for (int i = 0; i < ${field.name}.size(); i++) {
-				<#if field.clazz=="int">
+				<#if field.clazz=="Integer">
 				writeInt(buf, ${field.name}.get(i));
-				<#elseif field.clazz=="short">
+				<#elseif field.clazz=="Short">
 				writeShort(buf, ${field.name}.get(i));
 				<#elseif field.clazz=="float">
 				writeFloat(buf, ${field.name}.get(i));
-				<#elseif field.clazz=="long">
+				<#elseif field.clazz=="Long">
 				writeLong(buf, ${field.name}.get(i));
-				<#elseif field.clazz=="byte">
+				<#elseif field.clazz=="Byte">
 				writeByte(buf, ${field.name}.get(i));
 				<#elseif field.clazz=="String">
 				writeString(buf, ${field.name}.get(i));
+				<#elseif field.clazz=="byte[]">
+				writeBytes(buf, ${field.name}.get(i));
 				<#else>
 				writeBean(buf, ${field.name}.get(i));
 				</#if>
 			}
 			<#else>
 			//${field.note}
-			<#if field.clazz=="int">
+			<#if field.clazz=="Integer">
 			writeInt(buf, this.${field.name});
-			<#elseif field.clazz=="short">
+			<#elseif field.clazz=="Short">
 			writeShort(buf, this.${field.name});
 			<#elseif field.clazz=="float">
 			writeFloat(buf, this.${field.name});
-			<#elseif field.clazz=="long">
+			<#elseif field.clazz=="Long">
 			writeLong(buf, this.${field.name});
-			<#elseif field.clazz=="byte">
+			<#elseif field.clazz=="Byte">
 			writeByte(buf, this.${field.name});
 			<#elseif field.clazz=="String">
 			writeString(buf, this.${field.name});
+			<#elseif field.clazz=="byte[]">
+			writeBytes(buf, this.${field.name});
 			<#else>
 			writeBean(buf, this.${field.name});
 			</#if>
@@ -103,36 +107,40 @@ public class ${name} extends Bean {
 			//${field.note}
 			int ${field.name}_length = readShort(buf);
 			for (int i = 0; i < ${field.name}_length; i++) {
-				<#if field.clazz=="int">
+				<#if field.clazz=="Integer">
 				${field.name}.add(readInt(buf));
-				<#elseif field.clazz=="short">
+				<#elseif field.clazz=="Short">
 				${field.name}.add(readShort(buf));
 				<#elseif field.clazz=="float">
 				${field.name}.add(readFloat(buf));
-				<#elseif field.clazz=="long">
+				<#elseif field.clazz=="Long">
 				${field.name}.add(readLong(buf));
-				<#elseif field.clazz=="byte">
+				<#elseif field.clazz=="Byte">
 				${field.name}.add(readByte(buf));
 				<#elseif field.clazz=="String">
 				${field.name}.add(readString(buf));
+				<#elseif field.clazz=="byte[]">
+				${field.name}.add(readBytes(buf));
 				<#else>
 				${field.name}.add((${field.clazz})readBean(buf, ${field.clazz}.class));
 				</#if>
 			}
 			<#else>
 			//${field.note}
-			<#if field.clazz=="int">
+			<#if field.clazz=="Integer">
 			this.${field.name} = readInt(buf);
-			<#elseif field.clazz=="short">
+			<#elseif field.clazz=="Short">
 			this.${field.name} = readShort(buf);
 			<#elseif field.clazz=="float">
 			this.${field.name} = readFloat(buf);
-			<#elseif field.clazz=="long">
+			<#elseif field.clazz=="Long">
 			this.${field.name} = readLong(buf);
-			<#elseif field.clazz=="byte">
+			<#elseif field.clazz=="Byte">
 			this.${field.name} = readByte(buf);
 			<#elseif field.clazz=="String">
 			this.${field.name} = readString(buf);
+			<#elseif field.clazz=="byte[]">
+			this.${field.name} = readBytes(buf);
 			<#else>
 			this.${field.name} = (${field.clazz})readBean(buf, ${field.clazz}.class);
 			</#if>
@@ -188,15 +196,15 @@ public class ${name} extends Bean {
 		//${field.note}
 		buf.append("${field.name}:{");
 		for (int i = 0; i < ${field.name}.size(); i++) {
-			<#if field.clazz=="int">
+			<#if field.clazz=="Integer">
 			buf.append(${field.name}.get(i) +",");
-			<#elseif field.clazz=="short">
+			<#elseif field.clazz=="Short">
 			buf.append(${field.name}.get(i) +",");
 			<#elseif field.clazz=="float">
 			buf.append(${field.name}.get(i) +",");
-			<#elseif field.clazz=="long">
+			<#elseif field.clazz=="Long">
 			buf.append(${field.name}.get(i) +",");
-			<#elseif field.clazz=="byte">
+			<#elseif field.clazz=="Byte">
 			buf.append(${field.name}.get(i) +",");
 			<#elseif field.clazz=="String">
 			buf.append(${field.name}.get(i).toString() +",");
@@ -208,15 +216,15 @@ public class ${name} extends Bean {
 		buf.append("},");
 		<#else>
 		//${field.note}
-		<#if field.clazz=="int">
+		<#if field.clazz=="Integer">
 		buf.append("${field.name}:" + ${field.name} +",");
-		<#elseif field.clazz=="short">
+		<#elseif field.clazz=="Short">
 		buf.append("${field.name}:" + ${field.name} +",");
 		<#elseif field.clazz=="float">
 		buf.append("${field.name}:" + ${field.name} +",");
-		<#elseif field.clazz=="long">
+		<#elseif field.clazz=="Long">
 		buf.append("${field.name}:" + ${field.name} +",");
-		<#elseif field.clazz=="byte">
+		<#elseif field.clazz=="Byte">
 		buf.append("${field.name}:" + ${field.name} +",");
 		<#elseif field.clazz=="String">
 		if(this.${field.name}!=null) buf.append("${field.name}:" + ${field.name}.toString() +",");

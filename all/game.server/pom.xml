@@ -33,6 +33,10 @@
 			<artifactId>netty-all</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>com.mokylin</groupId>
 			<artifactId>game.core</artifactId>
 			<version>1.0</version>
