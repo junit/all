@@ -2,6 +2,7 @@ package com.mokylin.game.server.message.manager;
 
 import com.mokylin.game.core.message.MessagePool;
 
+@Singleton
 public class MessageManager {
 
 	public boolean init() {

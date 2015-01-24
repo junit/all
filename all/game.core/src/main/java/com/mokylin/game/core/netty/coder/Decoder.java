@@ -7,12 +7,15 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 
 import java.util.List;
 
+import com.google.inject.Inject;
 import com.mokylin.game.core.message.MessagePool;
 import com.mokylin.game.core.message.bean.Message;
 import com.mokylin.game.core.util.ContextUtil;
 import com.mokylin.game.core.util.ZLibUtil;
 
 public class Decoder extends ByteToMessageDecoder {
+	@Inject
+	private MessagePool messagePool;
 
 	@Override
 	protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
@@ -38,7 +41,7 @@ public class Decoder extends ByteToMessageDecoder {
 		// 消息Id
 		int msgId = in.readInt();
 		// 消息
-		Message message = MessagePool.getInstance().createMessage(msgId);
+		Message message = messagePool.createMessage(msgId);
 		
 		if (message == null) {
 			ContextUtil.close(ctx, "无此消息" + msgId);

@@ -12,19 +12,14 @@ import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
 
-import com.mokylin.game.core.manager.Manager;
-import com.mokylin.game.core.manager.ManagerPool;
+import com.google.inject.Singleton;
 
-public class SchedulerManager extends Manager {
-	public SchedulerManager(ManagerPool pool) {
-		super(pool);
-	}
-
+@Singleton
+public class SchedulerManager {
 	private static Logger logger = Logger.getLogger(SchedulerManager.class);
 	private Scheduler scheduler;
 
-	@Override
-	public boolean onStart() {
+	public boolean start() {
 		try {
 			scheduler = StdSchedulerFactory.getDefaultScheduler();
 			scheduler.start();
@@ -33,15 +28,6 @@ public class SchedulerManager extends Manager {
 			return false;
 		}
 		return true;
-	}
-
-	@Override
-	public void onStop() {
-//		try {
-//			scheduler.shutdown();
-//		} catch (SchedulerException e) {
-//			logger.error(e, e);
-//		}
 	}
 
 	public boolean add(Class<? extends Job> jobClass, long interval) {
