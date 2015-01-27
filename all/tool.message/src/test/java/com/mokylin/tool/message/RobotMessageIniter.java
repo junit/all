@@ -45,7 +45,10 @@ public class RobotMessageIniter {
 			}
 
 			for (IniterTemplate initer : initers) {
-				File newFile = new File("/home/shell/workspace/Game/src/com/moloong/bleach/robot/initer/" + initer.getShortHandlerName() + "Initer.java");
+				File newFile = new File("/home/shell/workspace/Game/test/com/moloong/bleach/robot/initer/" + initer.getShortHandlerName() + "Initer.java");
+				if (newFile.exists()) {
+					continue;
+				}
 				HashMap<String, Object> map = new HashMap<>();
 				map.put("short_handler", initer.getShortHandlerName());
 				map.put("msg", initer.getMsgName());
@@ -55,7 +58,7 @@ public class RobotMessageIniter {
 				template.process(map, new FileWriterWithEncoding(newFile, "UTF-8"));
 			}
 			
-			File newFile = new File("/home/shell/workspace/Game/src/com/moloong/bleach/robot/RobotThread.java");
+			File newFile = new File("/home/shell/workspace/Game/test/com/moloong/bleach/robot/RobotThread.java");
 			Template template = cfg.getTemplate("thread.ftl");
 			HashMap<String, Object> map = new HashMap<>();
 			map.put("details", initers);

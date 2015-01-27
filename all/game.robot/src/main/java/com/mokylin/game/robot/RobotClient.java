@@ -6,11 +6,12 @@ import io.netty.util.AttributeKey;
 import com.mokylin.game.core.netty.Client;
 import com.mokylin.game.core.netty.GameHandlerAdapter;
 
+
 public class RobotClient extends Client {
 	private static final AttributeKey<RobotClient> key = AttributeKey.valueOf("client");
 	
-	public RobotClient(String name, String host, int port) {
-		super(name, host, port);
+	public RobotClient(String host, int port) {
+		super(host, port);
 	}
 
 	@Override
@@ -20,7 +21,7 @@ public class RobotClient extends Client {
 
 	@Override
 	protected GameHandlerAdapter createHandlerAdapter() {
-		return new MessageDispatcher(this);
+		return new MessageDispatcher();
 	}
 
 	public static void set(ChannelHandlerContext ctx, RobotClient robot) {

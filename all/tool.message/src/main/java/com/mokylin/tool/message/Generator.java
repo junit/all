@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 
 import org.apache.commons.io.output.FileWriterWithEncoding;
 import org.dom4j.Document;
@@ -25,12 +26,12 @@ import com.mokylin.tool.message.bean.Manager;
 import com.mokylin.tool.message.bean.Message;
 
 public class Generator {
-	public Generator() throws IOException {
+	public Generator(Properties properties) throws IOException {
 		Config config = new Config();
 		ftlManager = new FtlManager("ftl", config);
-		config.add(FtlType.SERVER, "/home/shell/git/all/all/game.server", "game/server");
-		config.add(FtlType.ROBOT, "/home/shell/git/all/all/game.robot", "game/robot");
-		config.add(FtlType.CLIENT, "/home/shell/git/all/all/res/message/client", "");
+		config.add(FtlType.SERVER, properties.getProperty("server_path"), properties.getProperty("server_project"));
+		config.add(FtlType.ROBOT, properties.getProperty("robot_path"), properties.getProperty("robot_project"));
+		config.add(FtlType.CLIENT, properties.getProperty("client_path"), properties.getProperty("client_project"));
 	}
 	private FtlManager ftlManager;
 	
@@ -78,7 +79,7 @@ public class Generator {
 		StringBuilder builder = new StringBuilder();
 		builder.append("src/main/java/com/mokylin").append(File.separator);
 		builder.append(ftlManager.getConfig().getDestPath().get(ftlType).getProjectName()).append(File.separator);
-		builder.append("message/manager/MessageManager.java");
+		builder.append("message/MessageManager.java");
 		Manager manager = new Manager(ftlType, builder.toString());
 		File file = new File(path);
 		if (!file.exists()) {
@@ -132,9 +133,10 @@ public class Generator {
 				if (element.getName().equals("list")) {
 					field.setListFlag(1);
 				}
-				if (!isJavaType(element.attributeValue("class"))) {
+				if (!isJavaType(field.getClazz())) {
 					field.setImportFlag(1);
 				}
+				field.setClazz(getNewClazz(field.getClazz(), ftlType));
 			}
 		} else if (root.getName().equals("message")) {
 			Message message = new Message(ftlType, getDestRelativePath(pkg, root.attributeValue("name"), Message.class.getName(), ftlType));
@@ -159,6 +161,7 @@ public class Generator {
 				if (!isJavaType(element.attributeValue("class"))) {
 					field.setImportFlag(1);
 				}
+				field.setClazz(getNewClazz(field.getClazz(), ftlType));
 			}
 			
 			if (root.attributeValue("type").equals(getString(ftlType))) {
@@ -172,8 +175,17 @@ public class Generator {
 		}
 	}
 
+	private String getNewClazz(String clazz, FtlType ftlType) {
+		if (ftlType == FtlType.ROBOT) {
+			return clazz.replaceAll("game.server", "game.robot");
+		} else if (ftlType == FtlType.CLIENT) {
+			return clazz.replaceAll("game.server", "game.client");
+		}
+		return clazz;
+	}
+
 	private boolean isJavaType(String className) {
-		if (className.contains("\\.")) {
+		if (className.contains(".")) {
 			return true;
 		}
 		switch (className) {
@@ -187,7 +199,7 @@ public class Generator {
 		}
 		return false;
 	}
-
+	
 	private Object getString(FtlType ftlType) {
 		switch (ftlType) {
 		case SERVER: return "CS";

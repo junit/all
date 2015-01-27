@@ -6,15 +6,12 @@ import io.netty.handler.timeout.IdleStateEvent;
 
 import org.apache.log4j.Logger;
 
-import com.google.inject.Inject;
 import com.mokylin.game.core.message.MessagePool;
 import com.mokylin.game.core.message.bean.Message;
 import com.mokylin.game.core.util.ContextUtil;
 
 public abstract class GameHandlerAdapter extends ChannelInboundHandlerAdapter {
 	protected static Logger logger = Logger.getLogger(GameHandlerAdapter.class);
-	@Inject
-	private MessagePool messagePool;
 
 	protected abstract void onRecvMsg(com.mokylin.game.core.message.bean.Handler handler);
 	protected abstract void readIdle(ChannelHandlerContext ctx);
@@ -30,7 +27,7 @@ public abstract class GameHandlerAdapter extends ChannelInboundHandlerAdapter {
 
 		com.mokylin.game.core.message.bean.Handler handler = null;
 		try {
-			handler = messagePool.createHandler(msg.getId());
+			handler = MessagePool.getInstance().createHandler(msg.getId());
 		} catch (Exception e) {
 			ContextUtil.close(ctx, "exception");
 			logger.error(e, e);

@@ -12,9 +12,6 @@ import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
 
-import com.google.inject.Singleton;
-
-@Singleton
 public class SchedulerManager {
 	private static Logger logger = Logger.getLogger(SchedulerManager.class);
 	private Scheduler scheduler;

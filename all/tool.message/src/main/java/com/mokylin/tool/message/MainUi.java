@@ -4,7 +4,9 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileReader;
 import java.util.HashMap;
+import java.util.Properties;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -23,7 +25,7 @@ public class MainUi extends JFrame implements ActionListener {
 	@SuppressWarnings("rawtypes")
 	private JList list;
 	private HashMap<String, String> messagePathes = new HashMap<>();
-	private Generator generator = new Generator();
+	private Generator generator;
 	private JCheckBox javaServer;
 	private JCheckBox javaClient;
 	private JCheckBox asClient;
@@ -85,8 +87,11 @@ public class MainUi extends JFrame implements ActionListener {
 	}
 
 	public boolean init() throws Exception {
-		// TODO 这里改配置
-		File dir = new File("/home/shell/workspace/Res/resource/message");
+		Properties properties = new Properties();
+		properties.load(new FileReader("config.properties"));
+		
+		generator = new Generator(properties);
+		File dir = new File(properties.getProperty("message_xml_path"));
 		for (File file : dir.listFiles()) {
 			if (!file.getName().endsWith("xml")) {
 				continue;

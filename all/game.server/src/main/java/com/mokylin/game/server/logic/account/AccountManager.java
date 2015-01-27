@@ -2,10 +2,8 @@ package com.mokylin.game.server.logic.account;
 
 import org.apache.log4j.Logger;
 
-import com.google.inject.Singleton;
 import com.mokylin.game.core.cache.Cache;
 
-@Singleton
 public class AccountManager {
 	@SuppressWarnings("unused")
 	private static Logger logger = Logger.getLogger(AccountManager.class);

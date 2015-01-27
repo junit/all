@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<messages package="login" id="100">
+	<!-- bean定义 -->
+	<bean name="ArenaInfo" explain="玩家竞技场信息">
+		<field class="int" name="rank" explain="竞技场排名"></field>
+		<field class="int" name="bestRank" explain="竞技场最高排名"></field>
+		<field class="int" name="characterId" explain="上次使用的角色id"></field>
+		<field class="int" name="fighting" explain="战斗力"></field>
+		<field class="int" name="leftCount" explain="剩余挑战次数"></field>
+		<field class="int" name="cdTime" explain="cd剩余秒数"></field>
+	</bean>
+	
+	<!-- 服务器接收消息 -->
+	<message id="101" type="CS" name="ReqLogin" explain="登录">
+		<field class="String" name="accountName" explain="帐号名称"></field>
+		<field class="int" name="server" explain="服务器id"></field>
+		<field class="String" name="check" explain="验证key(密码)"></field>
+	</message>
+	
+	<message id="102" type="CS" name="ReqLoginTest" explain="登录">
+		<field class="String" name="accountName" explain="帐号名称"></field>
+		<field class="int" name="server" explain="服务器id"></field>
+		<field class="String" name="check" explain="验证key(密码)"></field>
+	</message>
+	
+</messages>

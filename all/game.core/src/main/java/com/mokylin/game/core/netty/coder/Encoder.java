@@ -6,9 +6,13 @@ import io.netty.handler.codec.MessageToByteEncoder;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.apache.log4j.Logger;
+
 import com.mokylin.game.core.message.bean.Message;
 
-public class Encoder extends MessageToByteEncoder<Message> {
+public final class Encoder extends MessageToByteEncoder<Message> {
+	@SuppressWarnings("unused")
+	private static Logger logger = Logger.getLogger(Encoder.class);
 	private AtomicInteger sendedMsgNum = new AtomicInteger(0);
     @Override
     protected void encode(ChannelHandlerContext ctx, Message msg, ByteBuf out) throws Exception {

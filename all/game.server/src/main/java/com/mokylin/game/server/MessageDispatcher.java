@@ -34,18 +34,15 @@ public class MessageDispatcher extends GameHandlerAdapter {
 	@Override
 	protected void readIdle(ChannelHandlerContext ctx) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	protected void writeIdle(ChannelHandlerContext ctx) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	protected void allIdle(ChannelHandlerContext ctx) {
 		// TODO Auto-generated method stub
-		
 	}
 }

@@ -4,12 +4,14 @@ import java.util.HashMap;
 
 import org.apache.log4j.Logger;
 
-import com.google.inject.Singleton;
 import com.mokylin.game.core.message.bean.Handler;
 import com.mokylin.game.core.message.bean.Message;
 
-@Singleton
-public class MessagePool {
+public final class MessagePool {
+	private static MessagePool instance = new MessagePool();
+	public static MessagePool getInstance() {
+		return instance;
+	}
 	private Logger logger = Logger.getLogger(this.getClass());
 	
     private HashMap<Integer, Class<? extends Handler>> id2handler = new HashMap<Integer, Class<? extends Handler>>();
