@@ -7,6 +7,9 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
+import io.netty.channel.ServerChannel;
+import io.netty.channel.epoll.EpollEventLoopGroup;
+import io.netty.channel.epoll.EpollServerSocketChannel;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
@@ -40,12 +43,22 @@ public abstract class Server extends Thread {
 
 		initSignal();
 
-		accepterGroup = new NioEventLoopGroup();
-		clientGroup = new NioEventLoopGroup();
+		Class<? extends ServerChannel> channelClass;
+		if (System.getProperties().getProperty("os.name").equals("Linux")) {
+			accepterGroup = new EpollEventLoopGroup(2);
+			clientGroup = new EpollEventLoopGroup(2);
+			channelClass = EpollServerSocketChannel.class;
+			logger.error("epoll方式监听");
+		} else {
+			accepterGroup = new NioEventLoopGroup();
+			clientGroup = new NioEventLoopGroup();
+			channelClass = NioServerSocketChannel.class;
+			logger.error("nio方式监听");
+		}
 
 		try {
 			ServerBootstrap b = new ServerBootstrap();
-			b.group(accepterGroup, clientGroup).channel(NioServerSocketChannel.class).childHandler(new ChannelInitializer<SocketChannel>() {
+			b.group(accepterGroup, clientGroup).channel(channelClass).childHandler(new ChannelInitializer<SocketChannel>() {
 				@Override
 				public void initChannel(SocketChannel ch) throws Exception {
 					ch.pipeline().addLast("encoder", new Encoder());

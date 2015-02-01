@@ -18,7 +18,7 @@ public class MessageDispatcher extends GameHandlerAdapter {
 	
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
-		logger.error(count.incrementAndGet());
+		logger.error(Thread.currentThread().getId());
 	}
 	
 	@Override
