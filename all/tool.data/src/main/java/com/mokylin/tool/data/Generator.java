@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import com.mokylin.tool.core.FtlManager;
 import com.mokylin.tool.core.bean.Config;
@@ -14,23 +15,17 @@ import com.mokylin.tool.data.bean.Container;
 import com.mokylin.tool.data.bean.Dao;
 import com.mokylin.tool.data.bean.Manager;
 import com.mokylin.tool.data.bean.Mapper;
+import com.mokylin.tool.data.bean.Pool;
 
 public class Generator {
-	public Generator() throws Exception {
-		// TODO 配置直接写这里来
-		String dataUrl = "jdbc:mysql://127.0.0.1/bleach_game";
-		String dataUsr = "game";
-		String dataPwd = "game";
-		String configUrl = "jdbc:mysql://127.0.0.1/bleach_data";
-		String configUsr = "game";
-		String configPwd = "game";
-		DbOpt.getInstance(dataUrl, dataUsr, dataPwd, configUrl, configUsr, configPwd);
+	public Generator(Properties properties) throws Exception {
+		DbOpt.getInstance(properties);
 		
 		Config config = new Config();
-		ftlManager = new FtlManager("/home/shell/git/all/all/tool.data/ftl", config);
-		config.add(FtlType.SERVER, "/home/shell/git/all/all/game.server", "game/server");
-		config.add(FtlType.ROBOT, "/home/shell/git/all/all/game.robot", "game/robot");
-		config.add(FtlType.CLIENT, "/home/shell/git/all/all/res/message/client", "");
+		ftlManager = new FtlManager("ftl", config);
+		config.add(FtlType.SERVER, properties.getProperty("server_path"), properties.getProperty("server_project"));
+		config.add(FtlType.ROBOT, properties.getProperty("robot_path"), properties.getProperty("robot_project"));
+		config.add(FtlType.CLIENT, properties.getProperty("client_path"), properties.getProperty("client_project"));
 	}
 	private FtlManager ftlManager;
 	
@@ -58,6 +53,7 @@ public class Generator {
 			ftlManager.generate(ftl);
 		}
 		
+		ftlManager.generate(new Pool(type, "src/main/java/com/mokylin/game/server/db/data/DaoPool.java", ftlManager.getConfig().getDestPath().get(type).getProjectPath()));
 		ftlManager.generate(new com.mokylin.tool.data.bean.Config("url", "usr", "pwd", type, "config/db-data.xml", ftlManager.getConfig().getDestPath().get(type).getProjectPath(), "config"));
 	}
 
@@ -69,7 +65,7 @@ public class Generator {
 			ftlManager.generate(ftl);
 		}
 		
-		ftlManager.generate(new Manager(type, "src/main/java/com/mokylin/game/server/db/config/DbConfigManager.java", ftlManager.getConfig().getDestPath().get(type).getProjectPath()));
+		ftlManager.generate(new Manager(type, "src/main/java/com/mokylin/game/server/db/config/ContainerPool.java", ftlManager.getConfig().getDestPath().get(type).getProjectPath()));
 		ftlManager.generate(new com.mokylin.tool.data.bean.Config("url", "usr", "pwd", type, "config/db-config.xml", ftlManager.getConfig().getDestPath().get(type).getProjectPath(), "config"));
 	}
 

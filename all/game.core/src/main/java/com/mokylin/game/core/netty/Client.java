@@ -14,9 +14,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 
-import com.mokylin.game.core.netty.coder.Decoder;
-import com.mokylin.game.core.netty.coder.Encoder;
-
 public abstract class Client {
 	private static Logger logger = Logger.getLogger(Client.class);
 	private String host;

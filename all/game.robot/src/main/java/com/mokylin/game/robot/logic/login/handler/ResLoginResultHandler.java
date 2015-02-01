@@ -4,7 +4,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.log4j.Logger;
 
-import com.mokylin.game.core.message.bean.Handler;
+import com.mokylin.game.core.message.Handler;
 import com.mokylin.game.robot.Main;
 import com.mokylin.game.robot.logic.login.message.ResLoginResultMessage;
 

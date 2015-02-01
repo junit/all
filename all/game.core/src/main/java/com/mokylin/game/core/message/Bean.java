@@ -1,4 +1,4 @@
-package com.mokylin.game.core.message.bean;
+package com.mokylin.game.core.message;
 
 import io.netty.buffer.ByteBuf;
 import org.apache.log4j.Logger;

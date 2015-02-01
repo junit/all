@@ -10,11 +10,11 @@ import org.apache.log4j.Logger;
 import com.mokylin.game.robot.message.MessageManager;
 
 public class Main {
-	public static final String PREFIX = "s3_";
+	public static final String PREFIX = "s1_";
 	// private static final String IP = "183.60.122.232";
 	private static final String IP = "183.60.122.232";
 	private static final int PORT = 7777;
-	public static final int COUNT = 20000;
+	public static final int COUNT = 10000;
 
 	public static AtomicInteger count = new AtomicInteger();
 

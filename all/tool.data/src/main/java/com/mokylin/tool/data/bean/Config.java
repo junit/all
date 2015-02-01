@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.mokylin.tool.core.bean.FtlType;
 import com.mokylin.tool.core.bean.IFtl;
+import com.mokylin.tool.core.util.FileUtil;
 
 public class Config extends IFtl {
 	public Config(String url, String usr, String pwd, FtlType ftlType, String destRelativePath, String path, String type) {
@@ -16,9 +17,11 @@ public class Config extends IFtl {
 		this.pwd = pwd;
 		this.type = type;
 		
-		File dir = new File(path + File.separator + "src/main/java/com/mokylin/game/server/db/" + type + "/mapper");
-		for (File file : dir.listFiles()) {
-			names.add(file.getName());
+		File dir = new File(FileUtil.getFileName(path + File.separator + "src/main/java/com/mokylin/game/server/db/" + type + "/mapper"));
+		if (dir.exists()) {
+			for (File file : dir.listFiles()) {
+				names.add(file.getName());
+			}
 		}
 	}
 
@@ -34,7 +37,7 @@ public class Config extends IFtl {
 		map.put("url", url);
 		map.put("usr", usr);
 		map.put("pwd", pwd);
-		map.put("path", "src/main/java/com/mokylin/game/server/db/" + type + "/mapper");
+		map.put("path", FileUtil.getFileName("src/main/java/com/mokylin/game/server/db/" + type + "/mapper"));
 		map.put("names", names);
 		return map;
 	}
