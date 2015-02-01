@@ -1,7 +1,5 @@
 package com.mokylin.game.core.netty;
 
-import java.util.concurrent.TimeUnit;
-
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -12,10 +10,10 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.timeout.IdleStateHandler;
 
+import java.util.concurrent.TimeUnit;
+
 import org.apache.log4j.Logger;
 
-import com.mokylin.game.core.netty.coder.Decoder;
-import com.mokylin.game.core.netty.coder.Encoder;
 import com.mokylin.game.core.system.SignalHandler;
 
 public abstract class Server extends Thread {
