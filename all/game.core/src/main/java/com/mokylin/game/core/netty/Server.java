@@ -42,6 +42,7 @@ public abstract class Server extends Thread {
 		accepterGroup = new NioEventLoopGroup();
 		clientGroup = new NioEventLoopGroup();
 
+		
 		try {
 			ServerBootstrap b = new ServerBootstrap();
 			b.group(accepterGroup, clientGroup).channel(NioServerSocketChannel.class).childHandler(new ChannelInitializer<SocketChannel>() {
