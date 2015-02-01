@@ -31,6 +31,7 @@ public abstract class Server extends Thread {
 
 	@Override
 	public void run() {
+		
 		if (!init()) {
 			logger.error("初始化失败");
 			System.exit(-1);
@@ -40,6 +41,7 @@ public abstract class Server extends Thread {
 
 		accepterGroup = new NioEventLoopGroup();
 		clientGroup = new NioEventLoopGroup();
+		
 
 		try {
 			ServerBootstrap b = new ServerBootstrap();
