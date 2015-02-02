@@ -29,21 +29,21 @@ public class Generator {
 	public Generator(Properties properties) throws IOException {
 		Config config = new Config();
 		ftlManager = new FtlManager("ftl", config);
-		config.add(FtlType.SERVER, properties.getProperty("server_path"), properties.getProperty("server_project"));
-		config.add(FtlType.ROBOT, properties.getProperty("robot_path"), properties.getProperty("robot_project"));
-		config.add(FtlType.CLIENT, properties.getProperty("client_path"), properties.getProperty("client_project"));
+		config.getDestPath().put(FtlType.SERVER, properties.getProperty("server_path"));
+		config.getDestPath().put(FtlType.ROBOT, properties.getProperty("robot_path"));
+		config.getDestPath().put(FtlType.CLIENT, properties.getProperty("client_path"));
 	}
 	private FtlManager ftlManager;
 	
 	public boolean generate(FtlType ftlType, String xml) throws Exception {
-		String managerXmlPath = ftlManager.getConfig().getDestPath().get(ftlType).getProjectPath() + File.separator + "message.xml";
+		String managerXmlPath = ftlManager.getConfig().getDestPath().get(ftlType) + File.separator + "message.xml";
 		Manager manager = parseManager(managerXmlPath, ftlType);
 		List<IFtl> ftls = parse(xml, ftlType);
 		for (IFtl ftl : ftls) {
 			ftlManager.generate(ftl);
 			if (ftl instanceof Handler) {
 				Handler handler = (Handler)ftl;
-				manager.add(handler.getId(), getFullPkg(handler.getPkg(), ftlType), handler.getName());
+				manager.add(handler.getId(), handler.getPkg(), handler.getName());
 			}
 		}
 		ftlManager.generate(manager);
@@ -51,12 +51,6 @@ public class Generator {
 		return true;
 	}
 	
-	private String getFullPkg(String pkg, FtlType ftlType) {
-		ftlManager.getConfig().getDestPath().get(ftlType).getProjectName();
-		String ret = "com.mokylin." + ftlManager.getConfig().getDestPath().get(ftlType).getProjectName() + ".logic." + pkg;
-		return ret.replace("/", ".");
-	}
-
 	private void record(String path, Manager manager) throws Exception {
 		Document document = DocumentHelper.createDocument();
 		Element root = document.addElement("root");
@@ -76,11 +70,8 @@ public class Generator {
 	}
 
 	private Manager parseManager(String path, FtlType ftlType) throws Exception {
-		StringBuilder builder = new StringBuilder();
-		builder.append("src/main/java/com/mokylin").append(File.separator);
-		builder.append(ftlManager.getConfig().getDestPath().get(ftlType).getProjectName()).append(File.separator);
-		builder.append("message/MessageManager.java");
-		Manager manager = new Manager(ftlType, builder.toString());
+		String destPath = getDestRelativePath(null, "MessageManager", ftlType);
+		Manager manager = new Manager(ftlType, destPath);
 		File file = new File(path);
 		if (!file.exists()) {
 			return manager;
@@ -115,7 +106,7 @@ public class Generator {
 
 	private void add(List<IFtl> list, Element root, int index, String pkg, FtlType ftlType) {
 		if (root.getName().equals("bean")) {
-			Bean bean = new Bean(ftlType, getDestRelativePath(pkg, root.attributeValue("name"), Bean.class.getName(), ftlType));
+			Bean bean = new Bean(ftlType, getDestRelativePath(pkg + File.separator + "message", root.attributeValue("name") + "Bean", ftlType));
 			list.add(bean);
 			
 			bean.setName(root.attributeValue("name"));
@@ -139,7 +130,7 @@ public class Generator {
 				field.setClazz(getNewClazz(field.getClazz(), ftlType));
 			}
 		} else if (root.getName().equals("message")) {
-			Message message = new Message(ftlType, getDestRelativePath(pkg, root.attributeValue("name"), Message.class.getName(), ftlType));
+			Message message = new Message(ftlType, getDestRelativePath(pkg + File.separator + "message", root.attributeValue("name") + "Message", ftlType));
 			list.add(message);
 			
 			message.setName(root.attributeValue("name"));
@@ -165,7 +156,7 @@ public class Generator {
 			}
 			
 			if (root.attributeValue("type").equals(getString(ftlType))) {
-				Handler handler = new Handler(ftlType, getDestRelativePath(pkg, message.getName(), Handler.class.getName(), ftlType));
+				Handler handler = new Handler(ftlType, getDestRelativePath(pkg + File.separator + "handler", message.getName() + "Handler", ftlType));
 				list.add(handler);
 				
 				handler.setId(message.getId());
@@ -209,24 +200,25 @@ public class Generator {
 		return "";
 	}
 	
-	private String getDestRelativePath(String pkg, String clazz, String type, FtlType ftlType) {
-		String[] split = type.split("\\.");
-		String typeName = split[split.length - 1].toLowerCase();
-		StringBuilder builder = new StringBuilder();
-		builder.append("src/main/java/com/mokylin").append(File.separator);
-		builder.append(ftlManager.getConfig().getDestPath().get(ftlType).getProjectName()).append(File.separator);
-		builder.append("logic").append(File.separator);
-		builder.append(pkg).append(File.separator);
-		builder.append(typeName).append(File.separator);
-		builder.append(clazz);
-		if (!typeName.equalsIgnoreCase("bean")) {
-			builder.append(typeName.substring(0, 1).toUpperCase()).append(typeName.substring(1));
-		}
+	private String getDestRelativePath(String pkg, String className, FtlType ftlType) {
+		String projectPath = ftlManager.getConfig().getDestPath().get(ftlType);
+		String fileSuffix = "";
 		if (ftlType == FtlType.SERVER || ftlType == FtlType.ROBOT) {
-			builder.append(".java");
+			fileSuffix = "java";
 		} else if (ftlType == FtlType.CLIENT) {
-			builder.append(".as");
+			fileSuffix = "as";
 		}
+		return getJavaPath(projectPath, pkg, className, fileSuffix);
+	}
+	
+	private String getJavaPath(String projectPath, String pkg, String name, String fileSuffix) {
+		StringBuilder builder = new StringBuilder();
+		builder.append(projectPath).append(File.separator);
+		if (pkg != null && pkg.length() > 0) {
+			builder.append("logic").append(File.separator);
+			builder.append(pkg).append(File.separator);
+		}
+		builder.append(name).append(".").append(fileSuffix);
 		return builder.toString();
 	}
 }

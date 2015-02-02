@@ -1,4 +1,4 @@
-package com.mokylin.game.server.logic.${pkg}.bean;
+package com.mokylin.game.server.logic.${pkg}.message;
 
 <#list fields as field>
 <#if field.listFlag==1>
@@ -8,13 +8,7 @@ import java.util.ArrayList;
 </#if>
 </#list>
 
-<#list fields as field>
-<#if field.importFlag==1>
-import com.mokylin.game.server.logic.${pkg}.bean.*;
-<#break>
-</#if>
-</#list>
-import com.mokylin.game.core.message.bean.Bean;
+import com.mokylin.game.core.message.Bean;
 
 import io.netty.buffer.ByteBuf;
 import org.apache.log4j.Logger;
@@ -26,9 +20,9 @@ import org.apache.log4j.Logger;
  * 
  * ${note}
  */
-public class ${name} extends Bean {
+public class ${name}Bean extends Bean {
 
-	private static Logger log = Logger.getLogger(${name}.class);
+	private static Logger log = Logger.getLogger(${name}Bean.class);
 	
 	<#list fields as field>
 	<#if field.listFlag==1>

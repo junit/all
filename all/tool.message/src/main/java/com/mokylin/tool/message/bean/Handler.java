@@ -8,7 +8,6 @@ import com.mokylin.tool.core.bean.IFtl;
 public class Handler extends IFtl {
 	public Handler(FtlType ftlType, String destRelativePath) {
 		super(ftlType, destRelativePath);
-		// TODO Auto-generated constructor stub
 	}
 
 	private int id;

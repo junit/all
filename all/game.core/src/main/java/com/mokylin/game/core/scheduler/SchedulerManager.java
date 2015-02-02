@@ -16,17 +16,6 @@ public class SchedulerManager {
 	private static Logger logger = Logger.getLogger(SchedulerManager.class);
 	private Scheduler scheduler;
 
-	public boolean start() {
-		try {
-			scheduler = StdSchedulerFactory.getDefaultScheduler();
-			scheduler.start();
-		} catch (SchedulerException e) {
-			logger.error(e, e);
-			return false;
-		}
-		return true;
-	}
-
 	public boolean add(Class<? extends Job> jobClass, long interval) {
 		JobDetail job = JobBuilder.newJob(jobClass).withIdentity(jobClass.getName(), Scheduler.DEFAULT_GROUP).build();
 
@@ -50,6 +39,17 @@ public class SchedulerManager {
 
 		try {
 			scheduler.scheduleJob(job, trigger);
+		} catch (SchedulerException e) {
+			logger.error(e, e);
+			return false;
+		}
+		return true;
+	}
+
+	public boolean init() {
+		try {
+			scheduler = StdSchedulerFactory.getDefaultScheduler();
+			scheduler.start();
 		} catch (SchedulerException e) {
 			logger.error(e, e);
 			return false;

@@ -34,7 +34,7 @@ public class TestMain {
 
 		long s = System.currentTimeMillis();
 		for (int i = 0; i < 1000000; ++i) {
-			Data tmp = JSON.parseObject(string, Data.class);
+//			Data tmp = JSON.parseObject(string, Data.class);
 		}
 		System.out.println(System.currentTimeMillis() - s);
 	}

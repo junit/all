@@ -2,9 +2,7 @@ package com.mokylin.game.server.logic.login.message;
 
 
 import com.mokylin.game.core.message.Message;
-
 import io.netty.buffer.ByteBuf;
-
 import org.apache.log4j.Logger;
 
 /** 
@@ -22,7 +20,7 @@ public class ReqLoginMessage extends Message{
 	private String accountName;
 	//服务器id
 	private Integer server;
-	//验证key(密码)
+	//验证key/密码
 	private String check;
 	
 	/**
@@ -34,7 +32,7 @@ public class ReqLoginMessage extends Message{
 			writeString(buf, this.accountName);
 			//服务器id
 			writeInt(buf, this.server);
-			//验证key(密码)
+			//验证key/密码
 			writeString(buf, this.check);
         } catch (Exception e) {
             log.error(e, e);
@@ -52,7 +50,7 @@ public class ReqLoginMessage extends Message{
 			this.accountName = readString(buf);
 			//服务器id
 			this.server = readInt(buf);
-			//验证key(密码)
+			//验证key/密码
 			this.check = readString(buf);
         } catch (Exception e) {
             log.error(e, e);
@@ -92,7 +90,7 @@ public class ReqLoginMessage extends Message{
 	}
 	
 	/**
-	 * get 验证key(密码)
+	 * get 验证key/密码
 	 * @return 
 	 */
 	public String getCheck(){
@@ -100,7 +98,7 @@ public class ReqLoginMessage extends Message{
 	}
 	
 	/**
-	 * set 验证key(密码)
+	 * set 验证key/密码
 	 */
 	public void setCheck(String check){
 		this.check = check;
@@ -119,7 +117,7 @@ public class ReqLoginMessage extends Message{
 		if(this.accountName!=null) buf.append("accountName:" + accountName.toString() +",");
 		//服务器id
 		buf.append("server:" + server +",");
-		//验证key(密码)
+		//验证key/密码
 		if(this.check!=null) buf.append("check:" + check.toString() +",");
 		if(buf.charAt(buf.length()-1)==',') buf.deleteCharAt(buf.length()-1);
 		buf.append("]");

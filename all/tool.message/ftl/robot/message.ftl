@@ -14,7 +14,7 @@ import com.mokylin.game.robot.logic.${pkg}.bean.*;
 <#break>
 </#if>
 </#list>
-import com.mokylin.game.core.message.bean.Message;
+import com.mokylin.game.core.message.Message;
 import io.netty.buffer.ByteBuf;
 import org.apache.log4j.Logger;
 

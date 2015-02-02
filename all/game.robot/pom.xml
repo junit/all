@@ -28,9 +28,5 @@
 			<artifactId>game.core</artifactId>
 			<version>1.0</version>
 		</dependency>
-		<dependency>
-			<groupId>org.jboss.netty</groupId>
-			<artifactId>netty</artifactId>
-		</dependency>
 	</dependencies>
 </project>

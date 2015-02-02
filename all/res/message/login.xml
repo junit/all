@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <messages package="login" id="100">
+	<bean name="Test" explain="道具信息">
+		<field class="int" name="itemId" explain="道具model"></field>
+		<field class="int" name="itemCount" explain="道具数量"></field>
+	</bean>
+	
 	<!-- 服务器接收消息 -->
 	<message id="101" type="CS" name="ReqLogin" explain="登录">
 		<field class="String" name="accountName" explain="帐号名称"></field>

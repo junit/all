@@ -11,6 +11,11 @@ public class MessageDispatcher extends GameHandlerAdapter {
 
 	@Override
 	protected void onRecvMsg(Handler handler) {
+		if (handler.getMessage().getId() == 100101) { // 登录
+			handler.exec();
+			return ;
+		}
+		// TODO
 		handler.exec();
 	}
 
@@ -33,16 +38,16 @@ public class MessageDispatcher extends GameHandlerAdapter {
 
 	@Override
 	protected void readIdle(ChannelHandlerContext ctx) {
-		// TODO Auto-generated method stub
+		// do nothing
 	}
 
 	@Override
 	protected void writeIdle(ChannelHandlerContext ctx) {
-		// TODO Auto-generated method stub
+		// do noting
 	}
 
 	@Override
 	protected void allIdle(ChannelHandlerContext ctx) {
-		// TODO Auto-generated method stub
+		// do nothing
 	}
 }

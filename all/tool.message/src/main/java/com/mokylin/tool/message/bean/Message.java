@@ -10,7 +10,6 @@ import com.mokylin.tool.core.bean.IFtl;
 public class Message extends IFtl {
 	public Message(FtlType ftlType, String destRelativePath) {
 		super(ftlType, destRelativePath);
-		// TODO Auto-generated constructor stub
 	}
 
 	private String pkg;

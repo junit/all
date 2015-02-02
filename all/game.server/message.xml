@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<root>
-  <message id="100101" pkg="com.mokylin.game.server.logic.login" name="ReqLogin"/>
-  <message id="100102" pkg="com.mokylin.game.server.logic.login" name="ReqLoginTest"/>
-</root>

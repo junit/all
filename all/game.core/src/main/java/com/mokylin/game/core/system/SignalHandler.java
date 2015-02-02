@@ -13,6 +13,6 @@ public class SignalHandler implements sun.misc.SignalHandler {
 
 	@Override
 	public void handle(Signal signal) {
-		server.stopManual();
+		server.shutdown();
 	}
 }

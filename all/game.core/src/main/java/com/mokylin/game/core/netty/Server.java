@@ -15,6 +15,7 @@ import java.util.concurrent.TimeUnit;
 import org.apache.log4j.Logger;
 
 import com.mokylin.game.core.system.SignalHandler;
+import com.mokylin.game.core.util.CommonUtil;
 
 public abstract class Server extends Thread {
 	protected static Logger logger = Logger.getLogger(Server.class);
@@ -39,13 +40,14 @@ public abstract class Server extends Thread {
 
 		initSignal();
 
-		accepterGroup = new NioEventLoopGroup();
-		clientGroup = new NioEventLoopGroup();
-
+		accepterGroup = new NioEventLoopGroup(1);
+		clientGroup = new NioEventLoopGroup(2 * Runtime.getRuntime().availableProcessors());
 		
 		try {
 			ServerBootstrap b = new ServerBootstrap();
-			b.group(accepterGroup, clientGroup).channel(NioServerSocketChannel.class).childHandler(new ChannelInitializer<SocketChannel>() {
+			b.group(accepterGroup, clientGroup)
+			.channel(NioServerSocketChannel.class)
+			.childHandler(new ChannelInitializer<SocketChannel>() {
 				@Override
 				public void initChannel(SocketChannel ch) throws Exception {
 					ch.pipeline().addLast("encoder", new Encoder());
@@ -53,7 +55,9 @@ public abstract class Server extends Thread {
 					ch.pipeline().addLast("idle", new IdleStateHandler(60, 60, 60, TimeUnit.SECONDS));
 					ch.pipeline().addLast("handler", createHandlerAdapter());
 				}
-			}).option(ChannelOption.SO_BACKLOG, 128).childOption(ChannelOption.SO_KEEPALIVE, true);
+			})
+			.option(ChannelOption.SO_BACKLOG, 128)
+			.childOption(ChannelOption.SO_KEEPALIVE, true);
 
 			ChannelFuture f = b.bind(port).sync();
 
@@ -76,7 +80,7 @@ public abstract class Server extends Thread {
 
 	public abstract void onStop();
 
-	public void stopManual() {
+	public void shutdown() {
 		logger.error("服务器收到关闭信号");
 		// 关闭所有链接
 		clientGroup.shutdownGracefully();
@@ -84,6 +88,7 @@ public abstract class Server extends Thread {
 		
 		onStop();
 		
+		logger.error("需要等待" + (CommonUtil.time - (System.currentTimeMillis() / 1000)) + "秒之后才能重启,否则会出现ID重复");
 		System.exit(0);
 	}
 }

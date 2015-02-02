@@ -61,7 +61,7 @@ public class FtlManager {
 			return false;
 		}
 
-		File file = new File(getDstFileName(ftl));
+		File file = new File(ftl.getDestRelativePath());
 		if (file.exists() && !ftl.isRewrite()) {
 			return true;
 		}
@@ -71,11 +71,5 @@ public class FtlManager {
 		file.createNewFile();
 		template.process(ftl.getDataModel(), new FileWriterWithEncoding(file, "UTF-8"));
 		return true;
-	}
-
-	private String getDstFileName(IFtl ftl) {
-		StringBuilder builder = new StringBuilder();
-		builder.append(config.getDestPath().get(ftl.getFtlType()).getProjectPath()).append(File.separator).append(ftl.getDestRelativePath());
-		return builder.toString();
 	}
 }
