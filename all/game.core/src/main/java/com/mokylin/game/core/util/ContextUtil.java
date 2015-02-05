@@ -9,6 +9,7 @@ public class ContextUtil {
 
 	public static void close(ChannelHandlerContext ctx, String reason) {
 		logger.error("close context:" + reason);
-		ctx.close();
+//		ctx.close();
+		ctx.disconnect();
 	}
 }

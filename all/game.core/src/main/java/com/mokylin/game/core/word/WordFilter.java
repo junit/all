@@ -77,7 +77,7 @@ public class WordFilter {
 				word.clear();
 			} else if (node.flag == 1) {
 				node = null;
-				return true;
+				return false;
 			} else {
 				word.add(String.valueOf(chars[a]));
 			}
@@ -86,7 +86,7 @@ public class WordFilter {
 		chars = null;
 		word.clear();
 		word = null;
-		return false;
+		return true;
 	}
 
 	public static void main(String[] args) {

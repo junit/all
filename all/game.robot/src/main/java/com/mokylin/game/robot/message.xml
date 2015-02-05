@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root>
+  <message id="100201" pkg="login" name="ResLoginFailed"/>
+  <message id="100202" pkg="login" name="ResLoginTest"/>
+</root>

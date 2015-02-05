@@ -2,9 +2,7 @@ package com.mokylin.game.robot.logic.login.message;
 
 
 import com.mokylin.game.core.message.Message;
-
 import io.netty.buffer.ByteBuf;
-
 import org.apache.log4j.Logger;
 
 /** 
@@ -12,30 +10,34 @@ import org.apache.log4j.Logger;
  * 
  * @version 1.0.0
  * 
- * 登陆消息
+ * 登录消息
  */
 public class ReqLoginMessage extends Message{
 
 	private static Logger log = Logger.getLogger(ReqLoginMessage.class);
 	
-	//玩家用户名
-	private String name;
-	//玩家密码
-	private String password;
-	//服务器Id
-	private Integer serverId;
+	//帐号名称
+	private String accountName;
+	//平台
+	private Integer platform;
+	//服务器
+	private Integer server;
+	//验证key/密码
+	private String check;
 	
 	/**
 	 * 写入字节缓存
 	 */
 	public boolean write(ByteBuf buf){
 	    try {
-			//玩家用户名
-			writeString(buf, this.name);
-			//玩家密码
-			writeString(buf, this.password);
-			//服务器Id
-			writeInt(buf, this.serverId);
+			//帐号名称
+			writeString(buf, this.accountName);
+			//平台
+			writeInt(buf, this.platform);
+			//服务器
+			writeInt(buf, this.server);
+			//验证key/密码
+			writeString(buf, this.check);
         } catch (Exception e) {
             log.error(e, e);
             return false;
@@ -48,12 +50,14 @@ public class ReqLoginMessage extends Message{
 	 */
 	public boolean read(ByteBuf buf){
         try {
-			//玩家用户名
-			this.name = readString(buf);
-			//玩家密码
-			this.password = readString(buf);
-			//服务器Id
-			this.serverId = readInt(buf);
+			//帐号名称
+			this.accountName = readString(buf);
+			//平台
+			this.platform = readInt(buf);
+			//服务器
+			this.server = readInt(buf);
+			//验证key/密码
+			this.check = readString(buf);
         } catch (Exception e) {
             log.error(e, e);
             return false;
@@ -62,65 +66,82 @@ public class ReqLoginMessage extends Message{
 	}
 	
 	/**
-	 * get 玩家用户名
+	 * get 帐号名称
 	 * @return 
 	 */
-	public String getName(){
-		return name;
+	public String getAccountName(){
+		return accountName;
 	}
 	
 	/**
-	 * set 玩家用户名
+	 * set 帐号名称
 	 */
-	public void setName(String name){
-		this.name = name;
+	public void setAccountName(String accountName){
+		this.accountName = accountName;
 	}
 	
 	/**
-	 * get 玩家密码
+	 * get 平台
 	 * @return 
 	 */
-	public String getPassword(){
-		return password;
+	public Integer getPlatform(){
+		return platform;
 	}
 	
 	/**
-	 * set 玩家密码
+	 * set 平台
 	 */
-	public void setPassword(String password){
-		this.password = password;
+	public void setPlatform(Integer platform){
+		this.platform = platform;
 	}
 	
 	/**
-	 * get 服务器Id
+	 * get 服务器
 	 * @return 
 	 */
-	public Integer getServerId(){
-		return serverId;
+	public Integer getServer(){
+		return server;
 	}
 	
 	/**
-	 * set 服务器Id
+	 * set 服务器
 	 */
-	public void setServerId(Integer serverId){
-		this.serverId = serverId;
+	public void setServer(Integer server){
+		this.server = server;
+	}
+	
+	/**
+	 * get 验证key/密码
+	 * @return 
+	 */
+	public String getCheck(){
+		return check;
+	}
+	
+	/**
+	 * set 验证key/密码
+	 */
+	public void setCheck(String check){
+		this.check = check;
 	}
 	
 	
 	@Override
 	public int getId() {
-		return 100201;
+		return 100101;
 	}
 	
 	@Override
 	public String toString(){
 		StringBuffer buf = new StringBuffer("[");
-		//玩家用户名
-		if(this.name!=null) buf.append("name:" + name.toString() +",");
-		//玩家密码
-		if(this.password!=null) buf.append("password:" + password.toString() +",");
-		//服务器Id
-		buf.append("serverId:" + serverId +",");
+		//帐号名称
+		if(this.accountName!=null) buf.append("accountName:" + accountName.toString() +",");
+		//平台
+		buf.append("platform:" + platform +",");
+		//服务器
+		buf.append("server:" + server +",");
+		//验证key/密码
+		if(this.check!=null) buf.append("check:" + check.toString() +",");
 		if(buf.charAt(buf.length()-1)==',') buf.deleteCharAt(buf.length()-1);
 		buf.append("]");
 		return buf.toString();

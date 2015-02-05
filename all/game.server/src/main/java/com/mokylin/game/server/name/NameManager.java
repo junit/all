@@ -1,5 +1,6 @@
 package com.mokylin.game.server.name;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 import org.apache.log4j.Logger;
@@ -56,7 +57,10 @@ public class NameManager {
 		return wordFilter.isLegal(str);
 	}
 
-	public void init() {
-		// wordFilter.init(strs);
+	public boolean init() {
+		ArrayList<String> list = new ArrayList<String>();
+		list.add("草拟吗");
+		wordFilter.init(list);
+		return true;
 	}
 }

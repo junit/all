@@ -1,6 +1,6 @@
 package com.mokylin.game.robot.logic.${pkg}.handler;
 
-import com.mokylin.game.core.message.bean.Handler;
+import com.mokylin.game.core.message.Handler;
 import org.apache.log4j.Logger;
 import com.mokylin.game.robot.logic.${pkg}.message.${name}Message;
 

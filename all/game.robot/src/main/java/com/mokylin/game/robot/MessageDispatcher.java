@@ -1,14 +1,13 @@
 package com.mokylin.game.robot;
 
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ConnectTimeoutException;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.mokylin.game.core.message.Handler;
 import com.mokylin.game.core.netty.GameHandlerAdapter;
 import com.mokylin.game.robot.logic.login.message.ReqLoginMessage;
-import com.mokylin.game.robot.logic.player.message.ReqPlayerTestMessage;
+import com.mokylin.game.robot.logic.login.message.ReqLoginTestMessage;
 
 public class MessageDispatcher extends GameHandlerAdapter {
 	@Override
@@ -21,16 +20,22 @@ public class MessageDispatcher extends GameHandlerAdapter {
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
 		ReqLoginMessage msg = new ReqLoginMessage();
-		msg.setName(Main.PREFIX + count.incrementAndGet());
-		msg.setServerId(1);
-		msg.setPassword("x");
+		msg.setAccountName(Main.PREFIX + count.incrementAndGet());
+		msg.setServer(1);
+		msg.setPlatform(1);
+		msg.setCheck("check");
 		ctx.writeAndFlush(msg);
 	}
 	
 	@Override
 	protected void readIdle(ChannelHandlerContext ctx) {
-		ReqPlayerTestMessage msg = new ReqPlayerTestMessage();
-		msg.setFlag(System.currentTimeMillis());
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < 1024; ++i) {
+			builder.append(0);
+		}
+		ReqLoginTestMessage msg = new ReqLoginTestMessage();
+		msg.setStr(builder.toString());
+		msg.setTime(System.currentTimeMillis());
 		ctx.writeAndFlush(msg);
 	}
 
@@ -44,9 +49,6 @@ public class MessageDispatcher extends GameHandlerAdapter {
 	
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-		if (cause instanceof ConnectTimeoutException) {
-			logger.error("草啊！链接超时来");
-		}
 		logger.error(cause, cause);
 	}
 }

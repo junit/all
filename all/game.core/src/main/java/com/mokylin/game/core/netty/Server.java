@@ -60,7 +60,7 @@ public abstract class Server extends Thread {
 			.childOption(ChannelOption.SO_KEEPALIVE, true);
 
 			ChannelFuture f = b.bind(port).sync();
-
+			logger.error("端口监听成功");
 			f.channel().closeFuture().sync();
 		} catch (Exception e) {
 			logger.error(e, e);

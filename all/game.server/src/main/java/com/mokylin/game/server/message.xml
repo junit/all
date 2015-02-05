@@ -2,4 +2,5 @@
 
 <root>
   <message id="100101" pkg="login" name="ReqLogin"/>
+  <message id="100102" pkg="login" name="ReqLoginTest"/>
 </root>

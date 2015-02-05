@@ -8,12 +8,6 @@ import java.util.ArrayList;
 </#if>
 </#list>
 
-<#list fields as field>
-<#if field.importFlag==1>
-import com.mokylin.game.robot.logic.${pkg}.bean.*;
-<#break>
-</#if>
-</#list>
 import com.mokylin.game.core.message.Message;
 import io.netty.buffer.ByteBuf;
 import org.apache.log4j.Logger;

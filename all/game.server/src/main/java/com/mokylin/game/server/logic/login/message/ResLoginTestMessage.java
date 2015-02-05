@@ -1,10 +1,8 @@
-package com.mokylin.game.robot.logic.login.message;
+package com.mokylin.game.server.logic.login.message;
 
 
 import com.mokylin.game.core.message.Message;
-
 import io.netty.buffer.ByteBuf;
-
 import org.apache.log4j.Logger;
 
 /** 
@@ -12,26 +10,26 @@ import org.apache.log4j.Logger;
  * 
  * @version 1.0.0
  * 
- * 连续登录天数消息
+ * 测试消息
  */
-public class ResContinuousLoginMessage extends Message{
+public class ResLoginTestMessage extends Message{
 
-	private static Logger log = Logger.getLogger(ResContinuousLoginMessage.class);
+	private static Logger log = Logger.getLogger(ResLoginTestMessage.class);
 	
-	//连续天数
-	private Integer day;
-	//最大连续天数
-	private Integer maxDay;
+	//time
+	private Long time;
+	//字符串
+	private String str;
 	
 	/**
 	 * 写入字节缓存
 	 */
 	public boolean write(ByteBuf buf){
 	    try {
-			//连续天数
-			writeInt(buf, this.day);
-			//最大连续天数
-			writeInt(buf, this.maxDay);
+			//time
+			writeLong(buf, this.time);
+			//字符串
+			writeString(buf, this.str);
         } catch (Exception e) {
             log.error(e, e);
             return false;
@@ -44,10 +42,10 @@ public class ResContinuousLoginMessage extends Message{
 	 */
 	public boolean read(ByteBuf buf){
         try {
-			//连续天数
-			this.day = readInt(buf);
-			//最大连续天数
-			this.maxDay = readInt(buf);
+			//time
+			this.time = readLong(buf);
+			//字符串
+			this.str = readString(buf);
         } catch (Exception e) {
             log.error(e, e);
             return false;
@@ -56,48 +54,48 @@ public class ResContinuousLoginMessage extends Message{
 	}
 	
 	/**
-	 * get 连续天数
+	 * get time
 	 * @return 
 	 */
-	public Integer getDay(){
-		return day;
+	public Long getTime(){
+		return time;
 	}
 	
 	/**
-	 * set 连续天数
+	 * set time
 	 */
-	public void setDay(Integer day){
-		this.day = day;
+	public void setTime(Long time){
+		this.time = time;
 	}
 	
 	/**
-	 * get 最大连续天数
+	 * get 字符串
 	 * @return 
 	 */
-	public Integer getMaxDay(){
-		return maxDay;
+	public String getStr(){
+		return str;
 	}
 	
 	/**
-	 * set 最大连续天数
+	 * set 字符串
 	 */
-	public void setMaxDay(Integer maxDay){
-		this.maxDay = maxDay;
+	public void setStr(String str){
+		this.str = str;
 	}
 	
 	
 	@Override
 	public int getId() {
-		return 100104;
+		return 100202;
 	}
 	
 	@Override
 	public String toString(){
 		StringBuffer buf = new StringBuffer("[");
-		//连续天数
-		buf.append("day:" + day +",");
-		//最大连续天数
-		buf.append("maxDay:" + maxDay +",");
+		//time
+		buf.append("time:" + time +",");
+		//字符串
+		if(this.str!=null) buf.append("str:" + str.toString() +",");
 		if(buf.charAt(buf.length()-1)==',') buf.deleteCharAt(buf.length()-1);
 		buf.append("]");
 		return buf.toString();

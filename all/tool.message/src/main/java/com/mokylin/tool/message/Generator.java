@@ -23,6 +23,7 @@ import com.mokylin.tool.message.bean.Bean;
 import com.mokylin.tool.message.bean.Field;
 import com.mokylin.tool.message.bean.Handler;
 import com.mokylin.tool.message.bean.Manager;
+import com.mokylin.tool.message.bean.Manager.Detail;
 import com.mokylin.tool.message.bean.Message;
 
 public class Generator {
@@ -43,6 +44,11 @@ public class Generator {
 			ftlManager.generate(ftl);
 			if (ftl instanceof Handler) {
 				Handler handler = (Handler)ftl;
+				Detail detail = manager.getDetails().get(handler.getId());
+				if (detail != null && !detail.getName().equalsIgnoreCase(handler.getName())) {
+					System.err.println("错误:" + handler.getId() + "[" + handler.getName() + "," + detail.getName() + "]");
+					return false;
+				}
 				manager.add(handler.getId(), handler.getPkg(), handler.getName());
 			}
 		}

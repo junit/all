@@ -7,7 +7,9 @@ import org.apache.log4j.Logger;
 import com.mokylin.game.core.message.Handler;
 import com.mokylin.game.core.util.ContextUtil;
 import com.mokylin.game.server.ManagerPool;
+import com.mokylin.game.server.config.Platform;
 import com.mokylin.game.server.context.ContextAttribute;
+import com.mokylin.game.server.logic.GameEventPool;
 import com.mokylin.game.server.logic.account.Account;
 import com.mokylin.game.server.logic.login.RetCode;
 import com.mokylin.game.server.logic.login.message.ReqLoginMessage;
@@ -30,15 +32,14 @@ public class ReqLoginHandler extends Handler {
     		
     		ReqLoginMessage msg = (ReqLoginMessage)this.getMessage();
     		
-    		if (ManagerPool.config.getConfigs().containsKey(msg.getServer())) { // server 判定
+    		if (!ManagerPool.config.getConfigs().containsKey(msg.getServer())) { // server 判定
     			sendError(getContext(), RetCode.SERVER_ERROR);
     			return ;
     		}
     		
-    		// TODO platform
-    		Account account = ManagerPool.account.get(msg.getAccountName(), null, msg.getServer());
+    		Account account = ManagerPool.account.get(msg.getAccountName(), Platform.get(msg.getPlatform()), msg.getServer());
     		if (account == null) {
-    			account = ManagerPool.account.create(msg.getAccountName(), null, msg.getServer()); // TODO platform
+    			account = ManagerPool.account.create(msg.getAccountName(), Platform.get(msg.getPlatform()), msg.getServer());
     		}
     		
     		if (account == null) {
@@ -63,8 +64,11 @@ public class ReqLoginHandler extends Handler {
 			ContextUtil.close(oldContext, "顶号");
 		}
 		ManagerPool.context.getContexts().put(account.getId(), context);
+		synchronized (context) { // 改变和获取的时候,加锁
+			context.attr(ContextAttribute.ACCOUNT_ID).set(account.getId());
+		}
 		
-		// TODO 告知前端登录成功
+		GameEventPool.account.onLogin(account);
 	}
 
 	private void sendError(ChannelHandlerContext ctx, RetCode code) {

@@ -5,7 +5,7 @@ import io.netty.channel.ChannelHandlerContext;
 /**
  * Created by game on 3/31/14.
  */
-public abstract class Handler {
+public abstract class Handler implements Command {
     private Message message; // message
     private ChannelHandlerContext context;
 
@@ -16,8 +16,6 @@ public abstract class Handler {
     public void setContext(ChannelHandlerContext context) {
         this.context = context;
     }
-
-    public abstract void exec();
 
     public Message getMessage() {
         return message;

@@ -67,4 +67,8 @@ public class AccountManager {
 		// TODO
 		return true;
 	}
+
+	public Account get(long id) {
+		return accounts.get(id);
+	}
 }

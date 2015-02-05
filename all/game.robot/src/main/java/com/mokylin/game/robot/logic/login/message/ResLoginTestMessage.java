@@ -1,10 +1,8 @@
-package com.mokylin.game.robot.logic.player.message;
+package com.mokylin.game.robot.logic.login.message;
 
 
 import com.mokylin.game.core.message.Message;
-
 import io.netty.buffer.ByteBuf;
-
 import org.apache.log4j.Logger;
 
 /** 
@@ -14,20 +12,24 @@ import org.apache.log4j.Logger;
  * 
  * 测试消息
  */
-public class ResPlayerTestMessage extends Message{
+public class ResLoginTestMessage extends Message{
 
-	private static Logger log = Logger.getLogger(ResPlayerTestMessage.class);
+	private static Logger log = Logger.getLogger(ResLoginTestMessage.class);
 	
-	//标识
-	private Long flag;
+	//time
+	private Long time;
+	//字符串
+	private String str;
 	
 	/**
 	 * 写入字节缓存
 	 */
 	public boolean write(ByteBuf buf){
 	    try {
-			//标识
-			writeLong(buf, this.flag);
+			//time
+			writeLong(buf, this.time);
+			//字符串
+			writeString(buf, this.str);
         } catch (Exception e) {
             log.error(e, e);
             return false;
@@ -40,8 +42,10 @@ public class ResPlayerTestMessage extends Message{
 	 */
 	public boolean read(ByteBuf buf){
         try {
-			//标识
-			this.flag = readLong(buf);
+			//time
+			this.time = readLong(buf);
+			//字符串
+			this.str = readString(buf);
         } catch (Exception e) {
             log.error(e, e);
             return false;
@@ -50,31 +54,48 @@ public class ResPlayerTestMessage extends Message{
 	}
 	
 	/**
-	 * get 标识
+	 * get time
 	 * @return 
 	 */
-	public Long getFlag(){
-		return flag;
+	public Long getTime(){
+		return time;
 	}
 	
 	/**
-	 * set 标识
+	 * set time
 	 */
-	public void setFlag(Long flag){
-		this.flag = flag;
+	public void setTime(Long time){
+		this.time = time;
+	}
+	
+	/**
+	 * get 字符串
+	 * @return 
+	 */
+	public String getStr(){
+		return str;
+	}
+	
+	/**
+	 * set 字符串
+	 */
+	public void setStr(String str){
+		this.str = str;
 	}
 	
 	
 	@Override
 	public int getId() {
-		return 105108;
+		return 100202;
 	}
 	
 	@Override
 	public String toString(){
 		StringBuffer buf = new StringBuffer("[");
-		//标识
-		buf.append("flag:" + flag +",");
+		//time
+		buf.append("time:" + time +",");
+		//字符串
+		if(this.str!=null) buf.append("str:" + str.toString() +",");
 		if(buf.charAt(buf.length()-1)==',') buf.deleteCharAt(buf.length()-1);
 		buf.append("]");
 		return buf.toString();

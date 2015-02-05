@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config>
+	<gameserver port="5241" max_session="20000" />
+
+	<servers>
+		<server id="1" />
+		<server id="2" />
+	</servers>
+</config>

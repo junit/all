@@ -1,8 +1,9 @@
 package com.mokylin.game.server.logic.account;
 
+import com.mokylin.game.core.thread.GameObject;
 import com.mokylin.game.server.config.Platform;
 
-public class Account {
+public class Account extends GameObject {
 	private transient volatile int thread;
 	
 	private long id;
