@@ -10,14 +10,14 @@ import com.mokylin.tool.core.bean.IFtl;
 import com.mokylin.tool.core.util.FileUtil;
 
 public class Config extends IFtl {
-	public Config(String url, String usr, String pwd, FtlType ftlType, String destRelativePath, String path, String type) {
+	public Config(String url, String usr, String pwd, FtlType ftlType, String destRelativePath, String mapperPath, String type) {
 		super(ftlType, destRelativePath);
 		this.url = url;
 		this.usr = usr;
 		this.pwd = pwd;
 		this.type = type;
 		
-		File dir = new File(FileUtil.getFileName(path + File.separator + "src/main/java/com/mokylin/game/server/db/" + type + "/mapper"));
+		File dir = new File(FileUtil.getFileName(mapperPath));
 		if (dir.exists()) {
 			for (File file : dir.listFiles()) {
 				names.add(file.getName());

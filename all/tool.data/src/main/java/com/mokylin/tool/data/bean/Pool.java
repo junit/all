@@ -10,10 +10,10 @@ import com.mokylin.tool.core.bean.IFtl;
 import com.mokylin.tool.core.util.FileUtil;
 
 public class Pool extends IFtl {
-	public Pool(FtlType ftlType, String destRelativePath, String path) {
+	public Pool(FtlType ftlType, String destRelativePath, String daoPath) {
 		super(ftlType, destRelativePath);
 		
-		File dir = new File(FileUtil.getFileName(path + File.separator + "src/main/java/com/mokylin/game/server/db/data/dao"));
+		File dir = new File(FileUtil.getFileName(daoPath));
 		if (dir.exists()) {
 			for (File file : dir.listFiles()) {
 				String name = file.getName().substring(0, file.getName().length() - 5);

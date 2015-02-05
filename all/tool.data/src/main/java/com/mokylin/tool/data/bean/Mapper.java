@@ -44,6 +44,6 @@ public class Mapper extends IFtl {
 
 	@Override
 	public boolean isRewrite() {
-		return false;
+		return true;
 	}
 }

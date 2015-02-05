@@ -19,6 +19,7 @@ import com.mokylin.tool.core.FtlManager;
 import com.mokylin.tool.core.bean.Config;
 import com.mokylin.tool.core.bean.FtlType;
 import com.mokylin.tool.core.bean.IFtl;
+import com.mokylin.tool.core.util.FileUtil;
 import com.mokylin.tool.message.bean.Bean;
 import com.mokylin.tool.message.bean.Field;
 import com.mokylin.tool.message.bean.Handler;
@@ -76,7 +77,7 @@ public class Generator {
 	}
 
 	private Manager parseManager(String path, FtlType ftlType) throws Exception {
-		String destPath = getDestRelativePath(null, "MessageManager", ftlType);
+		String destPath = FileUtil.getDestRelativePath(null, "MessageManager", ftlType, ftlManager);
 		Manager manager = new Manager(ftlType, destPath);
 		File file = new File(path);
 		if (!file.exists()) {
@@ -112,7 +113,7 @@ public class Generator {
 
 	private void add(List<IFtl> list, Element root, int index, String pkg, FtlType ftlType) {
 		if (root.getName().equals("bean")) {
-			Bean bean = new Bean(ftlType, getDestRelativePath(pkg + File.separator + "message", root.attributeValue("name") + "Bean", ftlType));
+			Bean bean = new Bean(ftlType, FileUtil.getDestRelativePath("logic" + File.separator + pkg + File.separator + "message", root.attributeValue("name") + "Bean", ftlType, ftlManager));
 			list.add(bean);
 			
 			bean.setName(root.attributeValue("name"));
@@ -136,7 +137,7 @@ public class Generator {
 				field.setClazz(getNewClazz(field.getClazz(), ftlType));
 			}
 		} else if (root.getName().equals("message")) {
-			Message message = new Message(ftlType, getDestRelativePath(pkg + File.separator + "message", root.attributeValue("name") + "Message", ftlType));
+			Message message = new Message(ftlType, FileUtil.getDestRelativePath("logic" + File.separator + pkg + File.separator + "message", root.attributeValue("name") + "Message", ftlType, ftlManager));
 			list.add(message);
 			
 			message.setName(root.attributeValue("name"));
@@ -162,7 +163,7 @@ public class Generator {
 			}
 			
 			if (root.attributeValue("type").equals(getString(ftlType))) {
-				Handler handler = new Handler(ftlType, getDestRelativePath(pkg + File.separator + "handler", message.getName() + "Handler", ftlType));
+				Handler handler = new Handler(ftlType, FileUtil.getDestRelativePath("logic" + File.separator + pkg + File.separator + "handler", message.getName() + "Handler", ftlType, ftlManager));
 				list.add(handler);
 				
 				handler.setId(message.getId());
@@ -204,27 +205,5 @@ public class Generator {
 		case CLIENT: return "SC";
 		}
 		return "";
-	}
-	
-	private String getDestRelativePath(String pkg, String className, FtlType ftlType) {
-		String projectPath = ftlManager.getConfig().getDestPath().get(ftlType);
-		String fileSuffix = "";
-		if (ftlType == FtlType.SERVER || ftlType == FtlType.ROBOT) {
-			fileSuffix = "java";
-		} else if (ftlType == FtlType.CLIENT) {
-			fileSuffix = "as";
-		}
-		return getJavaPath(projectPath, pkg, className, fileSuffix);
-	}
-	
-	private String getJavaPath(String projectPath, String pkg, String name, String fileSuffix) {
-		StringBuilder builder = new StringBuilder();
-		builder.append(projectPath).append(File.separator);
-		if (pkg != null && pkg.length() > 0) {
-			builder.append("logic").append(File.separator);
-			builder.append(pkg).append(File.separator);
-		}
-		builder.append(name).append(".").append(fileSuffix);
-		return builder.toString();
 	}
 }

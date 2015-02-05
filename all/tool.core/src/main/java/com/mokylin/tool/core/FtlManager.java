@@ -55,8 +55,7 @@ public class FtlManager {
 			return false;
 		}
 		
-		String[] split = ftl.getClass().getName().split("\\.");
-		Template template = class2template.get(split[split.length - 1].toLowerCase());
+		Template template = class2template.get(ftl.getClass().getSimpleName().toLowerCase());
 		if (template == null) {
 			return false;
 		}
