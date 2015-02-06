@@ -16,11 +16,15 @@ public class MessageDispatcher extends GameHandlerAdapter {
 	@Override
 	protected void channelRead(ChannelHandlerContext ctx, Message msg) {
 		Handler handler = MessagePool.getInstance().createHandler(msg.getId());
-//		handler.exec();
+		try {
+			handler.exec();
+		} catch (Exception e) {
+
+		}
 	}
 
 	private static AtomicInteger count = new AtomicInteger();
-	
+
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
 		ReqLoginMessage msg = new ReqLoginMessage();
@@ -30,7 +34,7 @@ public class MessageDispatcher extends GameHandlerAdapter {
 		msg.setCheck("check");
 		ContextUtil.write(ctx, msg);
 	}
-	
+
 	@Override
 	protected void readIdle(ChannelHandlerContext ctx) {
 		StringBuilder builder = new StringBuilder();
@@ -50,7 +54,7 @@ public class MessageDispatcher extends GameHandlerAdapter {
 	@Override
 	protected void allIdle(ChannelHandlerContext ctx) {
 	}
-	
+
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
 		logger.error(cause, cause);

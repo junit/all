@@ -16,6 +16,7 @@ public class GameServer extends Server {
 		if (!ManagerPool.scheduler.init()) return false;
 		if (!ManagerPool.name.init()) return false;
 		if (!ManagerPool.thread.init()) return false;
+		if (!ManagerPool.map.init()) return false;
 		return true;
 	}
 

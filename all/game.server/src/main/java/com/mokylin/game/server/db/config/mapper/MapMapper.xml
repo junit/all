@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+    PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"  
+    "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">  
+<mapper namespace="map"> 
+  <resultMap id="bean" type="com.mokylin.game.server.db.config.bean.MapBean" >
+	<result column="max_line" property="max_line" jdbcType="INTEGER" />
+	<result column="default_line" property="default_line" jdbcType="INTEGER" />
+	<result column="x_len" property="x_len" jdbcType="INTEGER" />
+	<result column="y_len" property="y_len" jdbcType="INTEGER" />
+	<result column="id" property="id" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <select id="select" resultMap="bean">
+  	select max_line,default_line,x_len,y_len,id from map
+  </select>
+  
+  <insert id="insert" parameterType="com.mokylin.game.server.db.config.bean.MapBean">
+  	insert into map(max_line,default_line,x_len,y_len,id)
+  	     values (#{max_line,jdbcType=INTEGER},#{default_line,jdbcType=INTEGER},#{x_len,jdbcType=INTEGER},#{y_len,jdbcType=INTEGER},#{id,jdbcType=INTEGER})
+  </insert>
+</mapper>

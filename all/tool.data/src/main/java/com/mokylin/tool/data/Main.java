@@ -17,6 +17,7 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import com.mokylin.tool.core.bean.FtlType;
+import com.mokylin.tool.core.util.FileUtil;
 
 public class Main extends JFrame {
 	private static final long serialVersionUID = 7975473610009954340L;
@@ -42,11 +43,13 @@ public class Main extends JFrame {
 	private JRadioButton data;
 	private JRadioButton excel;
 	private JButton genButton;
+	private JButton genButton0;
 	private JButton genButton2;
 	private JButton genButton3;
 	@SuppressWarnings("rawtypes")
 	private JList list;
 	private Generator generator;
+	private ExcelOpt excelOpt;
 
 	/**
 	 * Create the frame.
@@ -58,6 +61,8 @@ public class Main extends JFrame {
 		Properties properties = new Properties();
 		properties.load(new FileInputStream("config.properties"));
 		generator = new Generator(properties);
+		excelOpt = new ExcelOpt();
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 734, 793);
 		contentPane = new JPanel();
@@ -74,6 +79,11 @@ public class Main extends JFrame {
 					config.setSelected(false);
 					excel.setSelected(false);
 					list.setListData(DbOpt.getInstance().getDataTables());
+
+					genButton.setVisible(true);
+					genButton2.setVisible(true);
+					genButton3.setVisible(true);
+					genButton0.setVisible(false);
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
@@ -91,6 +101,11 @@ public class Main extends JFrame {
 					data.setSelected(false);
 					excel.setSelected(false);
 					list.setListData(DbOpt.getInstance().getConfigTables());
+
+					genButton.setVisible(true);
+					genButton2.setVisible(true);
+					genButton3.setVisible(true);
+					genButton0.setVisible(false);
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
@@ -98,7 +113,7 @@ public class Main extends JFrame {
 		});
 		config.setBounds(139, 6, 121, 23);
 		contentPane.add(config);
-		
+
 		excel = new JRadioButton("excel");
 		excel.addMouseListener(new MouseAdapter() {
 			@SuppressWarnings("unchecked")
@@ -109,6 +124,11 @@ public class Main extends JFrame {
 					config.setSelected(false);
 					File excelDir = new File(properties.getProperty("excel"));
 					list.setListData(excelDir.list());
+
+					genButton.setVisible(false);
+					genButton2.setVisible(false);
+					genButton3.setVisible(false);
+					genButton0.setVisible(true);
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
@@ -123,29 +143,49 @@ public class Main extends JFrame {
 		scrollBar.setBounds(16, 35, 692, 680);
 		scrollBar.setViewportView(list);
 		contentPane.add(scrollBar);
-
-			genButton = new JButton("server");
-			genButton.addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseReleased(MouseEvent e) {
-					for (Object table : list.getSelectedValuesList()) {
-						try {
-							if (data.isSelected()) {
-								generator.generateData((String) table, FtlType.SERVER);
-							}
-							if (config.isSelected()) {
-								generator.generateConfig((String) table, FtlType.SERVER);
-							}
-						} catch (Exception e1) {
-							e1.printStackTrace();
-						}
-					}
-					JOptionPane.showMessageDialog(null, "操作成功");
-				}
-			});
-			genButton.setBounds(615, 722, 93, 23);
-			contentPane.add(genButton);
 		
+		genButton0 = new JButton("import");
+		genButton0.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				for (Object table : list.getSelectedValuesList()) {
+					try {
+						if (excel.isSelected()) {
+							excelOpt.process(FileUtil.getFilePath(properties.getProperty("excel"), (String)table));
+						}
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+				}
+				JOptionPane.showMessageDialog(null, "操作成功");
+			}
+		});
+		genButton0.setBounds(615, 722, 93, 23);
+		contentPane.add(genButton0);
+		genButton0.setVisible(false);
+
+		genButton = new JButton("server");
+		genButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				for (Object table : list.getSelectedValuesList()) {
+					try {
+						if (data.isSelected()) {
+							generator.generateData((String) table, FtlType.SERVER);
+						}
+						if (config.isSelected()) {
+							generator.generateConfig((String) table, FtlType.SERVER);
+						}
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+				}
+				JOptionPane.showMessageDialog(null, "操作成功");
+			}
+		});
+		genButton.setBounds(615, 722, 93, 23);
+		contentPane.add(genButton);
+
 		genButton2 = new JButton("robot");
 		genButton2.addMouseListener(new MouseAdapter() {
 			@Override
@@ -167,7 +207,7 @@ public class Main extends JFrame {
 		});
 		genButton2.setBounds(522, 722, 93, 23);
 		contentPane.add(genButton2);
-		
+
 		genButton3 = new JButton("client");
 		genButton3.addMouseListener(new MouseAdapter() {
 			@Override

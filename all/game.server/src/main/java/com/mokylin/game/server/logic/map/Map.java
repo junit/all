@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.mokylin.game.server.ManagerPool;
+import com.mokylin.game.server.config.ServerConfig;
+import com.mokylin.game.server.db.config.bean.MapBean;
 import com.mokylin.game.server.logic.role.Role;
 
 
@@ -31,7 +34,7 @@ public class Map {
 	}
 
 	public Coordinate correct(Coordinate coordinate) {
-		// TODO Auto-generated method stub
+		// TODO 矫正非法
 		return coordinate;
 	}
 
@@ -43,5 +46,24 @@ public class Map {
 			}
 		}
 		return roles;
+	}
+
+	public static List<Map> create(MapBean bean) {
+		List<Map> maps = new ArrayList<>();
+		for (ServerConfig config : ManagerPool.config.getConfigs()) {
+			for (int line = 1; line <= bean.getMax_line(); ++line) {
+				Map map = new Map();
+				map.setKey(new MapKey(config.getKey().getPlatform(), config.getKey().getServer(), bean.getId(), line));
+				map.init(bean);
+				maps.add(map);
+			}
+		}
+		return maps;
+	}
+
+	private void init(MapBean bean) {
+		int x = (int)Math.ceil((double)bean.getX_len() / Area.AREA_X);
+		int y = (int)Math.ceil((double)bean.getY_len() / Area.AREA_Y);
+		areas = new Area[x][y];
 	}
 }

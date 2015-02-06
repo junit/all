@@ -45,6 +45,7 @@ public class DbOpt {
 
 			if (!conn.isClosed())
 				System.out.println("Succeeded connecting to the Database!");
+			conn.setAutoCommit(false);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -98,5 +99,9 @@ public class DbOpt {
 			map.put(rsmd.getColumnName(i), rsmd.getColumnTypeName(i));
 		}
 		return map;
+	}
+	
+	public Connection getConfig() {
+		return config;
 	}
 }

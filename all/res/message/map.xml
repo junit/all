@@ -1,9 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <messages package="map" id="102">
+	<!-- bean定义 -->
+	<bean name="CoordinateInfo" explain="坐标信息">
+		<field class="int" name="x" explain="x"></field>
+		<field class="int" name="y" explain="y"></field>
+	</bean>
+	
+	<bean name="MapRoleInfo" explain="地图角色信息">
+		<field class="long" name="id" explain="角色Id"></field>
+		<field class="String" name="name" explain="角色名称"></field>
+		<field class="byte" name="sex" explain="性别"></field>
+		<field class="CoordinateInfo" name="coordinate" explain="坐标"></field>
+	</bean>
+	
 	<!-- 服务器接收消息 -->
 	<message id="101" type="CS" name="ReqMapEnter" explain="进入地图">
 		<field class="long" name="role" explain="角色id"></field>
 	</message>
 	
 	<!-- 服务器发送消息 -->
+	<message id="201" type="SC" name="ResMapAllObject" explain="地图信息">
+		<field class="int" name="map" explain="地图"></field>
+		<field class="int" name="line" explain="线"></field>
+		<list class="MapRoleInfo" name="roles" explain="角色信息"></list>
+	</message>
+	
+	<message id="202" type="SC" name="ResMapRole" explain="地图信息">
+		<list class="MapRoleInfo" name="roles" explain="角色信息"></list>
+	</message>
+	
 </messages>

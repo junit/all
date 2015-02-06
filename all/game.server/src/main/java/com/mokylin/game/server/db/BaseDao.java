@@ -19,7 +19,7 @@ public class BaseDao<T> {
         	List<T> list = session.selectList(arg);
         	long interval = System.currentTimeMillis() - s;
 			if (interval > SELECT_DELAY) {
-				com.mokylin.game.server.logger.GlobalLogger.db.error(new StringBuilder().append(arg).append(interval));
+				com.mokylin.game.server.logger.GlobalLogger.db.error(new StringBuilder().append(arg).append(":").append(interval));
 			}
             return list;
     	}finally{
@@ -34,7 +34,7 @@ public class BaseDao<T> {
         	List<T> list = session.selectList(arg, obj);
         	long interval = System.currentTimeMillis() - s;
 			if (interval > SELECT_DELAY) {
-				com.mokylin.game.server.logger.GlobalLogger.db.error(new StringBuilder().append(arg).append(interval));
+				com.mokylin.game.server.logger.GlobalLogger.db.error(new StringBuilder().append(arg).append(":").append(interval));
 			}
             return list;
     	}finally{
@@ -49,7 +49,7 @@ public class BaseDao<T> {
         	Object ret = session.selectOne(arg);
         	long interval = System.currentTimeMillis() - s;
 			if (interval > SELECT_DELAY) {
-				com.mokylin.game.server.logger.GlobalLogger.db.error(new StringBuilder().append(arg).append(interval));
+				com.mokylin.game.server.logger.GlobalLogger.db.error(new StringBuilder().append(arg).append(":").append(interval));
 			}
             return ret;
     	}finally{
@@ -65,7 +65,7 @@ public class BaseDao<T> {
         	session.commit();
         	long interval = System.currentTimeMillis() - s;
 			if (interval > INSERT_DELAY) {
-				com.mokylin.game.server.logger.GlobalLogger.db.error(new StringBuilder().append(arg).append(interval));
+				com.mokylin.game.server.logger.GlobalLogger.db.error(new StringBuilder().append(arg).append(":").append(interval));
 			}
 			return ret;
     	}finally{
@@ -81,7 +81,7 @@ public class BaseDao<T> {
         	session.commit();
         	long interval = System.currentTimeMillis() - s;
 			if (interval > UPDATE_DELAY) {
-				com.mokylin.game.server.logger.GlobalLogger.db.error(new StringBuilder().append(arg).append(interval));
+				com.mokylin.game.server.logger.GlobalLogger.db.error(new StringBuilder().append(arg).append(":").append(interval));
 			}
 			return ret;
     	}finally{
@@ -97,7 +97,7 @@ public class BaseDao<T> {
         	session.commit();
         	long interval = System.currentTimeMillis() - s;
 			if (interval > DELETE_DELAY) {
-				com.mokylin.game.server.logger.GlobalLogger.db.error(new StringBuilder().append(arg).append(interval));
+				com.mokylin.game.server.logger.GlobalLogger.db.error(new StringBuilder().append(arg).append(":").append(interval));
 			}
 			return ret;
     	}finally{

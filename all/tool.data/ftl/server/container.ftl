@@ -11,13 +11,16 @@ import com.mokylin.game.server.db.config.bean.${name?cap_first}Bean;
 public class ${name?cap_first}Container {
 	private List<${name?cap_first}Bean> list = new ArrayList<>();
 	private Map<Integer, ${name?cap_first}Bean> map = new HashMap<>();
-	private ${name?cap_first}Dao dao = ${name?cap_first}Dao.getInstance();
+	private ${name?cap_first}Dao dao = new ${name?cap_first}Dao();
+	
 	public List<${name?cap_first}Bean> getList() {
 		return list;
 	}
+	
 	public Map<Integer, ${name?cap_first}Bean> getMap() {
 		return map;
 	}
+	
 	public boolean init() {
 		list = dao.select();
 		for (${name?cap_first}Bean bean : list) {

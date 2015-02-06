@@ -69,7 +69,7 @@ public class AccountManager {
     			return ;
     		}
     		
-    		if (!ManagerPool.config.getConfigs().containsKey(msg.getServer())) { // server 判定
+    		if (ManagerPool.config.getServerConfig(Platform.get(msg.getPlatform()), msg.getServer()) == null) { // server 判定
     			sendError(ctx, RetCode.SERVER_ERROR);
     			return ;
     		}

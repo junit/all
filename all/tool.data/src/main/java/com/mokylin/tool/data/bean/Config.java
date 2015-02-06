@@ -37,7 +37,7 @@ public class Config extends IFtl {
 		map.put("url", url);
 		map.put("usr", usr);
 		map.put("pwd", pwd);
-		map.put("path", FileUtil.getFileName("src/main/java/com/mokylin/game/server/db/" + type + "/mapper"));
+		map.put("path", FileUtil.getFileName("com/mokylin/game/server/db/" + type + "/mapper"));
 		map.put("names", names);
 		return map;
 	}

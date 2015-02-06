@@ -1,23 +1,10 @@
 package com.mokylin.tool.data;
 
-import java.awt.EventQueue;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -25,67 +12,14 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
-import com.mokylin.tool.excel.Field;
-import com.mokylin.tool.excel.Main;
-
 public class ExcelOpt {
-
-	/**
-	 * Initialize the contents of the frame.
-	 * 
-	 * @throws Exception
-	 */
-	private void initialize() throws Exception {
-		// 配置文件
-		InputStreamReader stream = new InputStreamReader(new FileInputStream("config.properties"), "utf-8");
-		Properties properties = new Properties();
-		properties.load(stream);
-		String excelPath = properties.getProperty("excel");
-
-		// 数据库
-		String driver = "com.mysql.jdbc.Driver";
-		// 加载驱动程序
-		Class.forName(driver);
-
-		// 连续数据库
-		connection = DriverManager.getConnection(properties.getProperty("url"));
-		connection.setAutoCommit(false);
-
-		if (!connection.isClosed())
-			System.out.println("Succeeded connecting to the Database!");
-
-		// ui
-
-		frame = new JFrame();
-		frame.setBounds(100, 100, 624, 537);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
-
-		JList<String> list = new JList<>();
-		File excelDir = new File(excelPath);
-		list.setListData(excelDir.list());
-		JScrollPane scrollBar = new JScrollPane();
-		scrollBar.setBounds(10, 10, 588, 451);
-		scrollBar.setViewportView(list);
-		frame.getContentPane().add(scrollBar);
-
-		JButton button = new JButton("生成");
-		button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				for (String fileName : list.getSelectedValuesList()) {
-					try {
-						process(excelPath + File.separator + fileName);
-					} catch (Exception e1) {
-						JOptionPane.showMessageDialog(null, e1.getMessage());
-					}
-				}
-			}
-		});
-		button.setBounds(505, 466, 93, 23);
-		frame.getContentPane().add(button);
+	private Connection connection;
+	
+	public ExcelOpt() throws Exception {
+		connection = DbOpt.getInstance().getConfig();
 	}
 
-	private void process(String fileName) throws Exception {
+	public void process(String fileName) throws Exception {
 		Workbook wb = WorkbookFactory.create(new File(fileName));
 		for (int index = 0; index < wb.getNumberOfSheets(); ++index) {
 			Sheet sheet = wb.getSheetAt(index);
@@ -118,7 +52,6 @@ public class ExcelOpt {
 			statement.execute(insertSql);
 		}
 		connection.commit();
-		JOptionPane.showMessageDialog(null, "操作成功");
 	}
 
 	private String getInsertSql(String table, List<Field> fields, Row row) {
@@ -183,5 +116,44 @@ public class ExcelOpt {
 			return null;
 		}
 		return row.getCell(1).getStringCellValue();
+	}
+}
+
+class Field {
+	private String name;
+	private String type;
+	private String comment;
+	private String value;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
 	}
 }
