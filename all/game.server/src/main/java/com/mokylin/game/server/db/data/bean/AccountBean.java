@@ -5,7 +5,7 @@ public class AccountBean {
 	private long createTime;
 	private String name;
 	private long id;
-	private String platform;
+	private int platform;
 	
 	public int getServer(){
 		return server;
@@ -39,11 +39,11 @@ public class AccountBean {
 		this.id = id;
 	}
 	
-	public String getPlatform(){
+	public int getPlatform(){
 		return platform;
 	}
 	
-	public void setPlatform(String platform){
+	public void setPlatform(int platform){
 		this.platform = platform;
 	}
 	

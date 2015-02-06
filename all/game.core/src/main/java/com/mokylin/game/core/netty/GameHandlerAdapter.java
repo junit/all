@@ -7,13 +7,11 @@ import io.netty.handler.timeout.IdleStateEvent;
 import org.apache.log4j.Logger;
 
 import com.mokylin.game.core.message.Message;
-import com.mokylin.game.core.message.MessagePool;
-import com.mokylin.game.core.util.ContextUtil;
 
 public abstract class GameHandlerAdapter extends ChannelInboundHandlerAdapter {
 	protected static Logger logger = Logger.getLogger(GameHandlerAdapter.class);
 
-	protected abstract void onRecvMsg(com.mokylin.game.core.message.Handler handler);
+	protected abstract void channelRead(ChannelHandlerContext ctx, Message msg);
 	protected abstract void readIdle(ChannelHandlerContext ctx);
 	protected abstract void writeIdle(ChannelHandlerContext ctx);
 	protected abstract void allIdle(ChannelHandlerContext ctx);
@@ -23,26 +21,25 @@ public abstract class GameHandlerAdapter extends ChannelInboundHandlerAdapter {
 		if (!(obj instanceof Message)) {
 			return;
 		}
-		Message msg = (Message) obj;
 
-		com.mokylin.game.core.message.Handler handler = null;
-		try {
-			handler = MessagePool.getInstance().createHandler(msg.getId());
-		} catch (Exception e) {
-			ContextUtil.close(ctx, "exception");
-			logger.error(e, e);
-			return;
-		}
+//		com.mokylin.game.core.message.Handler handler = null;
+//		try {
+//			handler = MessagePool.getInstance().createHandler(msg.getId());
+//		} catch (Exception e) {
+//			ContextUtil.close(ctx, "exception");
+//			logger.error(e, e);
+//			return;
+//		}
+//
+//		if (handler == null) {
+//			ContextUtil.close(ctx, "no handler:" + msg.getId());
+//			return;
+//		}
+//
+//		handler.setMessage(msg);
+//		handler.setContext(ctx);
 
-		if (handler == null) {
-			ContextUtil.close(ctx, "no handler:" + msg.getId());
-			return;
-		}
-
-		handler.setMessage(msg);
-		handler.setContext(ctx);
-
-		onRecvMsg(handler);
+		channelRead(ctx, (Message) obj);
 	}
 	
 	@Override

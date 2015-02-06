@@ -12,7 +12,7 @@ public class BaseDao<T> {
 	private final static int UPDATE_DELAY = 10;
 	private final static int SELECT_DELAY = 10;
 
-	public List<T> selectListWithTimeCheck(String arg) {
+	protected List<T> selectListWithTimeCheck(String arg) {
 		long s = System.currentTimeMillis();
         SqlSession session = factory.openSession();
         try{
@@ -27,7 +27,22 @@ public class BaseDao<T> {
 		}
     }
 	
-	public Object selectOneWithTimeCheck(String arg) {
+	protected List<T> selectListWithTimeCheck(String arg, Object obj) {
+		long s = System.currentTimeMillis();
+        SqlSession session = factory.openSession();
+        try{
+        	List<T> list = session.selectList(arg, obj);
+        	long interval = System.currentTimeMillis() - s;
+			if (interval > SELECT_DELAY) {
+				com.mokylin.game.server.logger.GlobalLogger.db.error(new StringBuilder().append(arg).append(interval));
+			}
+            return list;
+    	}finally{
+			session.close();
+		}
+    }
+	
+	protected Object selectOneWithTimeCheck(String arg) {
 		long s = System.currentTimeMillis();
         SqlSession session = factory.openSession();
         try{
@@ -42,7 +57,7 @@ public class BaseDao<T> {
 		}
     }
     
-    public int insertWithTimeCheck(String arg, T obj) {
+	protected int insertWithTimeCheck(String arg, T obj) {
 		long s = System.currentTimeMillis();
         SqlSession session = factory.openSession();
         try{
@@ -58,7 +73,7 @@ public class BaseDao<T> {
 		}
 	}
     
-    public int updateWithTimeCheck(String arg, Object obj) {
+	protected int updateWithTimeCheck(String arg, Object obj) {
 		long s = System.currentTimeMillis();
         SqlSession session = factory.openSession();
         try{
@@ -74,7 +89,7 @@ public class BaseDao<T> {
 		}
 	}
     
-    public int deleteWithTimeCheck(String arg, Object obj) {
+	protected int deleteWithTimeCheck(String arg, Object obj) {
 		long s = System.currentTimeMillis();
         SqlSession session = factory.openSession();
         try{

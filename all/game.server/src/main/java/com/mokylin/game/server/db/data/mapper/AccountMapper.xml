@@ -8,7 +8,7 @@
 	<result column="createTime" property="createTime" jdbcType="BIGINT" />
 	<result column="name" property="name" jdbcType="VARCHAR" />
 	<result column="id" property="id" jdbcType="BIGINT" />
-	<result column="platform" property="platform" jdbcType="VARCHAR" />
+	<result column="platform" property="platform" jdbcType="INTEGER" />
   </resultMap>
   
   <select id="select" resultMap="bean">
@@ -17,6 +17,6 @@
   
   <insert id="insert" parameterType="com.db.data.bean.AccountBean">
   	insert into account(server,createTime,name,id,platform)
-  	     values (#{server,jdbcType=INTEGER},#{createTime,jdbcType=BIGINT},#{name,jdbcType=VARCHAR},#{id,jdbcType=BIGINT},#{platform,jdbcType=VARCHAR})
+  	     values (#{server,jdbcType=INTEGER},#{createTime,jdbcType=BIGINT},#{name,jdbcType=VARCHAR},#{id,jdbcType=BIGINT},#{platform,jdbcType=INTEGER})
   </insert>
 </mapper>

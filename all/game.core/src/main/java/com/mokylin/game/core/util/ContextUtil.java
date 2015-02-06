@@ -4,6 +4,8 @@ import io.netty.channel.ChannelHandlerContext;
 
 import org.apache.log4j.Logger;
 
+import com.mokylin.game.core.message.Message;
+
 public class ContextUtil {
 	private static Logger logger = Logger.getLogger(ContextUtil.class);
 
@@ -11,5 +13,9 @@ public class ContextUtil {
 		logger.error("close context:" + reason);
 //		ctx.close();
 		ctx.disconnect();
+	}
+	
+	public static void write(ChannelHandlerContext ctx, Message msg) {
+		ctx.writeAndFlush(msg);
 	}
 }

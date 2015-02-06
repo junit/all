@@ -113,7 +113,7 @@ public class Generator {
 
 	private void add(List<IFtl> list, Element root, int index, String pkg, FtlType ftlType) {
 		if (root.getName().equals("bean")) {
-			Bean bean = new Bean(ftlType, FileUtil.getDestRelativePath("logic" + File.separator + pkg + File.separator + "message", root.attributeValue("name") + "Bean", ftlType, ftlManager));
+			Bean bean = new Bean(ftlType, FileUtil.getDestRelativePath("logic" + File.separator + pkg + File.separator + "message", root.attributeValue("name"), ftlType, ftlManager));
 			list.add(bean);
 			
 			bean.setName(root.attributeValue("name"));

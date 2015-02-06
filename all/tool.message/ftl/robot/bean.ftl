@@ -20,9 +20,9 @@ import org.apache.log4j.Logger;
  * 
  * ${note}
  */
-public class ${name}Bean extends Bean {
+public class ${name} extends Bean {
 
-	private static Logger log = Logger.getLogger(${name}Bean.class);
+	private static Logger log = Logger.getLogger(${name}.class);
 	
 	<#list fields as field>
 	<#if field.listFlag==1>

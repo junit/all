@@ -1,7 +1,7 @@
 package com.mokylin.game.core.message;
 
 public interface Command {
-	 public void exec();
+	 public void exec() throws Exception;
 	 /*
 	  * 超时毫秒数
 	  */

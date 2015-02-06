@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <root>
-  <message id="100101" pkg="login" name="ReqLogin"/>
-  <message id="100102" pkg="login" name="ReqLoginTest"/>
+  <message id="100101" pkg="account" name="ReqAccountLogin"/>
+  <message id="102101" pkg="map" name="ReqMapEnter"/>
+  <message id="100102" pkg="account" name="ReqAccountTest"/>
+  <message id="101101" pkg="role" name="ReqRoleCreate"/>
 </root>

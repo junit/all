@@ -21,6 +21,7 @@
     </environments>
     
     <mappers>
+		<mapper resource="src/main/java/com/mokylin/game/server/db/config/mapper/RoleMapper.xml"/>
 		<mapper resource="src/main/java/com/mokylin/game/server/db/config/mapper/AccountMapper.xml"/>
     </mappers>
 </configuration>

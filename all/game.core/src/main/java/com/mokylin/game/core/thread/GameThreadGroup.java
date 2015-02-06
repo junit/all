@@ -16,6 +16,10 @@ public class GameThreadGroup {
 	
 	public void add(GameObject excutor, Command command) throws Exception {
 		GameThread thread = excutor2thread.get(excutor);
+		if (thread == null) {
+			add(excutor);
+			thread = excutor2thread.get(excutor); // 再错就不管了
+		}
 		thread.add(command);
 	}
 

@@ -63,4 +63,15 @@ public class NameManager {
 		wordFilter.init(list);
 		return true;
 	}
+
+	/**
+	 * 根据name和server生成一个合法的name,如果没有则返回null
+	 * @param server
+	 * @param name
+	 * @return
+	 */
+	public String createValidName(int server, String name) {
+		String newName = new StringBuilder().append(server).append(".").append(name).toString();
+		return check(newName) ? newName : null;
+	}
 }

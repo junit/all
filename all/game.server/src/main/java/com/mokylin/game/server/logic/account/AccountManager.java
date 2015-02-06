@@ -1,30 +1,32 @@
 package com.mokylin.game.server.logic.account;
 
-import java.util.concurrent.ConcurrentHashMap;
+import io.netty.channel.ChannelHandlerContext;
+
+import org.apache.log4j.Logger;
 
 import com.mokylin.game.core.util.CommonUtil;
+import com.mokylin.game.core.util.ContextUtil;
 import com.mokylin.game.server.ManagerPool;
 import com.mokylin.game.server.config.Platform;
+import com.mokylin.game.server.context.ContextAttribute;
+import com.mokylin.game.server.db.data.bean.AccountBean;
+import com.mokylin.game.server.logic.GameEventPool;
+import com.mokylin.game.server.logic.account.consts.RetCode;
+import com.mokylin.game.server.logic.account.message.ReqAccountLoginMessage;
+import com.mokylin.game.server.logic.account.message.ResAccountLoginFailedMessage;
+import com.mokylin.game.server.logic.role.message.ResRoleInfoMessage;
 
 public class AccountManager {
-	private ConcurrentHashMap<Long, Account> accounts = new ConcurrentHashMap<>();
-	private ConcurrentHashMap<String, ConcurrentHashMap<Platform, ConcurrentHashMap<Integer, Account>>> accounts0 = new ConcurrentHashMap<>();
+	private Logger logger = Logger.getLogger(this.getClass());
+	private AccountCache cache = new AccountCache();
 
 	public boolean init() {
-		// TODO
+		if (!cache.init()) return false;
 		return true;
 	}
 
 	public Account get(String accountName, Platform platform, int server) {
-		ConcurrentHashMap<Platform, ConcurrentHashMap<Integer, Account>> accounts1 = accounts0.get(accountName);
-		if (accounts1 == null) {
-			return null;
-		}
-		ConcurrentHashMap<Integer, Account> accounts2 = accounts1.get(platform);
-		if (accounts2 == null) {
-			return null;
-		}
-		return accounts2.get(server);
+		return cache.get(accountName, platform, server);
 	}
 
 	public Account create(String name, Platform platform, int server) {
@@ -38,29 +40,13 @@ public class AccountManager {
 		account.setPlatform(platform);
 		account.setServer(server);
 		account.setCreateTime(System.currentTimeMillis());
-		account.setLoginTime(account.getCreateTime());
 
 		add(account);
 		return account;
 	}
 
 	private void add(Account account) {
-		accounts.put(account.getId(), account);
-
-		synchronized (accounts0) {
-			ConcurrentHashMap<Platform, ConcurrentHashMap<Integer, Account>> accounts1 = accounts0.get(account.getName());
-			if (accounts1 == null) {
-				accounts1 = new ConcurrentHashMap<>();
-				accounts0.put(account.getName(), accounts1);
-			}
-
-			ConcurrentHashMap<Integer, Account> accounts2 = accounts1.get(account.getPlatform());
-			if (accounts2 == null) {
-				accounts2 = new ConcurrentHashMap<>();
-				accounts1.put(account.getPlatform(), accounts2);
-			}
-			accounts2.put(account.getServer(), account);
-		}
+		cache.add(account);
 	}
 
 	public boolean checkKey(Account account, String check) {
@@ -69,6 +55,78 @@ public class AccountManager {
 	}
 
 	public Account get(long id) {
-		return accounts.get(id);
+		return cache.get(id);
+	}
+
+	public void login(ChannelHandlerContext ctx, ReqAccountLoginMessage msg) {
+    	try {
+    		Long accountId = null;
+    		synchronized (ctx) { // 改变和获取的时候,加锁
+    			accountId = ctx.attr(ContextAttribute.ACCOUNT_ID).get();
+    		}
+    		if (accountId != null) {
+    			sendError(ctx, RetCode.LOGINED);
+    			return ;
+    		}
+    		
+    		if (!ManagerPool.config.getConfigs().containsKey(msg.getServer())) { // server 判定
+    			sendError(ctx, RetCode.SERVER_ERROR);
+    			return ;
+    		}
+    		
+    		Account account = ManagerPool.account.get(msg.getAccountName(), Platform.get(msg.getPlatform()), msg.getServer());
+    		if (account == null) {
+    			account = ManagerPool.account.create(msg.getAccountName(), Platform.get(msg.getPlatform()), msg.getServer());
+    		}
+    		
+    		if (account == null) {
+    			sendError(ctx, RetCode.CRATE_ERROR);
+    			return ;
+    		}
+    		
+    		if (!ManagerPool.account.checkKey(account, msg.getCheck())) {
+    			sendError(ctx, RetCode.KEY_ERROR);
+    			return ;
+    		}
+    		
+    		onLoginSuc(ctx, account);
+      } catch (Exception e) {
+			logger.error(e, e);
+		}
+    }
+	
+	private void onLoginSuc(ChannelHandlerContext context, Account account) {
+		ChannelHandlerContext oldContext = ManagerPool.context.getContexts().get(account.getId());
+		if (oldContext != null) {
+			ContextUtil.close(oldContext, "顶号");
+		}
+		ManagerPool.context.getContexts().put(account.getId(), context);
+		synchronized (context) { // 改变和获取的时候,加锁
+			context.attr(ContextAttribute.ACCOUNT_ID).set(account.getId());
+		}
+		
+		GameEventPool.account.onLogin(account);
+	}
+
+	private void sendError(ChannelHandlerContext ctx, RetCode code) {
+		ResAccountLoginFailedMessage msg = new ResAccountLoginFailedMessage();
+		msg.setErr(code.getValue());
+		ManagerPool.context.write(ctx, msg);
+	}
+
+	public void send(Account account) {
+		ResRoleInfoMessage msg = new ResRoleInfoMessage();
+		msg.setRoles(ManagerPool.role.getRoleInfoList(account, msg.getRoles()));
+		ManagerPool.context.write(account, msg);
+	}
+
+	public Account create(AccountBean bean) {
+		Account account = new Account();
+		account.setId(bean.getId());
+		account.setName(bean.getName());
+		account.setPlatform(Platform.get(bean.getPlatform()));
+		account.setServer(bean.getServer());
+		account.setCreateTime(bean.getCreateTime());
+		return account;
 	}
 }

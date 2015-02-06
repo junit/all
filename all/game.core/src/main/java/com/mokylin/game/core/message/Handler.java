@@ -1,27 +1,26 @@
 package com.mokylin.game.core.message;
 
-import io.netty.channel.ChannelHandlerContext;
 
 /**
  * Created by game on 3/31/14.
  */
 public abstract class Handler implements Command {
-    private Message message; // message
-    private ChannelHandlerContext context;
+	private Message message; // message
+	private Object excutor;
 
-    public ChannelHandlerContext getContext() {
-        return context;
-    }
+	public Message getMessage() {
+		return message;
+	}
 
-    public void setContext(ChannelHandlerContext context) {
-        this.context = context;
-    }
+	public void setMessage(Message message) {
+		this.message = message;
+	}
 
-    public Message getMessage() {
-        return message;
-    }
+	public Object getExcutor() {
+		return excutor;
+	}
 
-    public void setMessage(Message message) {
-        this.message = message;
-    }
+	public void setExcutor(Object excutor) {
+		this.excutor = excutor;
+	}
 }

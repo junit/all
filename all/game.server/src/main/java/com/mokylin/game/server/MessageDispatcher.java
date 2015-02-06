@@ -1,40 +1,47 @@
 package com.mokylin.game.server;
 
+import io.netty.channel.ChannelHandlerContext;
+
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.log4j.Logger;
 
-import io.netty.channel.ChannelHandlerContext;
-
 import com.mokylin.game.core.message.Handler;
+import com.mokylin.game.core.message.Message;
+import com.mokylin.game.core.message.MessagePool;
 import com.mokylin.game.core.netty.GameHandlerAdapter;
 import com.mokylin.game.core.util.ContextUtil;
 import com.mokylin.game.server.context.ContextAttribute;
 import com.mokylin.game.server.logic.account.Account;
+import com.mokylin.game.server.logic.account.message.ReqAccountLoginMessage;
 
 public class MessageDispatcher extends GameHandlerAdapter {
 	private static Logger logger = Logger.getLogger(MessageDispatcher.class);
 
 	@Override
-	protected void onRecvMsg(Handler handler) {
-		if (handler.getMessage().getId() == 100101) { // 登录
-			handler.exec();
+	protected void channelRead(ChannelHandlerContext ctx, Message msg) {
+		if (msg instanceof ReqAccountLoginMessage) { // 登录
+			ManagerPool.account.login(ctx, (ReqAccountLoginMessage)msg);
 			return ;
 		}
 		
 		Long accountId = null;
-		synchronized (handler.getContext()) { // 改变和获取的时候,加锁
-			accountId = handler.getContext().attr(ContextAttribute.ACCOUNT_ID).get();
+		synchronized (ctx) { // 改变和获取的时候,加锁
+			accountId = ctx.attr(ContextAttribute.ACCOUNT_ID).get();
 		}
 		if (accountId == null) {
-			ContextUtil.close(handler.getContext(), "未登录的帐号");
+			ContextUtil.close(ctx, "未登录的帐号");
 			return ;
 		}
 		Account account = ManagerPool.account.get(accountId);
 		if (account == null) {
-			ContextUtil.close(handler.getContext(), "未登录的帐号");
+			ContextUtil.close(ctx, "未登录的帐号");
 			return ;
 		}
+		
+		Handler handler = MessagePool.getInstance().createHandler(msg.getId());
+		handler.setExcutor(account);
+		
 		try {
 			ManagerPool.thread.getAccountThreadGroup().add(account, handler);
 		} catch (Exception e) {

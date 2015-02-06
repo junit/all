@@ -1,4 +1,4 @@
-package com.mokylin.game.server.logic.login.message;
+package com.mokylin.game.server.logic.account.message;
 
 
 import com.mokylin.game.core.message.Message;
@@ -12,9 +12,9 @@ import org.apache.log4j.Logger;
  * 
  * 登录消息
  */
-public class ReqLoginMessage extends Message{
+public class ReqAccountLoginMessage extends Message{
 
-	private static Logger log = Logger.getLogger(ReqLoginMessage.class);
+	private static Logger log = Logger.getLogger(ReqAccountLoginMessage.class);
 	
 	//帐号名称
 	private String accountName;

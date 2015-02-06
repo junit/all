@@ -1,4 +1,4 @@
-package com.mokylin.game.server.logic.login.message;
+package com.mokylin.game.server.logic.role.message;
 
 
 import com.mokylin.game.core.message.Message;
@@ -10,26 +10,22 @@ import org.apache.log4j.Logger;
  * 
  * @version 1.0.0
  * 
- * 测试消息
+ * 创建角色返回消息
  */
-public class ResLoginTestMessage extends Message{
+public class ResRoleCreateMessage extends Message{
 
-	private static Logger log = Logger.getLogger(ResLoginTestMessage.class);
+	private static Logger log = Logger.getLogger(ResRoleCreateMessage.class);
 	
-	//time
-	private Long time;
-	//字符串
-	private String str;
+	//角色
+	private RoleInfo role;
 	
 	/**
 	 * 写入字节缓存
 	 */
 	public boolean write(ByteBuf buf){
 	    try {
-			//time
-			writeLong(buf, this.time);
-			//字符串
-			writeString(buf, this.str);
+			//角色
+			writeBean(buf, this.role);
         } catch (Exception e) {
             log.error(e, e);
             return false;
@@ -42,10 +38,8 @@ public class ResLoginTestMessage extends Message{
 	 */
 	public boolean read(ByteBuf buf){
         try {
-			//time
-			this.time = readLong(buf);
-			//字符串
-			this.str = readString(buf);
+			//角色
+			this.role = (RoleInfo)readBean(buf, RoleInfo.class);
         } catch (Exception e) {
             log.error(e, e);
             return false;
@@ -54,48 +48,31 @@ public class ResLoginTestMessage extends Message{
 	}
 	
 	/**
-	 * get time
+	 * get 角色
 	 * @return 
 	 */
-	public Long getTime(){
-		return time;
+	public RoleInfo getRole(){
+		return role;
 	}
 	
 	/**
-	 * set time
+	 * set 角色
 	 */
-	public void setTime(Long time){
-		this.time = time;
-	}
-	
-	/**
-	 * get 字符串
-	 * @return 
-	 */
-	public String getStr(){
-		return str;
-	}
-	
-	/**
-	 * set 字符串
-	 */
-	public void setStr(String str){
-		this.str = str;
+	public void setRole(RoleInfo role){
+		this.role = role;
 	}
 	
 	
 	@Override
 	public int getId() {
-		return 100202;
+		return 101202;
 	}
 	
 	@Override
 	public String toString(){
 		StringBuffer buf = new StringBuffer("[");
-		//time
-		buf.append("time:" + time +",");
-		//字符串
-		if(this.str!=null) buf.append("str:" + str.toString() +",");
+		//角色
+		if(this.role!=null) buf.append("role:" + role.toString() +",");
 		if(buf.charAt(buf.length()-1)==',') buf.deleteCharAt(buf.length()-1);
 		buf.append("]");
 		return buf.toString();

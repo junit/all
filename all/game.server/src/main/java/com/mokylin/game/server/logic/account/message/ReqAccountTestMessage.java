@@ -1,4 +1,4 @@
-package com.mokylin.game.server.logic.login.message;
+package com.mokylin.game.server.logic.account.message;
 
 
 import com.mokylin.game.core.message.Message;
@@ -10,22 +10,26 @@ import org.apache.log4j.Logger;
  * 
  * @version 1.0.0
  * 
- * 登录失败消息
+ * 测试消息
  */
-public class ResLoginFailedMessage extends Message{
+public class ReqAccountTestMessage extends Message{
 
-	private static Logger log = Logger.getLogger(ResLoginFailedMessage.class);
+	private static Logger log = Logger.getLogger(ReqAccountTestMessage.class);
 	
-	//错误代码
-	private Byte err;
+	//字符串
+	private String str;
+	//time
+	private Long time;
 	
 	/**
 	 * 写入字节缓存
 	 */
 	public boolean write(ByteBuf buf){
 	    try {
-			//错误代码
-			writeByte(buf, this.err);
+			//字符串
+			writeString(buf, this.str);
+			//time
+			writeLong(buf, this.time);
         } catch (Exception e) {
             log.error(e, e);
             return false;
@@ -38,8 +42,10 @@ public class ResLoginFailedMessage extends Message{
 	 */
 	public boolean read(ByteBuf buf){
         try {
-			//错误代码
-			this.err = readByte(buf);
+			//字符串
+			this.str = readString(buf);
+			//time
+			this.time = readLong(buf);
         } catch (Exception e) {
             log.error(e, e);
             return false;
@@ -48,31 +54,48 @@ public class ResLoginFailedMessage extends Message{
 	}
 	
 	/**
-	 * get 错误代码
+	 * get 字符串
 	 * @return 
 	 */
-	public Byte getErr(){
-		return err;
+	public String getStr(){
+		return str;
 	}
 	
 	/**
-	 * set 错误代码
+	 * set 字符串
 	 */
-	public void setErr(Byte err){
-		this.err = err;
+	public void setStr(String str){
+		this.str = str;
+	}
+	
+	/**
+	 * get time
+	 * @return 
+	 */
+	public Long getTime(){
+		return time;
+	}
+	
+	/**
+	 * set time
+	 */
+	public void setTime(Long time){
+		this.time = time;
 	}
 	
 	
 	@Override
 	public int getId() {
-		return 100201;
+		return 100102;
 	}
 	
 	@Override
 	public String toString(){
 		StringBuffer buf = new StringBuffer("[");
-		//错误代码
-		buf.append("err:" + err +",");
+		//字符串
+		if(this.str!=null) buf.append("str:" + str.toString() +",");
+		//time
+		buf.append("time:" + time +",");
 		if(buf.charAt(buf.length()-1)==',') buf.deleteCharAt(buf.length()-1);
 		buf.append("]");
 		return buf.toString();

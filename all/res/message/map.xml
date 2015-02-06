@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<messages package="map" id="102">
+	<!-- 服务器接收消息 -->
+	<message id="101" type="CS" name="ReqMapEnter" explain="进入地图">
+		<field class="long" name="role" explain="角色id"></field>
+	</message>
+	
+	<!-- 服务器发送消息 -->
+</messages>
