@@ -29,17 +29,20 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.mokylin</groupId>
-			<artifactId>tool.core</artifactId>
-			<version>1.0</version>
-		</dependency>
-		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-ooxml</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.freemarker</groupId>
+			<artifactId>freemarker</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
 		</dependency>
 	</dependencies>
 </project>

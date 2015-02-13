@@ -7,9 +7,9 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
-import com.mokylin.tool.database.DatabasePanel;
-import com.mokylin.tool.excel.ExcelPanel;
-import com.mokylin.tool.message.MessagePanel;
+import com.mokylin.tool.ui.database.DatabasePanel;
+import com.mokylin.tool.ui.excel.ExcelPanel;
+import com.mokylin.tool.ui.message.MessagePanel;
 
 public class MainWindow {
 

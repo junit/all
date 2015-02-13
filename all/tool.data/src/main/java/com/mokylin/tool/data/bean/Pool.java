@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.mokylin.tool.core.bean.FtlType;
 import com.mokylin.tool.core.bean.IFtl;
 import com.mokylin.tool.core.util.FileUtil;
 

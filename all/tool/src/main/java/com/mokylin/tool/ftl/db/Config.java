@@ -1,10 +1,11 @@
-package com.mokylin.tool.db.base;
+package com.mokylin.tool.ftl.db;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.mokylin.tool.core.bean.FtlType;
 import com.mokylin.tool.core.bean.IFtl;
 import com.mokylin.tool.core.util.FileUtil;
 

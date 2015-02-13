@@ -1,7 +1,8 @@
-package com.mokylin.tool.db.base;
+package com.mokylin.tool.ftl.db;
 
 import java.util.HashMap;
 
+import com.mokylin.tool.core.bean.FtlType;
 import com.mokylin.tool.core.bean.IFtl;
 
 public class Dao extends IFtl {

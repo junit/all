@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.mokylin.tool.Generator;
-import com.mokylin.tool.core.bean.FtlType;
 import com.mokylin.tool.core.bean.IFtl;
 
 public class Bean extends IFtl {

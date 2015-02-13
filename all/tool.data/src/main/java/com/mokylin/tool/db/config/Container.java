@@ -2,7 +2,6 @@ package com.mokylin.tool.db.config;
 
 import java.util.HashMap;
 
-import com.mokylin.tool.core.bean.FtlType;
 import com.mokylin.tool.core.bean.IFtl;
 
 public class Container extends IFtl {

@@ -6,9 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import com.mokylin.tool.core.FtlManager;
-import com.mokylin.tool.core.bean.Config;
-import com.mokylin.tool.core.bean.FtlType;
 import com.mokylin.tool.core.bean.IFtl;
 import com.mokylin.tool.core.util.FileUtil;
 import com.mokylin.tool.data.bean.Manager;
