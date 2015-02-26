@@ -18,6 +18,7 @@ public class NameManager {
 	public NameManager() {
 		super();
 		legalSpecialChar.add('_');
+		legalSpecialChar.add('.');
 	}
 
 	public boolean check(String name) {

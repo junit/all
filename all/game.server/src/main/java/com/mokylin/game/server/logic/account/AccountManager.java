@@ -2,6 +2,11 @@ package com.mokylin.game.server.logic.account;
 
 import io.netty.channel.ChannelHandlerContext;
 
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import org.apache.log4j.Logger;
 
 import com.mokylin.game.core.util.CommonUtil;
@@ -31,7 +36,6 @@ public class AccountManager {
 
 	public Account create(String name, Platform platform, int server) {
 		if (!ManagerPool.name.check(name)) {
-			logger.debug("创建失败:" + name + "," + platform + "," + server);
 			return null;
 		}
 
@@ -43,7 +47,6 @@ public class AccountManager {
 		account.setCreateTime(System.currentTimeMillis());
 
 		add(account);
-		logger.debug("创建成功:" + name + "," + platform + "," + server);
 		return account;
 	}
 
@@ -106,6 +109,7 @@ public class AccountManager {
 		synchronized (context) { // 改变和获取的时候,加锁
 			context.attr(ContextAttribute.ACCOUNT_ID).set(account.getId());
 		}
+		sendError(context, RetCode.SUC);
 		
 		GameEventPool.account.onLogin(account);
 	}
@@ -130,5 +134,35 @@ public class AccountManager {
 		account.setServer(bean.getServer());
 		account.setCreateTime(bean.getCreateTime());
 		return account;
+	}
+	
+	private static AtomicInteger suc = new AtomicInteger(0);
+	private static AtomicInteger fail = new AtomicInteger(0);
+	public static void main(String[] args) {
+		ManagerPool.name.init();
+		ManagerPool.config.init();
+		ReqAccountLoginMessage msg = new ReqAccountLoginMessage();
+		msg.setAccountName("shell");
+		msg.setCheck("");
+		msg.setPlatform(1);
+		msg.setServer(1);
+		
+		ThreadPoolExecutor excutor = new ThreadPoolExecutor(100, 100, 0, TimeUnit.DAYS, new LinkedBlockingQueue<>());
+		for (int i = 0; i < 100; ++i) {
+			excutor.execute(new Runnable() {
+				@Override
+				public void run() {
+					ManagerPool.account.login(null, msg);
+				}
+			});
+		}
+		
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.err.println("suc:" + suc);
+		System.err.println("fail:" + fail);
 	}
 }

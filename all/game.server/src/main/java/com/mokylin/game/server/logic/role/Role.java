@@ -8,7 +8,7 @@ import com.mokylin.game.server.logic.role.message.RoleInfo;
 public class Role {
 	private long id;
 	private String name;
-	private Sex sex;
+	private Sex sex = Sex.MALE;
 	private MapRoleData map = new MapRoleData();
 
 	private transient Account account;

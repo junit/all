@@ -1,0 +1,22 @@
+option java_package = "com.mokylin.game.server.logic.role.proto";
+option java_outer_classname = "RoleProto";
+
+message Coordinate
+{
+	required int32 x = 1;
+	required int32 y = 2;
+}
+
+message MapData
+{
+	required int32 model = 1;
+	required Coordinate coordinate = 2;
+}
+
+message Role
+{
+	required int64 id = 1;
+	required string name = 2;
+	required int32 sex = 3;
+	required MapData mapData = 4;
+}

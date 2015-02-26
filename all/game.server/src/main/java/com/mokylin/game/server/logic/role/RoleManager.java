@@ -2,6 +2,7 @@ package com.mokylin.game.server.logic.role;
 
 import java.util.List;
 import java.util.Vector;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.log4j.Logger;
 
@@ -51,6 +52,7 @@ public class RoleManager {
 	public void create(Account account, ReqRoleCreateMessage msg) {
 		String name = ManagerPool.name.createValidName(account.getServer(), msg.getName());
 		if (name == null) {
+			logger.info("名字重复啦:" + msg.getName());
 			return ;
 		}
 		
@@ -76,15 +78,20 @@ public class RoleManager {
 		} catch (Exception e) {
 			logger.error(e, e);
 		}
-		
 		send(account, role);
 	}
 
+	private static AtomicLong s = new AtomicLong(0);
+	
 	private RoleBean create(Account account, Role role) {
 		RoleBean bean = new RoleBean();
 		bean.setId(role.getId());
 		bean.setAccount(account.getId());
+		long s1 = System.currentTimeMillis();
 		bean.setData(JSON.toJSONBytes(role));
+		long s2 = System.currentTimeMillis();
+		s.addAndGet(s2 - s1);
+		System.err.println("总共:" + s);
 		return bean;
 	}
 

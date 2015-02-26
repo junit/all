@@ -1,6 +1,7 @@
 package com.mokylin.game.server.logic.account.consts;
 
 public enum RetCode {
+	SUC((byte)0),
 	LOGINED((byte)1),
 	SERVER_ERROR((byte)1),
 	CRATE_ERROR((byte)1),

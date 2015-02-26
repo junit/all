@@ -11,8 +11,7 @@ public class ContextUtil {
 
 	public static void close(ChannelHandlerContext ctx, String reason) {
 		logger.error("close context:" + reason);
-//		ctx.close();
-		ctx.disconnect();
+		ctx.close();
 	}
 	
 	public static void write(ChannelHandlerContext ctx, Message msg) {

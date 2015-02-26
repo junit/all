@@ -1,8 +1,8 @@
 package com.mokylin.game.server;
 
-import io.netty.channel.ChannelHandlerContext;
-
 import java.util.concurrent.atomic.AtomicInteger;
+
+import io.netty.channel.ChannelHandlerContext;
 
 import org.apache.log4j.Logger;
 
@@ -56,17 +56,17 @@ public class MessageDispatcher extends GameHandlerAdapter {
 			logger.error(e, e);
 		}
 	}
-
-	private static AtomicInteger count = new AtomicInteger();
 	
+	private static AtomicInteger count = new AtomicInteger(0);
+
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
-		logger.error(count.incrementAndGet());
+		logger.error("当前连接数量:" + count.incrementAndGet());
 	}
 	
 	@Override
 	public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-		logger.error(count.decrementAndGet());
+		logger.error("当前连接数量:" + count.decrementAndGet());
 	}
 	
 	@Override
