@@ -9,11 +9,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.log4j.Logger;
 
+import com.mokylin.game.core.message.Command;
 import com.mokylin.game.core.util.CommonUtil;
 import com.mokylin.game.core.util.ContextUtil;
 import com.mokylin.game.server.ManagerPool;
 import com.mokylin.game.server.config.Platform;
 import com.mokylin.game.server.context.ContextAttribute;
+import com.mokylin.game.server.db.data.DaoPool;
 import com.mokylin.game.server.db.data.bean.AccountBean;
 import com.mokylin.game.server.logic.GameEventPool;
 import com.mokylin.game.server.logic.account.consts.RetCode;
@@ -47,7 +49,35 @@ public class AccountManager {
 		account.setCreateTime(System.currentTimeMillis());
 
 		add(account);
+
+		final AccountBean bean = create(account); 
+		try {
+			ManagerPool.thread.getSaveThreadGroup().add(account, new Command() {
+				
+				@Override
+				public void exec() throws Exception {
+					DaoPool.accountDao.insert(bean);
+				}
+				
+				@Override
+				public int timeOutMs() {
+					return 100;
+				}
+			});
+		} catch (Exception e) {
+			logger.error(e, e);
+		}
 		return account;
+	}
+
+	private AccountBean create(Account account) {
+		AccountBean bean = new AccountBean();
+		bean.setId(account.getId());
+		bean.setName(account.getName());
+		bean.setPlatform(account.getPlatform().getValue());
+		bean.setServer(account.getServer());
+		bean.setCreateTime(account.getCreateTime());
+		return bean;
 	}
 
 	private void add(Account account) {
