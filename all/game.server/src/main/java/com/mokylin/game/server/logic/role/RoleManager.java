@@ -6,6 +6,8 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.log4j.Logger;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.mokylin.game.core.message.Command;
 import com.mokylin.game.core.util.CommonUtil;
@@ -138,5 +140,36 @@ public class RoleManager {
 
 	public Role getRole(int id) {
 		return cache.getRole(id);
+	}
+	
+	public static void main(String[] args) {
+		Role role = new Role();
+		role.setId(123);
+		role.setName("abc");
+		int count = 1000000;
+		
+		long s1 = System.currentTimeMillis();
+		for (int i = 0; i < count; ++i) {
+			Builder builder = RoleProto.Role.newBuilder();
+			com.mokylin.game.server.logic.role.proto.RoleProto.MapData.Builder mapBuilder = RoleProto.MapData.newBuilder();
+			mapBuilder.setModel(role.getMap().getModel());
+			mapBuilder.setX(role.getMap().getCoordinate().getX());
+			mapBuilder.setY(role.getMap().getCoordinate().getY());
+			
+			builder.setId(role.getId());
+			builder.setName(role.getName());
+			builder.setSex(role.getSex().getValue());
+			builder.setMapData(mapBuilder.build());
+			
+			byte[] b = builder.build().toByteArray();
+		}
+		
+		long s2 = System.currentTimeMillis();
+		for (int i = 0; i < count; ++i) {
+			String string = JSON.toJSONString(role, SerializerFeature.WriteClassName);
+//			byte[] b = JSON.toJSONBytes(role, SerializerFeature.WriteClassName);
+		}
+		long s3 = System.currentTimeMillis();
+		System.err.println("proto:" + (s2 - s1) + ",json:" + (s3 - s2));
 	}
 }

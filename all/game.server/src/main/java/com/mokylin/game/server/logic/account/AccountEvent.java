@@ -50,5 +50,4 @@ public class AccountEvent {
 			ManagerPool.account.send(account);
 		}
 	}
-
 }
