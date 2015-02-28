@@ -25,6 +25,8 @@
 		<module>tool.message</module>
 		<module>tool.excel</module>
 		<module>tool</module>
+		<module>game.supserver</module>
+		<module>game.pserver</module>
 	</modules>
 
 	<dependencyManagement>
@@ -98,6 +100,11 @@
 				<groupId>com.google.protobuf</groupId>
 				<artifactId>protobuf-java</artifactId>
 				<version>2.6.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.zookeeper</groupId>
+				<artifactId>zookeeper</artifactId>
+				<version>3.4.6</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
