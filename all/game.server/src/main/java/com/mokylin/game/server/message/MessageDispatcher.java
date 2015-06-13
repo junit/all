@@ -17,6 +17,7 @@ import com.mokylin.game.server.event.ExcutorGroup;
 import com.mokylin.game.server.logic.account.Account;
 import com.mokylin.game.server.logic.account.AccountManager;
 import com.mokylin.game.server.logic.account.message.ReqAccountLoginMessage;
+import com.mokylin.game.server.message.impl.CtxMessage;
 
 @Singleton
 @Sharable
@@ -40,7 +41,7 @@ public class MessageDispatcher extends HandlerAdapter {
 			accountId = ctx.attr(ContextAttribute.ACCOUNT_ID).get();
 		}
 		
-		if (msg instanceof ReqAccountLoginMessage) { // 登录
+		if (msg instanceof CtxMessage) { // 登录
 			if (accountId != null) {
 				ContextUtil.close(ctx, "已经登录过的账号");
 				return ;

@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import io.netty.channel.ChannelHandlerContext;
 
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.mokylin.game.core.event.GameEventHandler;
 import com.mokylin.game.core.message.Message;

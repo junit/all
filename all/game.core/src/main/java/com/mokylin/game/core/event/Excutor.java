@@ -32,7 +32,7 @@ public class Excutor<OWNER, EVENT> {
 		RingBuffer<Event<OWNER, EVENT>> ringBuffer = disruptor.getRingBuffer();
 		long next = ringBuffer.next();
 		try {
-			Event<OWNER, EVENT> t = ringBuffer.get(ringBuffer.next());
+			Event<OWNER, EVENT> t = ringBuffer.get(next);
 			t.setOwner(owner);
 			t.setGameEvent(event);
 			t.setGameEventHandler(handler);
