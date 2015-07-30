@@ -5,6 +5,8 @@ import org.quartz.CronScheduleBuilder;
 import org.quartz.Job;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.SimpleScheduleBuilder;
@@ -55,6 +57,13 @@ public class SchedulerManager {
 			return false;
 		}
 		return true;
+	}
+	
+	public static void main(String[] args) throws InterruptedException {
+		SchedulerManager manager = new SchedulerManager();
+		manager.init();
+		
+		Thread.sleep(10000);
 	}
 }
 

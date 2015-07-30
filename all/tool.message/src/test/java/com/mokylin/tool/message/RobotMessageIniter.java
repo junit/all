@@ -20,7 +20,7 @@ public class RobotMessageIniter {
 			freemarker.template.Configuration cfg = new freemarker.template.Configuration();
 			cfg.setDefaultEncoding("UTF-8");
 			cfg.setObjectWrapper(new DefaultObjectWrapper());
-			cfg.setDirectoryForTemplateLoading(new File("ftl/test_robot"));
+			cfg.setDirectoryForTemplateLoading(new File("config/test_robot"));
 
 			File file = new File("/home/shell/workspace/Game/src/message.xml");
 			if (!file.exists()) {
